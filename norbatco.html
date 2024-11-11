@@ -6,66 +6,134 @@
     <title>Lost and Found</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome for Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <!-- AngularJS -->
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
     <style>
-        /* Smooth transition effect on load */
+        /* Smooth transition, background image and glassmorphism styling */
         body {
             opacity: 0;
             transition: opacity 1s ease-in;
+            background: url("https://github.com/jcalinao/norbatcolostandfound/blob/main/bg.jpg") no-repeat center center fixed; /* Replace with hosted image */
+            background-size: cover;
+            -webkit-backdrop-filter: blur(5px) brightness(-0.7);
         }
         body.loaded {
             opacity: 1;
         }
 
-        /* Modern rounded corners */
-        .card, .btn {
+        .glass {
+            backdrop-filter: blur(10px) brightness(1.2);
+            background: rgba(255, 255, 255, 0.1);
             border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
         }
 
-        /* Custom styles */
         .container {
             margin-top: 30px;
+            color: #ffffff;
         }
-        .card-title {
+
+        /* Title styling with dark edge outline */
+        h1 {
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
             font-weight: bold;
         }
-        .form-control, .btn-primary {
-            margin-top: 10px;
+
+        /* Input and form styling for glassmorphism */
+        .glass-input {
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.15);
+            border: none;
+            border-radius: 10px;
+            padding: 10px;
+            color: #fff;
+        }
+
+        /* Limit form width */
+        .form-container {
+            max-width: 600px;
+            margin: auto;
+        }
+
+        /* Image styling to prevent stretching */
+        .item-image {
+            max-width: 100%;
+            height: auto;
         }
     </style>
 </head>
 <body ng-controller="MainController" onload="document.body.classList.add('loaded')">
     <div class="container">
+        <!-- Admin Sign-In Button -->
+        <button class="btn btn-light float-end mb-4" ng-click="toggleAdmin()">{{ isAdmin ? 'Sign Out' : 'Admin Sign In' }}</button>
+        
+        <!-- Title with dark edges for contrast -->
         <h1 class="text-center mb-4">Lost and Found</h1>
 
-        <!-- Search Bar -->
-        <div class="input-group mb-3">
-            <input type="text" class="form-control" placeholder="Search for items..." ng-model="searchQuery">
+        <!-- Courtesy paragraph about data privacy -->
+        <p class="text-center glass">We value your privacy and ensure that all your data remains secure and confidential.</p>
+
+        <!-- Search Bar (accessible to all users) -->
+        <div class="input-group mb-3 glass">
+            <input type="text" class="form-control glass-input" placeholder="Search for items..." ng-model="searchQuery">
         </div>
 
-        <!-- Item Grid -->
+        <!-- List of Items (replacing carousel) -->
         <div class="row">
-            <div class="col-md-4" ng-repeat="item in items | filter:searchQuery">
-                <div class="card shadow-sm">
+            <div class="col-md-4 mb-3" ng-repeat="item in items | filter:searchQuery">
+                <div class="card glass shadow-sm">
+                    <img ng-if="item.image" ng-src="{{ item.image }}" class="card-img-top item-image img-thumbnail">
                     <div class="card-body">
                         <h5 class="card-title">{{ item.name }}</h5>
                         <p class="card-text">{{ item.description }}</p>
                         <small class="text-muted">Category: {{ item.category }}</small>
+                        <!-- Edit and Delete buttons only for admins -->
+                        <button ng-show="isAdmin" class="btn btn-sm btn-warning mt-2" ng-click="editItem(item)">Edit</button>
+                        <button ng-show="isAdmin" class="btn btn-sm btn-danger mt-2" ng-click="deleteItem(item)">Delete</button>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Add New Item Form -->
-        <div class="card mt-5">
+        <!-- Button to Show All Items in a Modal -->
+        <button class="btn btn-info mt-4" ng-click="showItemList()">Show All Items</button>
+
+        <!-- Modal for Item List -->
+        <div class="modal fade" id="itemListModal" tabindex="-1" aria-labelledby="itemListModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content glass">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="itemListModalLabel">List of Items</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <ul class="list-group">
+                            <li class="list-group-item glass-input" ng-repeat="item in items">{{ item.name }}</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Add New Item Form (visible only to admins) with icon and narrower width -->
+        <div class="form-container glass mt-5" ng-show="isAdmin">
             <div class="card-body">
-                <h5 class="card-title">Report Lost or Found Item</h5>
+                <h5 class="card-title"><i class="fas fa-envelope"></i> Report Lost or Found Item</h5>
                 <form ng-submit="addItem()">
-                    <input type="text" class="form-control" placeholder="Item Name" ng-model="newItem.name" required>
-                    <input type="text" class="form-control" placeholder="Description" ng-model="newItem.description" required>
-                    <input type="text" class="form-control" placeholder="Category (e.g., Lost, Found)" ng-model="newItem.category" required>
-                    <button type="submit" class="btn btn-primary">Add Item</button>
+                    <input type="text" class="form-control glass-input mt-2" placeholder="Item Name" ng-model="newItem.name" required>
+                    <input type="text" class="form-control glass-input mt-2" placeholder="Description" ng-model="newItem.description" required>
+                    <!-- Dropdown for category selection -->
+                    <select class="form-control glass-input mt-2" ng-model="newItem.category" required>
+                        <option value="">Select Category</option>
+                        <option value="Lost">Lost</option>
+                        <option value="Found">Found</option>
+                    </select>
+                    <!-- Image upload input with glassmorphism effect -->
+                    <input type="file" class="form-control glass-input mt-2" accept="image/*" file-input="newItem.image">
+                    <button type="submit" class="btn btn-primary mt-3">Add Item</button>
                 </form>
             </div>
         </div>
@@ -73,31 +141,75 @@
 
     <!-- AngularJS Application Script -->
     <script>
-        // Define AngularJS app and controller
+        // AngularJS Application with file input directive
         angular.module('lostAndFoundApp', [])
+        .directive('fileInput', ['$parse', function($parse) {
+            return {
+                restrict: 'A',
+                link: function(scope, element, attrs) {
+                    element.bind('change', function() {
+                        const file = element[0].files[0];
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            scope.$apply(function() {
+                                $parse(attrs.fileInput).assign(scope, e.target.result);
+                            });
+                        };
+                        reader.readAsDataURL(file);
+                    });
+                }
+            };
+        }])
         .controller('MainController', function($scope) {
-            // List of items
+            // Sample list of items
             $scope.items = [
-                { name: 'Lost Wallet', description: 'Black leather wallet with cards.', category: 'Lost' },
-                { name: 'Found Umbrella', description: 'Red umbrella left in library.', category: 'Found' }
+                { name: 'Lost Wallet', description: 'Black leather wallet with cards.', category: 'Lost', image: '' },
+                { name: 'Found Umbrella', description: 'Red umbrella left in library.', category: 'Found', image: '' }
             ];
 
-            // Add new item
+            // Track admin status
+            $scope.isAdmin = false;
             $scope.newItem = {};
+
+            // Toggle admin sign-in
+            $scope.toggleAdmin = function() {
+                $scope.isAdmin = !$scope.isAdmin;
+            };
+
+            // Add new item
             $scope.addItem = function() {
                 if ($scope.newItem.name && $scope.newItem.description && $scope.newItem.category) {
                     $scope.items.push({
                         name: $scope.newItem.name,
                         description: $scope.newItem.description,
-                        category: $scope.newItem.category
+                        category: $scope.newItem.category,
+                        image: $scope.newItem.image || ''
                     });
                     // Clear form
                     $scope.newItem = {};
                 }
             };
+
+            // Edit an item (only admin access)
+            $scope.editItem = function(item) {
+                $scope.newItem = angular.copy(item);
+                $scope.items = $scope.items.filter(i => i !== item);
+            };
+
+            // Delete an item (only admin access)
+            $scope.deleteItem = function(item) {
+                $scope.items = $scope.items.filter(i => i !== item);
+            };
+
+            // Show item list modal
+            $scope.showItemList = function() {
+                const modal = new bootstrap.Modal(document.getElementById('itemListModal'));
+                modal.show();
+            };
         });
     </script>
-    <!-- Bootstrap JS (for Bootstrap components) -->
+    
+    <!-- Bootstrap JS for Modal -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
