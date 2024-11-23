@@ -1,226 +1,256 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="lostAndFoundApp">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NORBATCO Lost and Found</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome for Icons -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-    <!-- AngularJS and AngularJS Animate -->
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-animate.js"></script>
-    <style>
-        /* Smooth transition, darker background image and glassmorphism styling */
-        body {
-            opacity: 0;
-            transition: opacity 1s ease-in;
-            background: rgb(0, 0, 0) url('https://www.abraham.travel/wp-content/uploads/2023/04/Untitled-design-2023-05-02T091808.865-4.jpg') no-repeat center center fixed;
-            background-size: cover;
-            -webkit-backdrop-filter: blur(25px) brightness(-0.1);
-        }
-        body.loaded {
-            opacity: 1;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lost & Found - NORBATCO</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    /* General Styles */
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to bottom, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.9)),
+                  url('https://pia.gov.ph/uploads/2024/02/ef14a2d0c9f48d8756c1ab92433293bf.jpg') no-repeat center center fixed;
+      background-size: cover;
+    }
 
-        /* Glassmorphism styling for containers */
-        .glass {
-            backdrop-filter: blur(10px) brightness(1.2);
-            background: rgba(255, 255, 255, 0.15);
-            border-radius: 15px;
-            padding: 20px;
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
-            color: #ffffff;
-            transition: all 0.5s ease;
-        }
+    /* Navbar Styles */
+    .navbar {
+      background-color: rgba(0, 0, 0, 0.7);
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 1000;
+    }
+    .navbar-brand img {
+      width: 50px;
+      height: 50px;
+      border-radius: 5px;
+    }
+    .navbar a {
+      color: white;
+    }
+    .navbar a:hover {
+      color: lightgray;
+    }
 
-        .container {
-            margin-top: 30px;
-        }
+    /* Page Footer */
+    .footer {
+      background-color: black;
+      color: white;
+      padding: 20px 0;
+    }
+    .footer a {
+      color: white;
+      text-decoration: none;
+    }
+    .footer a:hover {
+      text-decoration: underline;
+    }
 
-        /* Title styling with white text */
-        h1 {
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
-            font-weight: bold;
-            color: #ffffff;
-            transition: color 0.3s ease;
-        }
+    /* Reported Items */
+    .reported-items {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 15px;
+      margin-top: 100px;
+    }
+    .reported-item {
+      background-color: white;
+      padding: 15px;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      position: relative;
+    }
+    .reported-item img {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 5px;
+    }
+    .reported-item button {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background-color: red;
+      color: white;
+      border: none;
+      padding: 5px;
+      border-radius: 3px;
+      display: none;
+    }
+    .reported-item.edit-mode button {
+      display: block;
+    }
 
-        /* Input and form styling for glassmorphism */
-        .glass-input {
-            backdrop-filter: blur(10px);
-            background: rgba(255, 255, 255, 0.15);
-            border: none;
-            border-radius: 10px;
-            padding: 10px;
-            color: #ffffff;
-            transition: background 0.3s ease, color 0.3s ease;
-        }
-
-        .glass-input:focus {
-            color: #ffffff;
-            outline: none;
-            background: rgba(255, 255, 255, 0.15);
-        }
-
-        /* Limit form width */
-        .form-container {
-            max-width: 600px;
-            margin: auto;
-            transition: opacity 0.5s ease;
-        }
-
-        /* Image styling to prevent stretching */
-        .item-image {
-            max-width: 100%;
-            height: auto;
-            transition: all 0.3s ease;
-        }
-
-        /* Dark text for sign-in button for better contrast */
-        .btn-light {
-            color: #333333;
-            transition: color 0.3s ease;
-        }
-
-        /* White text for category label */
-        .text-muted {
-            color: #ffffff !important;
-            transition: color 0.3s ease;
-        }
-
-        /* Animations for adding and removing items */
-        .animate-repeat.ng-enter {
-            transition: opacity 0.5s ease, transform 0.5s ease;
-            opacity: 0;
-            transform: translateY(-20px);
-        }
-        .animate-repeat.ng-enter-active {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .animate-repeat.ng-leave {
-            transition: opacity 0.5s ease, transform 0.5s ease;
-            opacity: 1;
-            transform: translateY(0);
-        }
-        .animate-repeat.ng-leave-active {
-            opacity: 0;
-            transform: translateY(20px);
-        }
-    </style>
+    /* Pop-up Modal */
+    .modal-content {
+      background-color: white;
+      padding: 20px;
+      border-radius: 5px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    }
+  </style>
 </head>
-<body ng-controller="MainController" onload="document.body.classList.add('loaded')">
-    <div class="container">
-        <!-- Admin Sign-In Button -->
-        <button class="btn btn-light float-end mb-4" ng-click="toggleAdmin()">{{ isAdmin ? 'Sign Out' : 'Admin Sign In' }}</button>
-        
-        <!-- Title with white text -->
-        <h1 class="text-center mb-4">NORBATCO Lost & Found</h1>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">
+        <img src='https://github.com/norbatco/lostandfound/blob/main/images.png' alt="Logo">
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav me-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="#" onclick="navigateTo('home')">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#" onclick="navigateTo('create-report')">Create Report</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#" onclick="navigateTo('about')">About</a>
+          </li>
+        </ul>
+        <button class="btn btn-outline-light" onclick="showLoginModal()">Login</button>
+      </div>
+    </div>
+  </nav>
 
-        <!-- Courtesy paragraph with white text -->
-        <p class="text-center glass">We value your privacy and ensure that all your data remains secure and confidential.</p>
-
-        <!-- Search Bar (accessible to all users) -->
-        <div class="input-group mb-3 glass">
-            <input type="text" class="form-control glass-input" placeholder="Search for items..." ng-model="searchQuery">
-        </div>
-
-        <!-- List of Items with animations on addition and deletion -->
-        <div class="row">
-            <div class="col-md-4 mb-3 animate-repeat" ng-repeat="item in items | filter:searchQuery" ng-animate="'animate-repeat'">
-                <div class="card glass shadow-sm">
-                    <img ng-if="item.image" ng-src="{{ item.image }}" class="card-img-top item-image img-thumbnail">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ item.name }}</h5>
-                        <p class="card-text">{{ item.description }}</p>
-                        <small class="text-muted">Category: {{ item.category }}</small>
-                        <!-- Edit and Delete buttons only for admins -->
-                        <button ng-show="isAdmin" class="btn btn-sm btn-warning mt-2" ng-click="editItem(item)">Edit</button>
-                        <button ng-show="isAdmin" class="btn btn-sm btn-danger mt-2" ng-click="deleteItem(item)">Delete</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Add New Item Form (visible only to admins) -->
-        <div class="form-container glass mt-5" ng-show="isAdmin">
-            <div class="card-body">
-                <h5 class="card-title"><i class="fas fa-envelope"></i> Report Lost or Found Item</h5>
-                <form ng-submit="addItem()">
-                    <input type="text" class="form-control glass-input mt-2" placeholder="Item Name" ng-model="newItem.name" required>
-                    <input type="text" class="form-control glass-input mt-2" placeholder="Description" ng-model="newItem.description" required>
-                    <select class="form-control glass-input mt-2" ng-model="newItem.category" required>
-                        <option value="">Select Category</option>
-                        <option value="Lost">Lost</option>
-                        <option value="Found">Found</option>
-                    </select>
-                    <input type="file" class="form-control glass-input mt-2" accept="image/*" file-input="newItem.image">
-                    <button type="submit" class="btn btn-primary mt-3">Add Item</button>
-                </form>
-            </div>
-        </div>
+  <!-- Main Content -->
+  <div class="container mt-5">
+    <!-- Home Section -->
+    <div id="home" class="mt-4">
+      <h2 class="text-center">Found Items Reported</h2>
+      <div class="reported-items" id="reportedItems"></div>
     </div>
 
-    <!-- AngularJS Application Script -->
-    <script>
-        angular.module('lostAndFoundApp', ['ngAnimate'])
-        .directive('fileInput', ['$parse', function($parse) {
-            return {
-                restrict: 'A',
-                link: function(scope, element, attrs) {
-                    element.bind('change', function() {
-                        const file = element[0].files[0];
-                        const reader = new FileReader();
-                        reader.onload = function(e) {
-                            scope.$apply(function() {
-                                $parse(attrs.fileInput).assign(scope, e.target.result);
-                            });
-                        };
-                        reader.readAsDataURL(file);
-                    });
-                }
-            };
-        }])
-        .controller('MainController', function($scope) {
-            $scope.items = [
-                { name: 'Lost Wallet', description: 'Black leather wallet with cards.', category: 'Lost', image: '' },
-                { name: 'Found Umbrella', description: 'Red umbrella left in library.', category: 'Found', image: '' }
-            ];
+    <!-- Create Report Section -->
+    <div id="create-report" style="display: none;">
+      <h3>Create a Report</h3>
+      <form id="createReportForm">
+        <div class="mb-3">
+          <label for="itemDescription" class="form-label">Item Description</label>
+          <input type="text" class="form-control" id="itemDescription" required>
+        </div>
+        <div class="mb-3">
+          <label for="itemImage" class="form-label">Upload Image</label>
+          <input type="file" class="form-control" id="itemImage" accept="image/*" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Add Report</button>
+      </form>
+    </div>
 
-            $scope.isAdmin = false;
-            $scope.newItem = {};
+    <!-- About Section -->
+    <div id="about" style="display: none;">
+      <h3>About NORBATCO Lost & Found</h3>
+      <p>This is a system to help people recover their lost items in public transportation.</p>
+    </div>
+  </div>
 
-            $scope.toggleAdmin = function() {
-                $scope.isAdmin = !$scope.isAdmin;
-            };
+  <!-- Footer -->
+  <div class="footer text-center">
+    <div class="container">
+      <p>Address: 101 New Kawayan, Tacloban City, Leyte</p>
+      <p>Phone: 093 9379 33017 | Email: norbatco@gmail.com</p>
+      <div>
+        <a href="#">Facebook</a> | <a href="#">Instagram</a> | <a href="#">Twitter</a>
+      </div>
+    </div>
+  </div>
 
-            $scope.addItem = function() {
-                if ($scope.newItem.name && $scope.newItem.description && $scope.newItem.category) {
-                    $scope.items.push({
-                        name: $scope.newItem.name,
-                        description: $scope.newItem.description,
-                        category: $scope.newItem.category,
-                        image: $scope.newItem.image || ''
-                    });
-                    $scope.newItem = {};
-                }
-            };
+  <!-- Login Modal -->
+  <div id="loginModal" class="modal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Admin Login</h5>
+        </div>
+        <div class="modal-body">
+          <input type="text" id="username" class="form-control mb-3" placeholder="Username">
+          <input type="password" id="password" class="form-control mb-3" placeholder="Password">
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-primary" onclick="checkLogin()">Login</button>
+          <button class="btn btn-secondary" onclick="hideLoginModal()">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
-            $scope.editItem = function(item) {
-                $scope.newItem = angular.copy(item);
-                $scope.items = $scope.items.filter(i => i !== item);
-            };
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    let items = [];
+    let adminMode = false;
 
-            $scope.deleteItem = function(item) {
-                $scope.items = $scope.items.filter(i => i !== item);
-            };
-        });
-    </script>
+    function navigateTo(sectionId) {
+      document.querySelectorAll('#home, #create-report, #about').forEach(section => section.style.display = 'none');
+      document.getElementById(sectionId).style.display = 'block';
+      if (sectionId === 'home') displayItems();
+    }
 
-    <!-- Bootstrap JS for Modal and Toast -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    function displayItems() {
+      const container = document.getElementById('reportedItems');
+      container.innerHTML = '';
+      items.forEach((item, index) => {
+        const itemElement = document.createElement('div');
+        itemElement.className = `reported-item ${adminMode ? 'edit-mode' : ''}`;
+        itemElement.innerHTML = `
+          <img src="${item.image}" alt="${item.description}">
+          <p>${item.description}</p>
+          ${adminMode ? `<button onclick="deleteItem(${index})">Delete</button>` : ''}
+        `;
+        container.appendChild(itemElement);
+      });
+    }
+
+    function showLoginModal() {
+      const modal = new bootstrap.Modal(document.getElementById('loginModal'));
+      modal.show();
+    }
+
+    function hideLoginModal() {
+      const modal = bootstrap.Modal.getInstance(document.getElementById('loginModal'));
+      modal.hide();
+    }
+
+    function checkLogin() {
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+      if (username === 'admin' && password === 'admin') {
+        alert('Admin mode activated.');
+        adminMode = true;
+        displayItems();
+        hideLoginModal();
+      } else {
+        alert('Invalid credentials.');
+      }
+    }
+
+    function deleteItem(index) {
+      items.splice(index, 1);
+      displayItems();
+    }
+
+    document.getElementById('createReportForm').addEventListener('submit', e => {
+      e.preventDefault();
+      const description = document.getElementById('itemDescription').value;
+      const file = document.getElementById('itemImage').files[0];
+
+      const reader = new FileReader();
+      reader.onload = function(event) {
+        items.push({ description, image: event.target.result });
+        navigateTo('home');
+      };
+      reader.readAsDataURL(file);
+    });
+
+    navigateTo('home'); // Initialize with the home section
+  </script>
 </body>
 </html>
