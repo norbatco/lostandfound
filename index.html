@@ -14,9 +14,16 @@
   <!-- Icons -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
 
+  <!-- Fonts-->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+
   <style>
 
     /* General Styles */
+
+    body {
+      font-family: 'Poppins', sans-serif;
+    }
 
     html {
       scroll-behavior: smooth;
@@ -55,7 +62,7 @@
     }
 
     .navbar-brand img {
-      height: 40px; 
+      height: 75px; 
       width: auto;  
     }
 
@@ -114,6 +121,22 @@
       color: red;
     }
 
+    /* Style for the search icon */
+    .search-icon {
+      position: absolute;
+      top: 50%; 
+      left: 8px; 
+      transform: translateY(-50%);
+      color: #ccc; 
+      font-size: 16px; 
+      pointer-events: none; 
+    }
+
+    /* Spyglass space :P */
+    .form-control.pl-4 {
+      padding-left: 35px; 
+    }
+
     /* Report Form Section */
     #report-section {
       position: relative;
@@ -142,13 +165,51 @@
       text-align: center;
     }
 
+    /* Styling for the Reported Items Container */
+    .reported-items-container {
+        max-height: 750px;  
+        overflow-y: auto;   
+        overflow-x: hidden;
+        border: 2px solid #ddd; 
+        padding: 25px; 
+        margin-top: 20px;
+        border-radius: 15px;
+    }
+
+    /* Optional: Add some styling for the items and cards */
+    .card {
+        margin-bottom: 10px; /* Add space between cards */
+    }
+
+    /* Custom scrollbar style */
+    .reported-items-container::-webkit-scrollbar {
+        width: 8px;  
+    }
+
+    .reported-items-container::-webkit-scrollbar-thumb {
+        background-color: #888;  
+        border-radius: 4px; 
+    }
+
+    .reported-items-container::-webkit-scrollbar-thumb:hover {
+        background-color: #555;  
+    }
+
     /* About Section */
     #about-section {
-      background: linear-gradient(rgba(0, 0, 0, 0.442),rgba(0, 0, 0, 0.385)), url('https://github.com/norbatco/lostandfound/blob/main/norbatco.jpg?raw=true') no-repeat center center/cover;
+      background: linear-gradient(rgba(0, 0, 0, 0.604),rgba(0, 0, 0, 0.53)), url('https://github.com/norbatco/lostandfound/blob/main/norbatco.jpg?raw=true') no-repeat center center/cover;
       background-position: cover;
       color: rgb(255, 255, 255);
       text-align: center;
       padding: 50px 20px;
+    }
+
+    #about-section h2 p {
+      font-family: 'Poppins', sans-serif;
+    }
+
+    #about-section p {
+      text-align: justify;
     }
 
     .about-section img {
@@ -185,13 +246,14 @@
 
     .footer-right {
       text-align: right; /* Align right text to the right */
+      margin-right: 10px;
     }
 
     .social-icon {
-      margin-left: 10px; /* Add space between icons */
+      margin-left: 15px; /* Add space between icons */
       color: white; /* Set icon color to white */
       text-decoration: none; /* Remove underline */
-      font-size: 20px; /* Adjust icon size */
+      font-size: 30px; /* Adjust icon size */
     }
 
     .social-icon:hover {
@@ -353,6 +415,7 @@
 
   <!-- Header Section -->
   <div id="top" class="header" class="fade-in">
+    <br><br><br>
     <h1>NORBATCO Lost and Found</h1>
     <p>A Solution for Recovering Belongings on Public Transportation</p>
     <button class="btn btn-primary my-2" ng-click="scrollTo('report-section')">Report a Lost Item</button>
@@ -360,30 +423,37 @@
 
   <!-- Found Items Section -->
   <div class="container items-section">
-    <h2 class="text-center">Reported Items</h2>
-    <div class="row">
-      <!-- Loop through the items array using ng-repeat -->
-      <div class="col-md-4" ng-repeat="item in items">
-        <div class="card">
-          <!-- Display the item image using ng-src to bind the image -->
-          <img ng-src="{{item.image}}" class="card-img-top" alt="{{item.itemName}}">
-          <div class="card-body">
-            <!-- Item name -->
-            <h5 class="card-title">{{item.itemName}}</h5>
-            <!-- Item description -->
-            <p class="card-text">{{item.description}}</p>
-            <!-- Display category with dynamic styling -->
-            <span class="category" ng-class="{
-              'category-found': item.category === 'Found',
-              'category-lost': item.category === 'Lost'
-            }">
-              {{item.category}}
-            </span>
+        <h2 class="text-center">Reported Items</h2>
+        
+        <!-- Search Bar with Spyglass Icon -->
+        <div class="form-group position-relative">
+          <input type="text" class="form-control pl-4" ng-model="searchTerm" placeholder="Search for items..." />
+          <i class="fas fa-search search-icon"></i>
+        </div>
+      
+        <!-- Scrollable Box -->
+        <div class="reported-items-container">
+          <div class="row">
+            <div class="col-md-4" ng-repeat="item in items | filter:searchTerm">
+              <div class="card">
+                <img ng-src="{{item.image}}" class="card-img-top" alt="{{item.itemName}}">
+                <div class="card-body">
+                  <h5 class="card-title">{{item.itemName}}</h5>
+                  <p class="card-text">{{item.description}}</p>
+                  <span class="category" ng-class="{
+                    'category-found': item.category === 'Found',
+                    'category-lost': item.category === 'Lost'
+                  }">
+                    {{item.category}}
+                  </span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  </div>
+
+      
 
   <!-- Report Form Section -->
   <div id="report-section">
@@ -519,11 +589,30 @@ Please note that NORBATCO Lost & Found is intended for accidental losses. If you
       // Password visibility state
       $scope.passwordVisible = false;
 
+      $scope.reportedItems = [
+          'Black Wallet',
+          'Blue Shoes',
+          'Red Umbrella',
+      ];
+
       $scope.items = [
         { name: 'Black Wallet', description: 'A small black wallet with gold details.', category: 'Found', image: 'https://i.ebayimg.com/images/g/mPgAAOSw8QtkYAin/s-l400.png' },
         { name: 'Blue Shoes', description: 'A pair of blue sneakers.', category: 'Lost', image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTWoFnMN1Dwa545eDc5UTZSt5gK1oftGJ2nUg&s' },
         { name: 'Red Umbrella', description: 'A bright red umbrella.', category: 'Found', image: 'https://www.ilmarchesato.com/cdn/shop/products/4-490_6_2048x.jpg?v=1665154607' },
       ];
+
+      // Function to toggle the visibility of the dropdown
+      $scope.isDropdownVisible = false;
+      $scope.toggleDropdown = function() {
+          $scope.isDropdownVisible = !$scope.isDropdownVisible;
+      };
+
+      // Function to select an item from the dropdown list
+      $scope.selectedItem = '';
+      $scope.selectItem = function(item) {
+          $scope.selectedItem = item;
+          $scope.isDropdownVisible = false; // Hide the dropdown after selection
+      };
 
       // New item model
         $scope.newItem = {
