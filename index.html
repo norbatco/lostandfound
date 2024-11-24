@@ -76,7 +76,7 @@
     }
 
     .header {
-      background: url('https://pia.gov.ph/uploads/2024/02/ef14a2d0c9f48d8756c1ab92433293bf.jpg') no-repeat center center/cover;
+      background: linear-gradient(rgba(0, 0, 0, 0.594), rgba(0, 0, 0, 0.163)), url('https://pia.gov.ph/uploads/2024/02/ef14a2d0c9f48d8756c1ab92433293bf.jpg') no-repeat center center/cover;
       backdrop-filter: blur(10px);
       background-color: rgb(0, 0, 0);
       color: rgb(255, 255, 255);
@@ -343,8 +343,10 @@
       </div>
       <div class="form-group">
         <label for="itemImage">Upload Item Image</label>
-        <input type="file" class="form-control-file" id="itemImage" ng-model="newItem.image" />
-      </div>
+        <input type="file" class="form-control-file" id="itemImage" 
+               ng-model="newItem.imageFile" 
+               onchange="angular.element(this).scope().handleFileUpload(this.files)" />
+      </div>      
       <button type="submit" class="btn btn-primary btn-block">Submit Report</button>
     </form>
   </div>
@@ -413,9 +415,9 @@
       $scope.passwordVisible = false;
 
       $scope.items = [
-        { name: 'Black Wallet', description: 'A small black wallet with gold details.', category: 'Found', image: 'https://via.placeholder.com/150' },
-        { name: 'Blue Shoes', description: 'A pair of blue sneakers.', category: 'Lost', image: 'https://via.placeholder.com/150' },
-        { name: 'Red Umbrella', description: 'A bright red umbrella.', category: 'Found', image: 'https://via.placeholder.com/150' },
+        { name: 'Black Wallet', description: 'A small black wallet with gold details.', category: 'Found', image: 'https://i.ebayimg.com/images/g/mPgAAOSw8QtkYAin/s-l400.png' },
+        { name: 'Blue Shoes', description: 'A pair of blue sneakers.', category: 'Lost', image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTWoFnMN1Dwa545eDc5UTZSt5gK1oftGJ2nUg&s' },
+        { name: 'Red Umbrella', description: 'A bright red umbrella.', category: 'Found', image: 'https://www.ilmarchesato.com/cdn/shop/products/4-490_6_2048x.jpg?v=1665154607' },
       ];
 
       // New item model
@@ -428,17 +430,17 @@
           imageFile: null
         };
 
-        $scope.$watch('newItem.imageFile', function(newFile) {
-          if (newFile) {
-            var reader = new FileReader();
-            reader.onload = function(event) {
-              $scope.$apply(function() {
-                $scope.newItem.image = event.target.result; // Save the file as a data URL
-              });
-            };
-            reader.readAsDataURL(newFile);
-          }
-        });
+        $scope.handleFileUpload = function(files) {
+            if (files && files[0]) {
+              const reader = new FileReader();
+              reader.onload = function(event) {
+                $scope.$apply(function() {
+                  $scope.newItem.image = event.target.result; // Save as a data URL
+                });
+              };
+              reader.readAsDataURL(files[0]); // Convert the file to a base64 data URL
+            }
+          };
 
       // Handle form submission
         $scope.submitReport = function() {
