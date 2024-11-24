@@ -76,12 +76,13 @@
     }
 
     .header {
-      background: linear-gradient(rgba(0, 0, 0, 0.594), rgba(0, 0, 0, 0.163)), url('https://pia.gov.ph/uploads/2024/02/ef14a2d0c9f48d8756c1ab92433293bf.jpg') no-repeat center center/cover;
+      background: linear-gradient(rgba(0, 0, 0, 0.745), rgba(0, 0, 0, 0.163)), url('https://pia.gov.ph/uploads/2024/02/ef14a2d0c9f48d8756c1ab92433293bf.jpg') no-repeat center center/cover;
       backdrop-filter: blur(10px);
       background-color: rgb(0, 0, 0);
       color: rgb(255, 255, 255);
       text-align: center;
       padding: 100px 20px;
+      padding-top: 10%;
     }
 
     .header h1, .header p {
@@ -115,32 +116,98 @@
 
     /* Report Form Section */
     #report-section {
-      background: url('https://via.placeholder.com/1920x400') no-repeat center center/cover;
+      position: relative;
+      background: linear-gradient(
+    rgba(0, 0, 0, 0.285),
+    rgba(122, 122, 122, 0.579)), url('https://static.vecteezy.com/system/resources/thumbnails/009/201/628/small_2x/paperwork-business-and-file-documents-of-unfinished-stacked-on-office-desk-archive-in-archive-analyzing-the-market-and-considers-the-size-of-future-profits-on-table-office-concept-work-in-office-free-photo.jpg') no-repeat center center/cover;
+      backdrop-filter: blur(33px); 
+      -webkit-backdrop-filter: blur(35px); 
+      border: 1px solid rgba(255, 255, 255, 0.3); 
       padding: 50px 20px;
+      border-radius: 15px; 
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
     }
 
     #report-section form {
       max-width: 600px;
       margin: 0 auto;
-      background-color: #00000074;
+      background: rgba(255, 255, 255, 0.16); /* Inner form background */
       padding: 30px;
       border-radius: 10px;
-      box-shadow: 0 4px 6px rgba(82, 82, 82, 0.904);
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    }
+
+    #report-section h2 {
+      color: white;
+      text-align: center;
     }
 
     /* About Section */
     #about-section {
-      background: url('https://encrypted-tbn0.gstatic.https://scontent.fceb3-1.fna.fbcdn.net/v/t39.30808-6/241005802_6063969653675262_2499790776856614708_n.jpg?_nc_cat=105&ccb=1-7&_nc_sid=127cfc&_nc_eui2=AeFDpo9DOTh5FPLfm73yiuZg-hc_ys5sa6P6Fz_Kzmxro_r3Nj2mq0ijNcbDI_d5wDavO7HNY2zb7W96tMxFEjDw&_nc_ohc=pI0tEbRT1loQ7kNvgGf61In&_nc_zt=23&_nc_ht=scontent.fceb3-1.fna&_nc_gid=A7AjbE7QKjbD0B5eONeFu-2&oh=00_AYA8iGkjcLBT3O_dNlp2Isls2WoEVDoHBq4wCv2iMSdR0Q&oe=6748D314com/images?q=tbn:ANd9GcRHVzD6fSbIFiamkSUYRvp5UFzM0mFaeqXPGw&s') no-repeat center center/cover;
-      color: rgb(0, 0, 0);
+      background: linear-gradient(rgba(0, 0, 0, 0.442),rgba(0, 0, 0, 0.385)), url('https://github.com/norbatco/lostandfound/blob/main/norbatco.jpg?raw=true') no-repeat center center/cover;
+      background-position: cover;
+      color: rgb(255, 255, 255);
       text-align: center;
-      padding: 50px 45px;
+      padding: 50px 20px;
+    }
+
+    .about-section img {
+      max-width: 100%;
+      border-radius: 10px;
     }
 
     /* Footer */
-    footer {
+    .footer {
       background-color: #343a40;
       color: white;
-      padding: 25px 0;
+      padding: 35px 0;
+    }
+
+    .footer-container {
+      display: flex;
+      justify-content: space-between; /* Spread the items evenly */
+      align-items: center; /* Vertically center the text */
+      max-width: 1200px; /* Optional: Center content in wide screens */
+      margin: 0 auto;
+      padding: 0 40px; /* Add some padding for spacing */
+    }
+
+    .footer-left,
+    .footer-center,
+    .footer-right {
+      flex: 1; /* Ensure equal width sections */
+      text-align: center; /* Center-align content */
+    }
+
+    .footer-left {
+      text-align: left; /* Align left text to the left */
+    }
+
+    .footer-right {
+      text-align: right; /* Align right text to the right */
+    }
+
+    .social-icon {
+      margin-left: 10px; /* Add space between icons */
+      color: white; /* Set icon color to white */
+      text-decoration: none; /* Remove underline */
+      font-size: 20px; /* Adjust icon size */
+    }
+
+    .social-icon:hover {
+      color: #0056ff; /* Change icon color on hover */
+      transition: color 0.3s ease;
+    }
+
+    footer p {
+      margin: 0;
+      margin-bottom: 5px;
+    }
+
+    .about-section p {
+      margin: 0;
+      margin-bottom: 15px;
+      padding-right: 50px;
     }
 
     /* Button to toggle login popup */
@@ -352,18 +419,56 @@
   </div>
 
   <!-- About Section -->
-  <div id="about-section" class="fade-in">
-    <h2>About NORBATCO Lost and Found</h2>
-    <p>
-      NORBATCO Lost and Found is a platform to help passengers recover lost belongings and report found items in public transportation. Our goal is to create a seamless and efficient system for connecting people with their lost valuables.
-    </p>
+  <div id="about-section" class="about-section fade-in">
+    <div class="container">
+      <div class="row align-items-center">
+        <!-- Left Column: Text -->
+        <div class="col-md-6 text-center text-md-left">
+          <h2>About NORBATCO Lost and Found</h2>
+          <p>
+            NORBATCO Lost & Found is a web-based platform designed to help you recover lost items on public transportation.
+
+When you report a lost item, it is logged into our secure database. This allows our system, as well as public transportation authorities, to search for and identify your lost belongings, increasing the chances of recovery.
+
+Our platform is user-friendly and secure, ensuring that your data is protected. For insurance claims, certificates from NORBATCO Lost & Found can often be used in place of traditional lost item reports.
+
+Please note that NORBATCO Lost & Found is intended for accidental losses. If your item has been stolen, you should report the theft to local law enforcement to obtain a crime reference number.
+          </p>
+        </div>
+  
+        <!-- Right Column: Image -->
+        <div class="col-md-6 text-center">
+          <img src="https://factohr-1a56a.kxcdn.com/wp-content/uploads/2021/03/jse.png" alt="About NORBATCO" class="img-fluid rounded">
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- Footer -->
-  <footer class="text-center mt-4">
-    <p>Address: 101 New Kawayan, Tacloban City, Leyte</p>
-    <p>Phone: 093 9379 33017 | Email: norbatco@gmail.com</p>
-    <p>&copy; NORBATCO Lost and Found</p>
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-left">
+        <p>Address: </p>
+        <br>
+        <p>101 New Kawayan</p>
+        <p>Tacloban City</p>
+        <p>Leyte</p>
+      </div>
+      <div class="footer-center">
+        <p>Phone: 093 9379 33017</p>
+        <p>Email: norbatco@gmail.com</p>
+        <br>
+        <br>
+        <p>&copy; NORBATCO Lost and Found</p>
+      </div>
+      <div class="footer-right">
+        <p>Find us @:</p>
+        <br>
+        <a href="https://facebook.com" target="_blank" class="social-icon"><i class="fab fa-facebook"></i></a>
+        <a href="https://instagram.com" target="_blank" class="social-icon"><i class="fab fa-instagram"></i></a>
+        <a href="https://x.com" target="_blank" class="social-icon"><i class="fab fa-twitter"></i></a>
+      </div>
+    </div>
   </footer>
 
   <!-- Button to trigger login popup -->
