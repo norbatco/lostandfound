@@ -218,47 +218,56 @@
     }
 
     /* Footer */
-    .footer {
-      background-color: #343a40;
-      color: white;
-      padding: 35px 0;
-    }
-
-    .footer-container {
+        .footer-container {
       display: flex;
-      justify-content: space-between; /* Spread the items evenly */
-      align-items: center; /* Vertically center the text */
-      max-width: 1200px; /* Optional: Center content in wide screens */
+      background: #282828;
+      flex-wrap: wrap; /* Ensure wrapping on smaller screens */
+      justify-content: space-between; /* Maintain spacing between sections */
+      align-items: center;
+      text-align: center; /* Center-align for smaller screens */
+      max-width: 1200px;
       margin: 0 auto;
-      padding: 0 40px; /* Add some padding for spacing */
+      padding: 20px;
+      color: white;
     }
 
-    .footer-left,
-    .footer-center,
-    .footer-right {
-      flex: 1; /* Ensure equal width sections */
-      text-align: center; /* Center-align content */
+/* Ensure equal width for all sections on larger screens */
+    .footer-left, .footer-center, .footer-right {
+      flex: 1;
     }
 
+    /* Text alignment adjustments */
     .footer-left {
-      text-align: left; /* Align left text to the left */
+      text-align: left;
     }
 
     .footer-right {
-      text-align: right; /* Align right text to the right */
-      margin-right: 10px;
+      text-align: right;
     }
 
+    /* Social icons dynamic sizing */
     .social-icon {
-      margin-left: 15px; /* Add space between icons */
-      color: white; /* Set icon color to white */
-      text-decoration: none; /* Remove underline */
-      font-size: 30px; /* Adjust icon size */
+      font-size: 1.5rem; /* Default size */
+      margin-left: 10px;
+      transition: font-size 0.3s ease; /* Smooth resizing */
     }
 
     .social-icon:hover {
-      color: #0056ff; /* Change icon color on hover */
-      transition: color 0.3s ease;
+      font-size: 1.8rem; /* Slightly larger on hover */
+      color: #0056ff;
+    }
+
+    /* Responsive behavior for smaller screens */
+    @media (max-width: 768px) {
+      .footer-left, .footer-center, .footer-right {
+        flex-basis: 100%; /* Each section takes up full width */
+        text-align: center; /* Center text for better readability */
+        margin-bottom: 10px; /* Add spacing between sections */
+      }
+
+      .social-icon {
+        font-size: 1.3rem; /* Smaller size on smaller screens */
+      }
     }
 
     footer p {
