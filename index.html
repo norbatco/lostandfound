@@ -11,11 +11,36 @@
   <!-- AngularJS -->
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
 
-  <!-- Font Awesome for icons -->
+  <!-- Icons -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
 
   <style>
+
     /* General Styles */
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    .btn:hover {
+      background-color: #003bb3;
+      transition: background-color 0.3s ease;
+    }
+
+    input:focus, textarea:focus {
+      border-color: #0056ff;
+      transition: border-color 0.3s ease-in-out;
+    }
+
+    .fade-in {
+      opacity: 0;
+      animation: fadeIn 1s forwards;
+    }
+
+    @keyframes fadeIn {
+      100% {opacity: 1;}
+    }
+
     body {
       margin: 0;
       font-family: Arial, sans-serif;
@@ -24,15 +49,37 @@
     .navbar {
       background-color: rgba(0, 0, 0, 0.7);
     }
+
     .navbar a {
-      color: white !important;
+      color: rgb(255, 255, 255) !important;
+    }
+
+    .navbar-brand img {
+      height: 40px; 
+      width: auto;  
+    }
+
+    .navbar-nav {
+      display: flex;  
+      align-items: center;  
+    }
+
+    .navbar-divider {
+      margin: 0 10px;  
+      color: white;  
+      font-size: 18px;  
+    }
+
+    .nav-item {
+      display: flex;  
+      align-items: center;  
     }
 
     .header {
       background: url('https://pia.gov.ph/uploads/2024/02/ef14a2d0c9f48d8756c1ab92433293bf.jpg') no-repeat center center/cover;
       backdrop-filter: blur(10px);
       background-color: rgb(0, 0, 0);
-      color: white;
+      color: rgb(255, 255, 255);
       text-align: center;
       padding: 100px 20px;
     }
@@ -43,14 +90,15 @@
 
     /* Found Items Section */
     .items-section {
-      padding: 50px 20px;
-      background: url('https://via.placeholder.com/1920x500') no-repeat center center/cover;
-      color: white;
+      padding: 25px 25px;
+      background: linear-gradient(rgb(255, 230, 161), rgb(246, 207, 100));
+      background-size: cover;
+      color: rgb(150, 150, 150);
     }
 
     .card {
-      margin: 10px 0;
-      color: rgb(255, 255, 255);
+      margin: 5px 0;
+      color: rgb(0, 0, 0);
     }
 
     .category-found {
@@ -70,16 +118,16 @@
     #report-section form {
       max-width: 600px;
       margin: 0 auto;
-      background-color: #000000;
+      background-color: #00000074;
       padding: 30px;
       border-radius: 10px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 4px 6px rgba(82, 82, 82, 0.904);
     }
 
     /* About Section */
     #about-section {
       background: url('https://via.placeholder.com/1920x300') no-repeat center center/cover;
-      color: white;
+      color: rgb(0, 0, 0);
       text-align: center;
       padding: 50px 20px;
     }
@@ -117,7 +165,6 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background-color: rgba(0, 0, 0, 0.6);
       display: flex;
       justify-content: center;
       align-items: center;
@@ -126,9 +173,11 @@
 
     /* Popup content */
     .popup-content {
-      background: url('https://www.google.com/url?sa=i&url=https%3A%2F%2Fm.facebook.com%2Fp%2FNORBATCO-Tacloban-100064040618876%2F&psig=AOvVaw0Zvuxm4KVXdH9xWgeMaWla&ust=1732515068477000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCJiA7NCn9IkDFQAAAAAdAAAAABAEhttps://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS_WG8tmOMPAr1qNI93-jUFyEQXw64xBdRmPg&s') no-repeat center center;
-      background-size: cover;
-      width: 350px;
+      background: 
+        linear-gradient(rgba(0, 47, 95, 0.576), rgba(0, 59, 107, 0.601)), /* Color overlay */
+        url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS_WG8tmOMPAr1qNI93-jUFyEQXw64xBdRmPg&s') no-repeat center center; /* Background image */
+      background-size: cover; /* Ensures the image covers the entire area */
+      color: white; /* Text color */
       padding: 20px;
       border-radius: 10px;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -172,7 +221,7 @@
 
     .toggle-password {
       position: absolute;
-      right: 10px;
+      right: 40px;
       top: 50%;
       transform: translateY(-50%);
       cursor: pointer;
@@ -203,6 +252,7 @@
       right: 10px;
       transform: translateY(-50%);
       cursor: pointer;
+      color: #777;
     }
 
   </style>
@@ -211,22 +261,27 @@
 
   <!-- Navbar -->
   <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
-    <a class="navbar-brand" href="#">NORBATCO</a>
+    <a class="navbar-brand" href="#">
+      <img src="https://raw.githubusercontent.com/norbatco/lostandfound/refs/heads/main/images.png" alt="NORBATCO Logo" style="height: 40px;">
+    </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav ml-auto">
         <li class="nav-item"><a class="nav-link" href="#top">Home</a></li>
+        <li class="nav-item navbar-divider"><span>|</span></li>
         <li class="nav-item"><a class="nav-link" href="#report-section">Create Report</a></li>
+        <li class="nav-item navbar-divider"><span>|</span></li>
         <li class="nav-item"><a class="nav-link" href="#about-section">About</a></li>
+        <li class="nav-item navbar-divider"><span>|</span></li>
         <li class="nav-item"><a class="nav-link" href="#" ng-click="toggleLoginPopup()">Login</a></li>
       </ul>
     </div>
   </nav>
 
   <!-- Header Section -->
-  <div id="top" class="header">
+  <div id="top" class="header" class="fade-in">
     <h1>NORBATCO Lost and Found</h1>
     <p>A Solution for Recovering Belongings on Public Transportation</p>
     <button class="btn btn-primary my-2" ng-click="scrollTo('report-section')">Report a Lost Item</button>
@@ -236,16 +291,23 @@
   <div class="container items-section">
     <h2 class="text-center">Reported Items</h2>
     <div class="row">
+      <!-- Loop through the items array using ng-repeat -->
       <div class="col-md-4" ng-repeat="item in items">
         <div class="card">
-          <img ng-src="{{item.image}}" class="card-img-top" alt="{{item.name}}">
+          <!-- Display the item image using ng-src to bind the image -->
+          <img ng-src="{{item.image}}" class="card-img-top" alt="{{item.itemName}}">
           <div class="card-body">
-            <h5 class="card-title">{{item.name}}</h5>
+            <!-- Item name -->
+            <h5 class="card-title">{{item.itemName}}</h5>
+            <!-- Item description -->
             <p class="card-text">{{item.description}}</p>
-            <span class="category" ng-class="{'category-found': item.category === 'Found', 'category-lost': item.category === 'Lost'}">
+            <!-- Display category with dynamic styling -->
+            <span class="category" ng-class="{
+              'category-found': item.category === 'Found',
+              'category-lost': item.category === 'Lost'
+            }">
               {{item.category}}
             </span>
-            <button ng-show="adminMode" class="btn btn-danger btn-sm mt-2" ng-click="deleteItem($index)">Delete</button>
           </div>
         </div>
       </div>
@@ -255,36 +317,36 @@
   <!-- Report Form Section -->
   <div id="report-section">
     <h2 class="text-center mb-4">Create a Report</h2>
-    <form>
+    <form ng-submit="submitReport()">
       <div class="form-group">
         <label for="userName">Your Name</label>
-        <input type="text" class="form-control" id="userName" placeholder="Enter your name">
+        <input type="text" class="form-control" id="userName" ng-model="newItem.name" placeholder="Enter your name" required />
       </div>
       <div class="form-group">
         <label for="itemName">Item Name</label>
-        <input type="text" class="form-control" id="itemName" placeholder="Enter item name">
+        <input type="text" class="form-control" id="itemName" ng-model="newItem.itemName" placeholder="Enter item name" required />
       </div>
       <div class="form-group">
         <label for="itemDescription">Item Description</label>
-        <textarea class="form-control" id="itemDescription" rows="3" placeholder="Describe the item"></textarea>
+        <textarea class="form-control" id="itemDescription" ng-model="newItem.description" rows="3" placeholder="Describe the item" required></textarea>
       </div>
       <div class="form-group">
         <label for="itemCategory">Category</label>
-        <select class="form-control" id="itemCategory">
-          <option>Lost</option>
-          <option>Found</option>
+        <select class="form-control" id="itemCategory" ng-model="newItem.category" required>
+          <option value="Lost">Lost</option>
+          <option value="Found">Found</option>
         </select>
       </div>
       <div class="form-group">
         <label for="itemImage">Upload Item Image</label>
-        <input type="file" class="form-control-file" id="itemImage">
+        <input type="file" class="form-control-file" id="itemImage" ng-model="newItem.image" />
       </div>
       <button type="submit" class="btn btn-primary btn-block">Submit Report</button>
     </form>
   </div>
 
   <!-- About Section -->
-  <div id="about-section">
+  <div id="about-section" class="fade-in">
     <h2>About NORBATCO Lost and Found</h2>
     <p>
       NORBATCO Lost and Found is a platform to help passengers recover lost belongings and report found items in public transportation. Our goal is to create a seamless and efficient system for connecting people with their lost valuables.
@@ -302,7 +364,7 @@
   <button class="btn-show-login" ng-click="toggleLoginPopup()">Login</button>
 
   <!-- Login Popup -->
-  <div class="popup-container" ng-show="loginVisible">
+  <div class="popup-container" ng-if="loginVisible"> <!-- Use ng-if instead of ng-show -->
     <div class="popup-content">
       <form ng-submit="handleLogin()">
         <h2>Login</h2>
@@ -332,7 +394,7 @@
   <script>
     var app = angular.module('lostAndFoundApp', []);
 
-    app.controller('mainController', function($scope) {
+    app.controller('mainController', function($scope, $anchorScroll, $location) {
 
       // Manage popup visibility
       $scope.loginVisible = false;
@@ -351,6 +413,66 @@
         { name: 'Blue Shoes', description: 'A pair of blue sneakers.', category: 'Lost', image: 'https://via.placeholder.com/150' },
         { name: 'Red Umbrella', description: 'A bright red umbrella.', category: 'Found', image: 'https://via.placeholder.com/150' },
       ];
+
+      // New item model
+        $scope.newItem = {
+          name: '',
+          itemName: '',
+          description: '',
+          category: 'Lost',
+          image: '',
+          imageFile: null
+        };
+
+        $scope.$watch('newItem.imageFile', function(newFile) {
+          if (newFile) {
+            var reader = new FileReader();
+            reader.onload = function(event) {
+              $scope.$apply(function() {
+                $scope.newItem.image = event.target.result; // Save the file as a data URL
+              });
+            };
+            reader.readAsDataURL(newFile);
+          }
+        });
+
+      // Handle form submission
+        $scope.submitReport = function() {
+          // Create a new item from the form input
+          var newItem = {
+            itemName: $scope.newItem.itemName,
+            description: $scope.newItem.description,
+            category: $scope.newItem.category,
+            image: $scope.newItem.image || 'https://via.placeholder.com/150' // Fallback image if none provided
+          };
+
+          // Add the new item to the items array
+          $scope.items.push(newItem);
+
+          // Reset the form
+          $scope.newItem = {
+            itemName: '',
+            description: '',
+            category: 'Lost',
+            image: '',
+            imageFile: null
+          };
+
+          // Optional: Display confirmation
+          alert('Your item report has been submitted!');
+        };
+      
+
+      // Scroll to section
+      $scope.scrollTo = function(id) {
+        // Update the location hash to the target section
+        $location.hash(id);
+        // Use the $anchorScroll service to scroll to that section
+        $anchorScroll();
+      };
+
+       // Manage popup visibility
+      $scope.loginVisible = false;
 
       // Toggle the login popup visibility
       $scope.toggleLoginPopup = function () {
