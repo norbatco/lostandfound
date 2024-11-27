@@ -20,9 +20,10 @@
   <style>
 
     /* General Styles */
-
     body {
       font-family: 'Poppins', sans-serif;
+      margin: 0;
+      background-color: #555;
     }
 
     html {
@@ -38,21 +39,17 @@
       border-color: #0056ff;
       transition: border-color 0.3s ease-in-out;
     }
-
+    /* Transition */
     .fade-in {
       opacity: 0;
       animation: fadeIn 1s forwards;
     }
-
+    
     @keyframes fadeIn {
       100% {opacity: 1;}
     }
 
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-    }
-
+    /* Navigation Bar */
     .navbar {
       background-color: rgba(0, 0, 0, 0.7);
     }
@@ -82,43 +79,58 @@
       align-items: center;  
     }
 
+    @media (max-width: 768px) {
+    /* Remove dividers on phone */
+    .navbar-divider {
+      display: none;
+    }
+
+    /* Center-align nav items and add spacing */
+    .navbar-nav {
+      text-align: center;
+    }
+
+    .nav-item {
+      margin-bottom: 5px; /* Add spacing between items */
+    }
+
+    .nav-link {
+      font-size: 1rem; /* Adjust font size for readability */
+    }
+    }
+  
+    /* Header Section */
     .header {
       background: linear-gradient(rgba(0, 0, 0, 0.745), rgba(0, 0, 0, 0.163)), url('https://pia.gov.ph/uploads/2024/02/ef14a2d0c9f48d8756c1ab92433293bf.jpg') no-repeat center center/cover;
       backdrop-filter: blur(10px);
       background-color: rgb(0, 0, 0);
+      background-size: cover;
+      height: 100vh;
       color: rgb(255, 255, 255);
       text-align: center;
       padding: 100px 20px;
       padding-top: 10%;
+      position: relative;
+      transition: height 0.3s ease, background-size 0.3s ease; /* Smooth transition for height and background scaling */
+    }
+
+    /* Restores header to its original size on scroll */
+    .shrink-header {
+      height: 400px;
+      background-size: auto;
+      padding: 50px 20px;
     }
 
     .header h1, .header p {
       text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8);
     }
 
-    /* Found Items Section */
-    .items-section {
-      padding: 25px 25px;
-      background: white;
-      background-size: cover;
-      color: rgb(0, 0, 0);
-      border-radius: 15px; /* Rounded corners for the entire section */
+    .header h1 {
+      font-size: 3.6vw;
     }
 
-    .card {
-      margin: 5px 0;
-      color: rgb(0, 0, 0);
-      border-radius: 15px;
-      overflow: hidden;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    }
-
-    .category-found {
-      color: limegreen;
-    }
-
-    .category-lost {
-      color: red;
+    .header p {
+      font-size: 1.8vw;
     }
 
     /* Style for the search icon */
@@ -135,6 +147,122 @@
     /* Spyglass space :P */
     .form-control.pl-4 {
       padding-left: 35px; 
+    }
+
+    /* Found Items Section */
+    .items-section {
+      padding: 25px 25px;
+      background: white;
+      background-size: cover;
+      color: rgb(0, 0, 0);
+      border-radius: 15px; /* Rounded corners for the entire section */
+      font-size: 0.8vw;
+    }
+
+    /* Styling for each card in items-section */
+    .card {
+      margin: 5px 0;
+      color: rgb(0, 0, 0);
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      display: flex; /* Use flexbox to align content */
+      flex-direction: column; /* Stack title and text vertically */
+      justify-content: space-between; /* Ensure content is spaced */
+      padding: 15px;
+      box-sizing: border-box; /* Ensure padding is inside the width */
+      flex-grow: 1; /* Allow the card to grow when necessary */
+      height: auto; 
+      min-width: 150px; /* Minimum width to avoid shrinking too small */
+    }
+
+    /* Category styles */
+    .category-found {
+      color: limegreen;
+      font-size: 1rem;
+    }
+
+    .category-lost {
+      color: red;
+      font-size: 1rem;
+    }
+
+    /* Reduce the font size within the card */
+    .card-title {
+      font-size: 0.9rem; 
+      margin-bottom: 10px; 
+    }
+
+    .card-text {
+      font-size: 0.8rem; 
+    }
+
+    /* On hover, make the card a little bigger */
+    .card:hover {
+      transform: scale(1.05); 
+    }
+
+    /* Responsive behavior for smaller screens */
+    @media (max-width: 768px) {
+      .card {
+        width: 20%; 
+        padding: 10px; 
+      }
+
+      .category-found {
+        color: limegreen;
+        font-size: 2.4vw; 
+      }
+
+      .category-lost {
+        color: red;
+        font-size: 2.4vw; 
+      }
+
+      .card-title {
+        font-size: 1.2rem; 
+      }
+
+      .card-text {
+        font-size: 1rem; 
+      }
+    }
+
+    @media (max-width: 480px) {
+      .card {
+        width: 15%; 
+        padding: 8px; 
+      }
+
+      .category-found {
+        font-size: 3vw; /
+      }
+
+      .category-lost {
+        font-size: 3vw; 
+      }
+
+      .card-title {
+        font-size: 1rem; /
+      }
+
+      .card-text {
+        font-size: 0.9rem; 
+      }
+    }
+
+    /* Custom scrollbar style */
+    .reported-items-container::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    .reported-items-container::-webkit-scrollbar-thumb {
+      background-color: #888;
+      border-radius: 4px;
+    }
+
+    .reported-items-container::-webkit-scrollbar-thumb:hover {
+      background-color: #555;
     }
 
     /* Report Form Section */
@@ -167,7 +295,7 @@
 
     /* Styling for the Reported Items Container */
     .reported-items-container {
-        max-height: 500px;  
+        max-height: 600px;  
         overflow-y: auto;   
         overflow-x: hidden;
         border: 2px solid #ddd; 
@@ -176,9 +304,9 @@
         border-radius: 15px;
     }
 
-    /* Optional: Add some styling for the items and cards */
     .card {
         margin-bottom: 10px; /* Add space between cards */
+        size: 50%;
     }
 
     /* Custom scrollbar style */
@@ -204,12 +332,20 @@
       padding: 50px 20px;
     }
 
-    #about-section h2 p {
-      font-family: 'Poppins', sans-serif;
+    /* Adjust paragraph text size inside the About section */
+    #about-section p {
+      font-size: 1vw; /* Responsive font size based on viewport width */
+      transition: font-size 0.3s ease-in-out;
+      line-height: 1.6; /* Adjust line height for readability */
+      padding-right: 50px;
+      text-align: justify;
     }
 
-    #about-section p {
-      text-align: justify;
+    /* Media query for smaller screens */
+    @media (max-width: 768px) {
+      #about-section p {
+        font-size: 3vw; /* Make font smaller on smaller screens */
+      }
     }
 
     .about-section img {
@@ -225,13 +361,13 @@
       justify-content: space-between; /* Maintain spacing between sections */
       align-items: center;
       text-align: center; /* Center-align for smaller screens */
-      max-width: 1200px;
+      max-width: 100%;
       margin: 0 auto;
       padding: 20px;
       color: white;
     }
 
-/* Ensure equal width for all sections on larger screens */
+    /* Ensure equal width for all sections on larger screens */
     .footer-left, .footer-center, .footer-right {
       flex: 1;
     }
@@ -245,30 +381,42 @@
       text-align: right;
     }
 
-    /* Social icons dynamic sizing */
+    .footer p {
+      font-size: 1vw; /* Responsive footer text size */
+      transition: font-size 0.3s ease-in-out;
+    }
+
+    @media (max-width: 768px){
+      .footer p {
+        font-size: 3vw;
+      }
+    }
+
+    /* Icons Sizing */
     .social-icon {
-      font-size: 1.5rem; /* Default size */
+      font-size: 1.2vw; 
       margin-left: 10px;
-      transition: font-size 0.3s ease; /* Smooth resizing */
       color: white;
+      transition: font-size 0.3s ease;
     }
 
     .social-icon:hover {
-      font-size: 1.8rem; /* Slightly larger on hover */
+      font-size: 1.5vw; 
       color: #0056ff;
     }
 
-    /* Responsive behavior for smaller screens */
-    @media (max-width: 768px) {
-      .footer-left, .footer-center, .footer-right {
-        flex-basis: 100%; /* Each section takes up full width */
-        text-align: center; /* Center text for better readability */
-        margin-bottom: 10px; /* Add spacing between sections */
-      }
+    @media (max-width: 768px){
+    .social-icon {
+      font-size: 5vw; 
+      margin-left: 10px;
+      color: white;
+      transition: font-size 0.3s ease;
+    }
 
-      .social-icon {
-        font-size: 1.3rem; /* Smaller size on smaller screens */
-      }
+    .social-icon:hover {
+      font-size: 5vw; 
+      color: #0056ff;
+    }
     }
 
     footer p {
@@ -413,12 +561,18 @@
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav ml-auto">
         <li class="nav-item"><a class="nav-link" href="#top">Home</a></li>
-        <li class="nav-item navbar-divider"><span>|</span></li>
+        <li class="nav-item navbar-divider d-none d-lg-block"><span>|</span></li>
         <li class="nav-item"><a class="nav-link" href="#report-section">Create Report</a></li>
-        <li class="nav-item navbar-divider"><span>|</span></li>
+        <li class="nav-item navbar-divider d-none d-lg-block"><span>|</span></li>
         <li class="nav-item"><a class="nav-link" href="#about-section">About</a></li>
-        <li class="nav-item navbar-divider"><span>|</span></li>
-        <li class="nav-item"><a class="nav-link" href="#" ng-click="toggleLoginPopup()">Login</a></li>
+        <li class="nav-item navbar-divider d-none d-lg-block"><span>|</span></li>
+        <!-- Conditional Login/Logout Button -->
+        <li class="nav-item" ng-if="!adminMode">
+          <a class="nav-link" href="#" ng-click="toggleLoginPopup()">Login</a>
+        </li>
+        <li class="nav-item" ng-if="adminMode">
+          <a class="nav-link text-danger" href="#" ng-click="logout()">Logout</a>
+        </li>
       </ul>
     </div>
   </nav>
@@ -428,42 +582,55 @@
     <br><br><br>
     <h1>NORBATCO Lost and Found</h1>
     <p>A Solution for Recovering Belongings on Public Transportation</p>
-    <button class="btn btn-primary my-2" ng-click="scrollTo('report-section')">Report a Lost Item</button>
+    <button class="btn btn-primary my-2" ng-click="scrollToSection()">Report a Lost Item</button>
   </div>
 
-  <!-- Found Items Section -->
-  <div class="container items-section">
-        <h2 class="text-center">Reported Items</h2>
-        
-        <!-- Search Bar with Spyglass Icon -->
-        <div class="form-group position-relative">
-          <input type="text" class="form-control pl-4" ng-model="searchTerm" placeholder="Search for items..." />
-          <i class="fas fa-search search-icon"></i>
-        </div>
-      
-        <!-- Scrollable Box -->
-        <div class="reported-items-container">
-          <div class="row">
-            <div class="col-md-4" ng-repeat="item in items | filter:searchTerm">
-              <div class="card">
-                <img ng-src="{{item.image}}" class="card-img-top" alt="{{item.itemName}}">
-                <div class="card-body">
-                  <h5 class="card-title">{{item.itemName}}</h5>
-                  <p class="card-text">{{item.description}}</p>
+  <!-- Reported Items Section -->
+<div class="container items-section">
+  <h2 class="text-center">Reported Items</h2>
+
+  <!-- Search Bar with Spyglass Icon -->
+  <div class="form-group position-relative">
+    <input type="text" class="form-control pl-4" ng-model="searchTerm" placeholder="Search for items..." />
+    <i class="fas fa-search search-icon"></i>
+  </div>
+
+  <!-- Scrollable Box -->
+      <div class="reported-items-container">
+        <div class="row">
+          <div class="col-md-4" ng-repeat="item in items | filter:searchTerm">
+            <div class="card">
+              <img ng-src="{{item.image}}" class="card-img-top" alt="{{item.itemName}}">
+              <div class="card-body">
+                <h5 class="card-title">{{item.itemName}}</h5>
+                <p class="card-text">{{item.description}}</p>
+
+                <!-- Editable Category Dropdown (Visible in Admin Mode) -->
+                <div ng-if="adminMode">
+                  <label for="category-{{$index}}">Category:</label>
+                  <select id="category-{{$index}}" class="form-control" ng-model="item.category">
+                    <option value="Lost">Lost</option>
+                    <option value="Found">Found</option>
+                  </select>
+                </div>
+                <!-- Non-Editable Category -->
+                <div ng-if="!adminMode">
                   <span class="category" ng-class="{
                     'category-found': item.category === 'Found',
                     'category-lost': item.category === 'Lost'
-                  }">
-                    {{item.category}}
-                  </span>
+                  }">{{item.category}}</span>
                 </div>
+
+                <!-- Delete Button (Visible in Admin Mode) -->
+                <button ng-if="adminMode" class="btn btn-danger btn-sm mt-2" ng-click="deleteItem($index)">
+                  Delete Report
+                </button>
               </div>
             </div>
           </div>
         </div>
       </div>
-
-      
+    </div>
 
   <!-- Report Form Section -->
   <div id="report-section">
@@ -507,12 +674,9 @@
           <h2>About NORBATCO Lost and Found</h2>
           <p>
             NORBATCO Lost & Found is a web-based platform designed to help you recover lost items on public transportation.
-
-When you report a lost item, it is logged into our secure database. This allows our system, as well as public transportation authorities, to search for and identify your lost belongings, increasing the chances of recovery.
-
-Our platform is user-friendly and secure, ensuring that your data is protected. For insurance claims, certificates from NORBATCO Lost & Found can often be used in place of traditional lost item reports.
-
-Please note that NORBATCO Lost & Found is intended for accidental losses. If your item has been stolen, you should report the theft to local law enforcement to obtain a crime reference number.
+    When you report a lost item, it is logged into our secure database. This allows our system, as well as public transportation authorities, to search for and identify your lost belongings, increasing the chances of recovery.
+    Our platform is user-friendly and secure, ensuring that your data is protected. For insurance claims, certificates from NORBATCO Lost & Found can often be used in place of traditional lost item reports.
+    Please note that NORBATCO Lost & Found is intended for accidental losses. If your item has been stolen, you should report the theft to local law enforcement to obtain a crime reference number.
           </p>
         </div>
   
@@ -581,8 +745,19 @@ Please note that NORBATCO Lost & Found is intended for accidental losses. If you
     </div>
   </div>
 
-  <!-- AngularJS Application Script -->
   <script>
+    // JavaScript
+    window.addEventListener('scroll', function() {
+      const header = document.getElementById('top');
+      
+      if (window.scrollY > 50) {
+        header.classList.add('shrink-header'); // Add class to shrink the header
+      } else {
+        header.classList.remove('shrink-header'); // Remove class to restore the header
+      }
+    });
+
+    // AngularJS Application Script
     var app = angular.module('lostAndFoundApp', []);
 
     app.controller('mainController', function($scope, $anchorScroll, $location) {
@@ -595,6 +770,9 @@ Please note that NORBATCO Lost & Found is intended for accidental losses. If you
         email: '',
         password: '',
       };
+
+       // Admin mode toggle
+      $scope.adminMode = false;
 
       // Password visibility state
       $scope.passwordVisible = false;
@@ -675,10 +853,16 @@ Please note that NORBATCO Lost & Found is intended for accidental losses. If you
 
       // Scroll to section
       $scope.scrollTo = function(id) {
-        // Update the location hash to the target section
         $location.hash(id);
-        // Use the $anchorScroll service to scroll to that section
         $anchorScroll();
+      };
+
+      $scope.scrollToSection = function() {
+        var target = document.getElementById("reported-items-container");
+        target.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+        });
       };
 
        // Manage popup visibility
@@ -698,13 +882,29 @@ Please note that NORBATCO Lost & Found is intended for accidental losses. If you
 
       // Handle login form submission
       $scope.handleLogin = function () {
-        if ($scope.user.email && $scope.user.password) {
-          alert('Login successful (demo)');
-          $scope.toggleLoginPopup(); // Close the popup on success
+        if ($scope.user.email === 'norbatco@gmail.com' && $scope.user.password === 'admin123') {
+          alert('Login successful! Admin mode activated.');
+          $scope.adminMode = true; // Enable admin mode on successful login
+          $scope.toggleLoginPopup(); // Close the login popup
         } else {
-          alert('Please enter valid email and password');
+          alert('Invalid credentials. Please try again.');
         }
       };
+
+      // Delete an item
+      $scope.deleteItem = function (index) {
+        if (confirm('Are you sure you want to delete this report?')) {
+          $scope.items.splice(index, 1); // Remove the item from the array
+        }
+      };
+
+      // Handle logout
+      $scope.logout = function() {
+        if (confirm('Are you sure you want to log out?')) {
+          $scope.adminMode = false; // Disable admin mode
+          alert('You have been logged out.');
+        }
+      };     
     });
   </script>
 
