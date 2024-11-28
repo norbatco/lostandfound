@@ -135,6 +135,28 @@
       font-size: 1.8vw;
     }
 
+    /* Small Screens */
+    @media (max-width: 768px) {
+        .header h1 {
+            font-size: 5vw; /* Adjust font size for smaller screens */
+        }
+
+        .header p {
+            font-size: 2.5vw; /* Adjust paragraph font size */
+        }
+    }
+
+    /* Very Small SCreens */
+    @media (max-width: 480px) {
+        .header h1 {
+            font-size: 6vw; /* Adjust further for very small screens */
+        }
+
+        .header p {
+            font-size: 3vw; /* Adjust paragraph font size */
+        }
+    }
+
     /* Style for the search icon */
     .search-icon {
       position: absolute;
@@ -181,12 +203,22 @@
     /* Category styles */
     .category-found {
       color: limegreen;
-      font-size: 1rem;
     }
 
     .category-lost {
       color: red;
-      font-size: 1rem;
+    }
+
+    .category-found, .category-lost {
+    font-size: 1rem; /* Default category text size */
+    font-weight: bold;
+    display: block;
+    margin-top: 10px;
+    }
+
+    /* On hover, make the card a little bigger */
+    .card:hover {
+      transform: scale(1.05);
     }
 
     /* Reduce the font size within the card */
@@ -199,58 +231,58 @@
       font-size: 0.8rem; 
     }
 
-    /* On hover, make the card a little bigger */
-    .card:hover {
-      transform: scale(1.05); 
+    /* Default font size for larger screens (e.g., desktops) */
+    .card-title {
+        font-size: 1.5rem; /* Larger font size */
     }
 
-    /* Responsive behavior for smaller screens */
+    .card-text {
+        font-size: 1rem; /* Regular text size */
+    }
+
+    /* Media Query for Smaller Screens (Phones/Tablets) */
     @media (max-width: 768px) {
-      .card {
-        width: 20%; 
-        padding: 10px; 
-      }
+        /* Reduce card size on smaller screens */
+        .card {
+            flex: 1 1 45%; /* Make the cards fit 2 per row */
+            max-width: 45%; /* Ensure cards are smaller */
+            margin-bottom: 15px;
+        }
 
-      .category-found {
-        color: limegreen;
-        font-size: 2.4vw; 
-      }
+        /* Smaller font size for titles, text, and category */
+        .card-title {
+            font-size: 1.2rem; /* Smaller title on small screens */
+        }
 
-      .category-lost {
-        color: red;
-        font-size: 2.4vw; 
-      }
+        .card-text {
+            font-size: 0.9rem; /* Smaller text on small screens */
+        }
 
-      .card-title {
-        font-size: 1.2rem; 
-      }
-
-      .card-text {
-        font-size: 1rem; 
-      }
+        .category-found, .category-lost {
+            font-size: 0.9rem; /* Smaller category text */
+        }
     }
 
+    /* Media Query for Very Small Screens (Mobile Phones) */
     @media (max-width: 480px) {
-      .card {
-        width: 15%; 
-        padding: 8px; 
-      }
+        /* Make the cards even smaller */
+        .card {
+            flex: 1 1 100%; /* 1 card per row on very small screens */
+            max-width: 100%;
+        }
 
-      .category-found {
-        font-size: 3vw; /
-      }
+        /* Further reduce the font size */
+        .card-title {
+            font-size: 1rem; /* Even smaller title on mobile phones */
+        }
 
-      .category-lost {
-        font-size: 3vw; 
-      }
+        .card-text {
+            font-size: 0.85rem; /* Smaller text for mobile phones */
+        }
 
-      .card-title {
-        font-size: 1rem; /
-      }
-
-      .card-text {
-        font-size: 0.9rem; 
-      }
+        .category-found, .category-lost {
+            font-size: 0.8rem; /* Smaller category text for mobile phones */
+        }
     }
 
     /* Custom scrollbar style */
@@ -386,7 +418,7 @@
     }
 
     .footer p {
-      font-size: 1vw; /* Responsive footer text size */
+      font-size: 0.78vw; /* Responsive footer text size */
       transition: font-size 0.3s ease-in-out;
     }
 
@@ -713,15 +745,13 @@
   <footer class="footer">
     <div class="footer-container">
       <div class="footer-left">
-        <p>Address: </p>
-        <br>
-        <p>101 New Kawayan</p>
-        <p>Tacloban City</p>
-        <p>Leyte</p>
+        <p>101 New Kawayan, Tacloban City, Leyte</p>
+        <p># 093 9379 33017</p>
+        <p>norbatco@gmail.com</p>
       </div>
       <div class="footer-center">
-        <p>Phone: 093 9379 33017</p>
-        <p>Email: norbatco@gmail.com</p>
+        <p></p>
+        <p></p>
         <br>
         <br>
         <p>&copy; NORBATCO Lost and Found</p>
