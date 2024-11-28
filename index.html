@@ -181,6 +181,7 @@
       color: rgb(0, 0, 0);
       border-radius: 15px; /* Rounded corners for the entire section */
       font-size: 0.8vw;
+      width: 100%;
     }
 
     /* Styling for each card in items-section */
@@ -209,7 +210,11 @@
       color: red;
     }
 
-    .category-found, .category-lost {
+    .category-notfound {
+      color: rgb(162, 162, 162);
+    }
+
+    .category-found, .category-lost, .category-notfound {
     font-size: 1rem; /* Default category text size */
     font-weight: bold;
     display: block;
@@ -258,7 +263,7 @@
             font-size: 0.9rem; /* Smaller text on small screens */
         }
 
-        .category-found, .category-lost {
+        .category-found, .category-lost, .category-notfound {
             font-size: 0.9rem; /* Smaller category text */
         }
     }
@@ -280,7 +285,7 @@
             font-size: 0.85rem; /* Smaller text for mobile phones */
         }
 
-        .category-found, .category-lost {
+        .category-found, .category-lost, .category-notfound {
             font-size: 0.8rem; /* Smaller category text for mobile phones */
         }
     }
@@ -370,7 +375,7 @@
 
     /* Adjust paragraph text size inside the About section */
     #about-section p {
-      font-size: 1vw; /* Responsive font size based on viewport width */
+      font-size: 0.8vw; /* Responsive font size based on viewport width */
       transition: font-size 0.3s ease-in-out;
       line-height: 1.6; /* Adjust line height for readability */
       padding-right: 50px;
@@ -380,7 +385,7 @@
     /* Media query for smaller screens */
     @media (max-width: 768px) {
       #about-section p {
-        font-size: 3vw; /* Make font smaller on smaller screens */
+        font-size: 2.7vw; /* Make font smaller on smaller screens */
       }
     }
 
@@ -589,7 +594,7 @@
   <!-- Navbar -->
   <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
     <a class="navbar-brand" href="#">
-        <img src="https://raw.githubusercontent.com/norbatco/lostandfound/refs/heads/main/images.png" alt="NORBATCO Logo" style="height: 40px;">
+        <img src="https://raw.githubusercontent.com/norbatco/lostandfound/refs/heads/main/images.png" alt="NORBATCO Logo" style="height: 60px;">
     </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -659,13 +664,15 @@
                   <select id="category-{{$index}}" class="form-control" ng-model="item.category">
                     <option value="Lost">Lost</option>
                     <option value="Found">Found</option>
+                    <option value="Not Found">Not Found</option>
                   </select>
                 </div>
                 <!-- Non-Editable Category -->
                 <div ng-if="!adminMode">
                   <span class="category" ng-class="{
                     'category-found': item.category === 'Found',
-                    'category-lost': item.category === 'Lost'
+                    'category-lost': item.category === 'Lost',
+                    'category-notfound': item.category === 'Not Found'
                   }">{{item.category}}</span>
                 </div>
 
