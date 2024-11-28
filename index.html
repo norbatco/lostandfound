@@ -7,6 +7,8 @@
   
   <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
   
   <!-- AngularJS -->
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
@@ -265,32 +267,34 @@
       background-color: #555;
     }
 
-    /* Report Form Section */
-    #report-section {
-      position: relative;
-      background: linear-gradient(
-    rgba(0, 0, 0, 0.285),
-    rgba(122, 122, 122, 0.579)), url('https://static.vecteezy.com/system/resources/thumbnails/009/201/628/small_2x/paperwork-business-and-file-documents-of-unfinished-stacked-on-office-desk-archive-in-archive-analyzing-the-market-and-considers-the-size-of-future-profits-on-table-office-concept-work-in-office-free-photo.jpg') no-repeat center center/cover;
-      backdrop-filter: blur(33px); 
-      -webkit-backdrop-filter: blur(35px); 
-      border: 1px solid rgba(255, 255, 255, 0.3); 
-      padding: 50px 20px;
-      border-radius: 15px; 
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+    /* Report Pop-up Section */
+    .report-popup-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1010;
     }
 
-    #report-section form {
-      max-width: 600px;
-      margin: 0 auto;
-      background: rgba(255, 255, 255, 0.16); /* Inner form background */
+    .report-popup-content {
+      background: rgba(157, 157, 157, 0.794);
       padding: 30px;
       border-radius: 10px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+      width: 90%;
+      max-width: 500px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
     }
 
-    #report-section h2 {
-      color: white;
+    .report-popup-content h2 {
       text-align: center;
+      margin-bottom: 20px;
+      color: rgb(255, 255, 255);
+      text-shadow: 0 4px 8px rgba(0, 0, 0, 0.43);
     }
 
     /* Styling for the Reported Items Container */
@@ -449,7 +453,7 @@
       background-color: #003bb3;
     }
 
-    /* Popup container */
+    /* Login Pop-up container */
     .popup-container {
       position: fixed;
       top: 0;
@@ -462,7 +466,7 @@
       z-index: 1000;
     }
 
-    /* Popup content */
+    /* Login Pop-up content */
     .popup-content {
       background: 
         linear-gradient(rgba(0, 47, 95, 0.576), rgba(0, 59, 107, 0.601)), /* Color overlay */
@@ -553,36 +557,48 @@
   <!-- Navbar -->
   <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
     <a class="navbar-brand" href="#">
-      <img src="https://raw.githubusercontent.com/norbatco/lostandfound/refs/heads/main/images.png" alt="NORBATCO Logo" style="height: 40px;">
+        <img src="https://raw.githubusercontent.com/norbatco/lostandfound/refs/heads/main/images.png" alt="NORBATCO Logo" style="height: 40px;">
     </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
+        <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav ml-auto">
-        <li class="nav-item"><a class="nav-link" href="#top">Home</a></li>
-        <li class="nav-item navbar-divider d-none d-lg-block"><span>|</span></li>
-        <li class="nav-item"><a class="nav-link" href="#report-section">Create Report</a></li>
-        <li class="nav-item navbar-divider d-none d-lg-block"><span>|</span></li>
-        <li class="nav-item"><a class="nav-link" href="#about-section">About</a></li>
-        <li class="nav-item navbar-divider d-none d-lg-block"><span>|</span></li>
-        <!-- Conditional Login/Logout Button -->
-        <li class="nav-item" ng-if="!adminMode">
-          <a class="nav-link" href="#" ng-click="toggleLoginPopup()">Login</a>
-        </li>
-        <li class="nav-item" ng-if="adminMode">
-          <a class="nav-link text-danger" href="#" ng-click="logout()">Logout</a>
-        </li>
-      </ul>
-    </div>
+      <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                  <a class="nav-link" href="#top" data-toggle="collapse" data-target=".navbar-collapse.show">Home</a>
+              </li>
+              <li class="nav-item navbar-divider d-none d-lg-block">
+                  <span>|</span>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link" href="#" ng-click="toggleReportPopup()" data-toggle="collapse" data-target=".navbar-collapse.show">Create Report</a>
+              </li>
+              <li class="nav-item navbar-divider d-none d-lg-block">
+                  <span>|</span>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link" href="#about-section" data-toggle="collapse" data-target=".navbar-collapse.show">About</a>
+              </li>
+              <li class="nav-item navbar-divider d-none d-lg-block">
+                  <span>|</span>
+              </li>
+              <li class="nav-item" ng-if="!adminMode">
+                  <a class="nav-link" href="#" ng-click="toggleLoginPopup()" data-toggle="collapse" data-target=".navbar-collapse.show">Login</a>
+              </li>
+              <li class="nav-item" ng-if="adminMode">
+                  <a class="nav-link text-danger" href="#" ng-click="logout()" data-toggle="collapse" data-target=".navbar-collapse.show">Logout</a>
+              </li>
+          </ul>
+      </div>
   </nav>
 
   <!-- Header Section -->
-  <div id="top" class="header" class="fade-in">
+  <div id="top" class="header fade-in">
     <br><br><br>
     <h1>NORBATCO Lost and Found</h1>
     <p>A Solution for Recovering Belongings on Public Transportation</p>
-    <button class="btn btn-primary my-2" ng-click="scrollToSection()">Report a Lost Item</button>
+    <!-- Updated Button -->
+    <button class="btn btn-primary my-2" ng-click="scrollDownByPercentage(30)">View Items</button>
   </div>
 
   <!-- Reported Items Section -->
@@ -633,36 +649,41 @@
     </div>
 
   <!-- Report Form Section -->
-  <div id="report-section">
-    <h2 class="text-center mb-4">Create a Report</h2>
-    <form ng-submit="submitReport()">
-      <div class="form-group">
-        <label for="userName">Your Name</label>
-        <input type="text" class="form-control" id="userName" ng-model="newItem.name" placeholder="Enter your name" required />
+    <div class="report-popup-container" ng-if="reportPopupVisible">
+      <div class="report-popup-content">
+          <form ng-submit="submitReport()">
+              <h2 class="text-center">Create a Report</h2>
+              <div class="form-group">
+                  <label for="userName">Your Name</label>
+                  <input type="text" class="form-control" id="userName" ng-model="newItem.name" placeholder="Enter your name" required />
+              </div>
+              <div class="form-group">
+                  <label for="itemName">Item Name</label>
+                  <input type="text" class="form-control" id="itemName" ng-model="newItem.itemName" placeholder="Enter item name" required />
+              </div>
+              <div class="form-group">
+                  <label for="itemDescription">Item Description</label>
+                  <textarea class="form-control" id="itemDescription" ng-model="newItem.description" rows="3" placeholder="Describe the item" required></textarea>
+              </div>
+              <div class="form-group">
+                  <label for="itemCategory">Category</label>
+                  <select class="form-control" id="itemCategory" ng-model="newItem.category" required>
+                      <option value="Lost">Lost</option>
+                      <option value="Found">Found</option>
+                  </select>
+              </div>
+              <div class="form-group">
+                  <label for="itemImage">Upload Item Image</label>
+                  <input type="file" class="form-control-file" id="itemImage" 
+                      ng-model="newItem.imageFile" 
+                      onchange="angular.element(this).scope().handleFileUpload(this.files)" />
+              </div>
+              <button type="submit" class="btn btn-primary btn-block">Submit Report</button>
+
+              <!-- New Close Button -->
+              <button type="button" class="btn btn-secondary btn-block mt-1" ng-click="toggleReportPopup()">Close</button>
+          </form>
       </div>
-      <div class="form-group">
-        <label for="itemName">Item Name</label>
-        <input type="text" class="form-control" id="itemName" ng-model="newItem.itemName" placeholder="Enter item name" required />
-      </div>
-      <div class="form-group">
-        <label for="itemDescription">Item Description</label>
-        <textarea class="form-control" id="itemDescription" ng-model="newItem.description" rows="3" placeholder="Describe the item" required></textarea>
-      </div>
-      <div class="form-group">
-        <label for="itemCategory">Category</label>
-        <select class="form-control" id="itemCategory" ng-model="newItem.category" required>
-          <option value="Lost">Lost</option>
-          <option value="Found">Found</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label for="itemImage">Upload Item Image</label>
-        <input type="file" class="form-control-file" id="itemImage" 
-               ng-model="newItem.imageFile" 
-               onchange="angular.element(this).scope().handleFileUpload(this.files)" />
-      </div>      
-      <button type="submit" class="btn btn-primary btn-block">Submit Report</button>
-    </form>
   </div>
 
   <!-- About Section -->
@@ -850,23 +871,28 @@
           alert('Your item report has been submitted!');
         };
       
+      // View Items Scroll Down
+      $scope.scrollDownByPercentage = function(percentage) {
+      // Get the height of the viewport
+      const viewportHeight = window.innerHeight;
 
-      // Scroll to section
-      $scope.scrollTo = function(id) {
-        $location.hash(id);
-        $anchorScroll();
+      // Calculate the scroll distance based on the percentage
+      const scrollDistance = (viewportHeight * percentage) / 100;
+
+      window.scrollBy({
+          top: scrollDistance, // Scroll vertically
+          behavior: 'smooth'
+          });
       };
 
-      $scope.scrollToSection = function() {
-        var target = document.getElementById("reported-items-container");
-        target.scrollIntoView({
-            behavior: 'smooth',
-            block: 'start'
-        });
-      };
-
-       // Manage popup visibility
+       // Popups visibility states
       $scope.loginVisible = false;
+      $scope.reportPopupVisible = false;
+
+      // Toggle Report Form Popup
+      $scope.toggleReportPopup = function() {
+        $scope.reportPopupVisible = !$scope.reportPopupVisible;
+      };
 
       // Toggle the login popup visibility
       $scope.toggleLoginPopup = function () {
