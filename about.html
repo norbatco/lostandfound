@@ -37,7 +37,7 @@
       <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav ml-auto">
               <li class="nav-item">
-                  <a class="nav-link" href="#top" data-toggle="collapse" data-target="index.html">Home</a>
+                  <a class="nav-link" href="index.html">Home</a>
               </li>
               <li class="nav-item navbar-divider d-none d-lg-block">
                   <span>|</span>
@@ -64,101 +64,66 @@
       </div>
   </nav>
 
-  <!-- Header Section -->
-  <div id="top" class="header fade-in">
-    <br><br><br>
-    <h1>NORBATCO Lost and Found</h1>
-    <p>A Solution for Recovering Belongings on Public Transportation</p>
-    <!-- Updated Button -->
-    <button class="btn btn-primary my-2" ng-click="scrollDownByPercentage(30)">View Items</button>
-  </div>
-
-  <!-- Reported Items Section -->
-<div class="container items-section">
-  <h2 class="text-center">Reported Items</h2>
-
-  <!-- Search Bar with Spyglass Icon -->
-  <div class="form-group position-relative">
-    <input type="text" class="form-control pl-4" ng-model="searchTerm" placeholder="Search for items..." />
-    <i class="fas fa-search search-icon"></i>
-  </div>
-
-  <!-- Scrollable Box -->
-      <div class="reported-items-container">
-        <div class="row">
-          <div class="col-md-4" ng-repeat="item in items | filter:searchTerm">
-            <div class="card">
-              <img ng-src="{{item.image}}" class="card-img-top" alt="{{item.itemName}}">
-              <div class="card-body">
-                <h5 class="card-title">{{item.itemName}}</h5>
-                <p class="card-text">{{item.description}}</p>
-
-                <!-- Editable Category Dropdown (Visible in Admin Mode) -->
-                <div ng-if="adminMode">
-                  <label for="category-{{$index}}">Category:</label>
-                  <select id="category-{{$index}}" class="form-control" ng-model="item.category">
-                    <option value="Lost">Lost</option>
-                    <option value="Found">Found</option>
-                    <option value="Not Found">Not Found</option>
-                  </select>
-                </div>
-                <!-- Non-Editable Category -->
-                <div ng-if="!adminMode">
-                  <span class="category" ng-class="{
-                    'category-found': item.category === 'Found',
-                    'category-lost': item.category === 'Lost',
-                    'category-notfound': item.category === 'Not Found'
-                  }">{{item.category}}</span>
-                </div>
-
-                <!-- Delete Button (Visible in Admin Mode) -->
-                <button ng-if="adminMode" class="btn btn-danger btn-sm mt-2" ng-click="deleteItem($index)">
-                  Delete Report
-                </button>
-              </div>
-            </div>
-          </div>
+  <!-- About Section -->
+  <div id="about-section" class="about-section fade-in">
+    <div class="container">
+      <div class="row align-items-center">
+        <!-- Left Column: Text -->
+        <div class="col-md-7 text-center text-md-left">
+          <h2>About NORBATCO Lost and Found</h2>
+          <p>
+            NORBATCO Lost & Found is a web-based platform designed to help you recover lost items on public transportation.
+    When you report a lost item, it is logged into our secure database. This allows our system, as well as public transportation authorities, to search for and identify your lost belongings, increasing the chances of recovery.
+    Our platform is user-friendly and secure, ensuring that your data is protected. For insurance claims, certificates from NORBATCO Lost & Found can often be used in place of traditional lost item reports.
+    Please note that NORBATCO Lost & Found is intended for accidental losses. If your item has been stolen, you should report the theft to local law enforcement to obtain a crime reference number.
+          </p>
+        </div>
+  
+        <!-- Right Column: Image -->
+        <div class="col-md-5 text-center">
+          <img src="https://factohr-1a56a.kxcdn.com/wp-content/uploads/2021/03/jse.png" alt="About NORBATCO" class="img-fluid rounded">
         </div>
       </div>
     </div>
+  </div>
 
   <!-- Report Form Section -->
     <div class="report-popup-container" ng-if="reportPopupVisible">
-      <div class="report-popup-content">
-          <form ng-submit="submitReport()">
-              <h2 class="text-center">Create a Report</h2>
-              <div class="form-group">
-                  <label for="userName">Your Name</label>
-                  <input type="text" class="form-control" id="userName" ng-model="newItem.name" placeholder="Enter your name" required />
-              </div>
-              <div class="form-group">
-                  <label for="itemName">Item Name</label>
-                  <input type="text" class="form-control" id="itemName" ng-model="newItem.itemName" placeholder="Enter item name" required />
-              </div>
-              <div class="form-group">
-                  <label for="itemDescription">Item Description</label>
-                  <textarea class="form-control" id="itemDescription" ng-model="newItem.description" rows="3" placeholder="Describe the item" required></textarea>
-              </div>
-              <div class="form-group">
-                  <label for="itemCategory">Category</label>
-                  <select class="form-control" id="itemCategory" ng-model="newItem.category" required>
-                      <option value="Lost">Lost</option>
-                      <option value="Found">Found</option>
-                  </select>
-              </div>
-              <div class="form-group">
-                  <label for="itemImage">Upload Item Image</label>
-                  <input type="file" class="form-control-file" id="itemImage" 
-                      ng-model="newItem.imageFile" 
-                      onchange="angular.element(this).scope().handleFileUpload(this.files)" />
-              </div>
-              <button type="submit" class="btn btn-primary btn-block">Submit Report</button>
+        <div class="report-popup-content">
+            <form ng-submit="submitReport()">
+                <h2 class="text-center">Create a Report</h2>
+                <div class="form-group">
+                    <label for="userName">Your Name</label>
+                    <input type="text" class="form-control" id="userName" ng-model="newItem.name" placeholder="Enter your name" required />
+                </div>
+                <div class="form-group">
+                    <label for="itemName">Item Name</label>
+                    <input type="text" class="form-control" id="itemName" ng-model="newItem.itemName" placeholder="Enter item name" required />
+                </div>
+                <div class="form-group">
+                    <label for="itemDescription">Item Description</label>
+                    <textarea class="form-control" id="itemDescription" ng-model="newItem.description" rows="3" placeholder="Describe the item" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="itemCategory">Category</label>
+                    <select class="form-control" id="itemCategory" ng-model="newItem.category" required>
+                        <option value="Lost">Lost</option>
+                        <option value="Found">Found</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="itemImage">Upload Item Image</label>
+                    <input type="file" class="form-control-file" id="itemImage" 
+                        ng-model="newItem.imageFile" 
+                        onchange="angular.element(this).scope().handleFileUpload(this.files)" />
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Submit Report</button>
 
-              <!-- New Close Button -->
-              <button type="button" class="btn btn-secondary btn-block mt-1" ng-click="toggleReportPopup()">Close</button>
-          </form>
-      </div>
-  </div>
+                <!-- New Close Button -->
+                <button type="button" class="btn btn-secondary btn-block mt-1" ng-click="toggleReportPopup()">Close</button>
+            </form>
+        </div>
+    </div>
 
   <!-- Footer -->
   <footer class="footer">

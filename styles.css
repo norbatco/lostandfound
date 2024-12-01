@@ -292,7 +292,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 1010;
+    z-index: 5000;
   }
 
   .report-popup-content {
@@ -344,18 +344,28 @@ body {
   /* About Section */
   #about-section {
     background: linear-gradient(rgba(0, 0, 0, 0.604),rgba(0, 0, 0, 0.53)), url('https://github.com/norbatco/lostandfound/blob/main/norbatco.jpg?raw=true') no-repeat center center/cover;
-    background-position: cover;
+    background-size: cover;
+    background-position: center center;
+    height: 300%;
+    width: 100%;
     color: rgb(255, 255, 255);
     text-align: center;
-    padding: 50px 20px;
+    padding: 200px 10px;
+    padding-left: -50px;
+    padding-right: 10px;
+  }
+
+  #about-section h2 {
+    font-size: 2vw;
+    padding-bottom: 15px;
   }
 
   /* Adjust paragraph text size inside the About section */
   #about-section p {
-    font-size: 0.8vw; 
+    font-size: 1vw; 
     transition: font-size 0.3s ease-in-out;
-    line-height: 1.6; /* Adjust line height for readability */
-    padding-right: 50px;
+    line-height: 2.4; /* Adjust line height for readability */
+    padding-right: 10px;
     text-align: justify;
   }
 
@@ -364,6 +374,10 @@ body {
     #about-section p {
       font-size: 2.7vw; 
     }
+
+    #about-section h2 {
+        font-size: 4.2vw;
+      }
   }
 
   .about-section img {
