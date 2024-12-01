@@ -1,0 +1,565 @@
+/* General Styles */
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    background-color: #555;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  .btn:hover {
+    background-color: #003bb3;
+    transition: background-color 0.3s ease;
+  }
+
+  input:focus, textarea:focus {
+    border-color: #0056ff;
+    transition: border-color 0.3s ease-in-out;
+  }
+  /* Transition */
+  .fade-in {
+    opacity: 0;
+    animation: fadeIn 1s forwards;
+  }
+  
+  @keyframes fadeIn {
+    100% {opacity: 1;}
+  }
+
+  /* Navigation Bar */
+  .navbar {
+    background-color: rgba(0, 0, 0, 0.7);
+  }
+
+  .navbar a {
+    color: rgb(255, 255, 255) !important;
+  }
+
+  .navbar-brand img {
+    height: 75px; 
+    width: auto;  
+  }
+
+  .navbar-nav {
+    display: flex;  
+    align-items: center;  
+  }
+
+  .navbar-divider {
+    margin: 0 10px;  
+    color: white;  
+    font-size: 18px;  
+  }
+
+  .nav-item {
+    display: flex;  
+    align-items: center;  
+  }
+
+  @media (max-width: 768px) {
+  /* Remove dividers on phone */
+  .navbar-divider {
+    display: none;
+  }
+
+  /* Center-align nav items and add spacing */
+  .navbar-nav {
+    text-align: center;
+  }
+
+  .nav-item {
+    margin-bottom: 5px; /* Add spacing between items */
+  }
+
+  .nav-link {
+    font-size: 1rem; /* Adjust font size for readability */
+  }
+  }
+
+  /* Header Section */
+  .header {
+    background: linear-gradient(rgba(0, 0, 0, 0.745), rgba(0, 0, 0, 0.163)), url('https://pia.gov.ph/uploads/2024/02/ef14a2d0c9f48d8756c1ab92433293bf.jpg') no-repeat center center/cover;
+    backdrop-filter: blur(10px);
+    background-color: rgb(0, 0, 0);
+    background-size: cover;
+    height: 100vh;
+    color: rgb(255, 255, 255);
+    text-align: center;
+    padding: 100px 20px;
+    padding-top: 10%;
+    position: relative;
+    transition: height 0.3s ease, background-size 0.3s ease; /* Smooth transition for height and background scaling */
+  }
+
+  /* Restores header to its original size on scroll */
+  .shrink-header {
+    height: 400px;
+    background-size: auto;
+    padding: 50px 20px;
+  }
+
+  .header h1, .header p {
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8);
+  }
+
+  .header h1 {
+    font-size: 3.6vw;
+  }
+
+  .header p {
+    font-size: 1.8vw;
+  }
+
+  /* Small Screens */
+  @media (max-width: 768px) {
+      .header h1 {
+          font-size: 5vw; 
+      }
+
+      .header p {
+          font-size: 2.5vw; 
+      }
+  }
+
+  /* Very Small SCreens */
+  @media (max-width: 480px) {
+      .header h1 {
+          font-size: 6vw; 
+      }
+
+      .header p {
+          font-size: 3vw; 
+      }
+  }
+
+  /* Style for the search icon */
+  .search-icon {
+    position: absolute;
+    top: 50%; 
+    left: 8px; 
+    transform: translateY(-50%);
+    color: #ccc; 
+    font-size: 16px; 
+    pointer-events: none; 
+  }
+
+  /* Spyglass space :P */
+  .form-control.pl-4 {
+    padding-left: 35px; 
+  }
+
+  /* Found Items Section */
+  .items-section {
+    padding: 25px 25px;
+    background: white;
+    background-size: cover;
+    color: rgb(0, 0, 0);
+    border-radius: 15px; 
+    font-size: 0.8vw;
+    width: 100%;
+  }
+
+  /* Styling for each card in items-section */
+  .card {
+    margin: 5px 0;
+    color: rgb(0, 0, 0);
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    display: flex; 
+    flex-direction: column; 
+    justify-content: space-between; 
+    padding: 15px;
+    box-sizing: border-box; 
+    flex-grow: 1; 
+    height: auto; 
+    min-width: 150px; 
+  }
+
+  /* Category styles */
+  .category-found {
+    color: limegreen;
+  }
+
+  .category-lost {
+    color: red;
+  }
+
+  .category-notfound {
+    color: rgb(162, 162, 162);
+  }
+
+  .category-found, .category-lost, .category-notfound {
+  font-size: 1rem; /* Default category text size */
+  font-weight: bold;
+  display: block;
+  margin-top: 10px;
+  }
+
+  /* On hover, make the card a little bigger */
+  .card:hover {
+    transform: scale(1.05);
+  }
+
+  /* Reduce the font size within the card */
+  .card-title {
+    font-size: 0.9rem; 
+    margin-bottom: 10px; 
+  }
+
+  .card-text {
+    font-size: 0.8rem; 
+  }
+
+  /* Default font size for larger screens (e.g., desktops) */
+  .card-title {
+      font-size: 1.5rem; 
+  }
+
+  .card-text {
+      font-size: 1rem;
+  }
+
+  /* Media Query for Smaller Screens (Phones/Tablets) */
+  @media (max-width: 768px) {
+      /* Reduce card size on smaller screens */
+      .card {
+          flex: 1 1 45%; 
+          max-width: 45%; 
+          margin-bottom: 15px;
+      }
+
+      /* Smaller font size for titles, text, and category */
+      .card-title {
+          font-size: 1.2rem;
+      }
+
+      .card-text {
+          font-size: 0.9rem;
+      }
+
+      .category-found, .category-lost, .category-notfound {
+          font-size: 0.9rem; 
+      }
+  }
+
+  /* Media Query for Very Small Screens (Mobile Phones) */
+  @media (max-width: 480px) {
+      /* Make the cards even smaller */
+      .card {
+          flex: 1 1 100%; 
+          max-width: 100%;
+      }
+
+      /* Further reduce the font size */
+      .card-title {
+          font-size: 1rem; 
+      }
+
+      .card-text {
+          font-size: 0.85rem; 
+      }
+
+      .category-found, .category-lost, .category-notfound {
+          font-size: 0.8rem; 
+      }
+  }
+
+  /* Custom scrollbar style */
+  .reported-items-container::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  .reported-items-container::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 4px;
+  }
+
+  .reported-items-container::-webkit-scrollbar-thumb:hover {
+    background-color: #555;
+  }
+
+  /* Report Pop-up Section */
+  .report-popup-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1010;
+  }
+
+  .report-popup-content {
+    background: rgba(157, 157, 157, 0.794);
+    padding: 30px;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  }
+
+  .report-popup-content h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: rgb(255, 255, 255);
+    text-shadow: 0 4px 8px rgba(0, 0, 0, 0.43);
+  }
+
+  /* Styling for the Reported Items Container */
+  .reported-items-container {
+      max-height: 600px;  
+      overflow-y: auto;   
+      overflow-x: hidden;
+      border: 2px solid #ddd; 
+      padding: 25px; 
+      margin-top: 20px;
+      border-radius: 15px;
+  }
+
+  .card {
+      margin-bottom: 10px; 
+      size: 50%;
+  }
+
+  /* Custom scrollbar style */
+  .reported-items-container::-webkit-scrollbar {
+      width: 8px;  
+  }
+
+  .reported-items-container::-webkit-scrollbar-thumb {
+      background-color: #888;  
+      border-radius: 4px; 
+  }
+
+  .reported-items-container::-webkit-scrollbar-thumb:hover {
+      background-color: #555;  
+  }
+
+  /* About Section */
+  #about-section {
+    background: linear-gradient(rgba(0, 0, 0, 0.604),rgba(0, 0, 0, 0.53)), url('https://github.com/norbatco/lostandfound/blob/main/norbatco.jpg?raw=true') no-repeat center center/cover;
+    background-position: cover;
+    color: rgb(255, 255, 255);
+    text-align: center;
+    padding: 50px 20px;
+  }
+
+  /* Adjust paragraph text size inside the About section */
+  #about-section p {
+    font-size: 0.8vw; 
+    transition: font-size 0.3s ease-in-out;
+    line-height: 1.6; /* Adjust line height for readability */
+    padding-right: 50px;
+    text-align: justify;
+  }
+
+  /* Media query for smaller screens */
+  @media (max-width: 768px) {
+    #about-section p {
+      font-size: 2.7vw; 
+    }
+  }
+
+  .about-section img {
+    max-width: 100%;
+    border-radius: 10px;
+  }
+
+  /* Footer */
+      .footer-container {
+    display: flex;
+    background: #282828;
+    flex-wrap: wrap; 
+    justify-content: space-between; 
+    align-items: center;
+    text-align: center; 
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 20px;
+    color: white;
+  }
+
+  /* Ensure equal width for all sections on larger screens */
+  .footer-left, .footer-center, .footer-right {
+    flex: 1;
+  }
+
+  /* Text alignment adjustments */
+  .footer-left {
+    text-align: left;
+  }
+
+  .footer-right {
+    text-align: right;
+  }
+
+  .footer p {
+    font-size: 0.78vw; /* Responsive footer text size */
+    transition: font-size 0.3s ease-in-out;
+  }
+
+  @media (max-width: 768px){
+    .footer p {
+      font-size: 3vw;
+    }
+  }
+
+  /* Icons Sizing */
+  .social-icon {
+    font-size: 1.2vw; 
+    margin-left: 10px;
+    color: white;
+    transition: font-size 0.3s ease;
+  }
+
+  .social-icon:hover {
+    font-size: 1.5vw; 
+    color: #0056ff;
+  }
+
+  @media (max-width: 768px){
+  .social-icon {
+    font-size: 5vw; 
+    margin-left: 10px;
+    color: white;
+    transition: font-size 0.3s ease;
+  }
+
+  .social-icon:hover {
+    font-size: 5vw; 
+    color: #0056ff;
+  }
+  }
+
+  footer p {
+    margin: 0;
+    margin-bottom: 5px;
+  }
+
+  .about-section p {
+    margin: 0;
+    margin-bottom: 15px;
+    padding-right: 50px;
+  }
+
+  /* Button to toggle login popup */
+  .btn-show-login {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    padding: 10px 15px;
+    background-color: #0056ff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    opacity: 0%;
+  }
+
+  .btn-show-login:hover {
+    background-color: #003bb3;
+  }
+
+  /* Login Pop-up container */
+  .popup-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+
+  /* Login Pop-up content */
+  .popup-content {
+    background: 
+      linear-gradient(rgba(0, 47, 95, 0.576), rgba(0, 59, 107, 0.601)), /* Color overlay */
+      url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS_WG8tmOMPAr1qNI93-jUFyEQXw64xBdRmPg&s') no-repeat center center; /* Background image */
+    background-size: cover; 
+    color: white; 
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  .popup-content h2 {
+    text-align: center;
+    color: #fff;
+    margin-bottom: 20px;
+  }
+
+  .form-group {
+    margin-bottom: 15px;
+  }
+
+  .form-group label {
+    color: #fff;
+    display: block;
+    font-size: 14px;
+    margin-bottom: 5px;
+  }
+
+  .input-wrapper {
+    position: relative;
+  }
+
+  .input-wrapper i {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #ccc;
+  }
+
+  .input-wrapper input {
+    width: 100%;
+    padding: 10px 10px 10px 35px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+
+  .toggle-password {
+    position: absolute;
+    right: 40px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #777;
+  }
+
+  .btn-login {
+    width: 100%;
+    padding: 10px;
+    background-color: #00137f;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  .btn-login:hover {
+    background-color: #003bb3;
+  }
+
+  .password-wrapper {
+    position: relative;
+  }
+
+  .password-wrapper .toggle-password {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #777;
+  }
