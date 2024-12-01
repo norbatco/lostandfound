@@ -249,8 +249,8 @@ body {
   @media (max-width: 480px) {
       /* Make the cards even smaller */
       .card {
-          flex: 1 1 100%; 
-          max-width: 100%;
+          flex: 1 1 50%; 
+          max-width: 45%;
       }
 
       /* Further reduce the font size */
@@ -265,6 +265,38 @@ body {
       .category-found, .category-lost, .category-notfound {
           font-size: 0.8rem; 
       }
+  }
+  
+  /* Update Button */
+  .card .btn-update {
+    background-color: #007bff; /* Primary Blue */
+    color: white; /* Text Color */
+    border: none; /* Remove Border */
+    padding: 8px 16px; /* Padding for Size */
+    border-radius: 4px; /* Rounded Corners */
+    font-size: 14px; /* Font Size */
+    font-weight: 600; /* Slightly Bold */
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth Hover */
+    width: 100%; /* Full width inside the card */
+  }
+
+  /* Hover Effect */
+  .card .btn-update:hover {
+    background-color: #0056b3; /* Darker Blue */
+    transform: scale(1.05); /* Slight Scale Effect */
+    cursor: pointer; /* Pointer Cursor */
+  }
+
+  /* Disabled State */
+  .card .btn-update:disabled {
+    background-color: #b0c4de; /* Light Blue */
+    cursor: not-allowed; /* Indicate Disabled */
+    transform: none; /* Remove Scale Effect */
+  }
+
+  /* Margin for Update Button Inside Card */
+  .card .btn-update {
+    margin-top: 10px; /* Space Between Dropdown and Button */
   }
 
   /* Custom scrollbar style */
@@ -343,28 +375,31 @@ body {
 
   /* About Section */
   #about-section {
-    background: linear-gradient(rgba(0, 0, 0, 0.604),rgba(0, 0, 0, 0.53)), url('https://github.com/norbatco/lostandfound/blob/main/norbatco.jpg?raw=true') no-repeat center center/cover;
+    background: linear-gradient(rgba(0, 0, 0, 0.604), rgba(0, 0, 0, 0.53)), url('https://github.com/norbatco/lostandfound/blob/main/norbatco.jpg?raw=true') no-repeat center center/cover;
     background-size: cover;
     background-position: center center;
-    height: 300%;
+    height: 100vh;
     width: 100%;
     color: rgb(255, 255, 255);
     text-align: center;
-    padding: 200px 10px;
-    padding-left: -50px;
-    padding-right: 10px;
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    padding: 0 10px;
+    box-sizing: border-box;
+    overflow: hidden; 
   }
 
   #about-section h2 {
     font-size: 2vw;
     padding-bottom: 15px;
+    padding-top: 55px;
   }
 
-  /* Adjust paragraph text size inside the About section */
   #about-section p {
-    font-size: 1vw; 
+    font-size: 1vw;
     transition: font-size 0.3s ease-in-out;
-    line-height: 2.4; /* Adjust line height for readability */
+    line-height: 2.4;
     padding-right: 10px;
     text-align: justify;
   }
@@ -376,9 +411,20 @@ body {
     }
 
     #about-section h2 {
-        font-size: 4.2vw;
-      }
+      font-size: 4.2vw;
+    }
   }
+
+/* For Very small screens */
+@media (max-width: 480px) {
+  #about-section p {
+    font-size: 4vw; /* Adjust paragraph text size for small screens */
+  }
+
+  #about-section h2 {
+    font-size: 6vw;
+  }
+}
 
   .about-section img {
     max-width: 100%;
@@ -414,13 +460,13 @@ body {
   }
 
   .footer p {
-    font-size: 0.78vw; /* Responsive footer text size */
+    font-size: 1vw; /* Responsive footer text size */
     transition: font-size 0.3s ease-in-out;
   }
 
   @media (max-width: 768px){
     .footer p {
-      font-size: 3vw;
+      font-size: 2.5vw;
     }
   }
 
@@ -439,14 +485,14 @@ body {
 
   @media (max-width: 768px){
   .social-icon {
-    font-size: 5vw; 
+    font-size: 3vw; 
     margin-left: 10px;
     color: white;
     transition: font-size 0.3s ease;
   }
 
   .social-icon:hover {
-    font-size: 5vw; 
+    font-size: 3.5vw; 
     color: #0056ff;
   }
   }

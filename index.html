@@ -74,23 +74,29 @@
   </div>
 
   <!-- Reported Items Section -->
-<div class="container items-section">
-  <h2 class="text-center">Reported Items</h2>
+    <div class="container items-section">
+      <h2 class="text-center">Reported Items</h2>
 
-  <!-- Search Bar with Spyglass Icon -->
-  <div class="form-group position-relative">
-    <input type="text" class="form-control pl-4" ng-model="searchTerm" placeholder="Search for items..." />
-    <i class="fas fa-search search-icon"></i>
-  </div>
+      <!-- Search Bar with Spyglass Icon -->
+      <div class="form-group position-relative">
+        <input type="text" class="form-control pl-4" ng-model="searchTerm" placeholder="Search for items..." />
+        <i class="fas fa-search search-icon"></i>
+      </div>
 
-  <!-- Scrollable Box -->
+      <!-- Scrollable Box -->
       <div class="reported-items-container">
         <div class="row">
-          <div class="col-md-4" ng-repeat="item in items | filter:searchTerm">
+          <!-- Dynamic Item Cards -->
+          <div class="col-md-4" ng-repeat="item in reports | filter:searchTerm">
             <div class="card">
-              <img ng-src="{{item.image}}" class="card-img-top" alt="{{item.itemName}}">
+              <!-- Image -->
+              <img ng-src="{{item.image || 'https://via.placeholder.com/150'}}" class="card-img-top" alt="{{item.itemName}}" />
+              
               <div class="card-body">
+                <!-- Item Name -->
                 <h5 class="card-title">{{item.itemName}}</h5>
+                
+                <!-- Description -->
                 <p class="card-text">{{item.description}}</p>
 
                 <!-- Editable Category Dropdown (Visible in Admin Mode) -->
@@ -101,7 +107,10 @@
                     <option value="Found">Found</option>
                     <option value="Not Found">Not Found</option>
                   </select>
+                  <!-- Add Update Button -->
+                  <button class="btn btn-update btn-sm mt-2" ng-click="updateReport(item, $index)">Update</button>
                 </div>
+
                 <!-- Non-Editable Category -->
                 <div ng-if="!adminMode">
                   <span class="category" ng-class="{
@@ -143,22 +152,21 @@
                   <label for="itemCategory">Category</label>
                   <select class="form-control" id="itemCategory" ng-model="newItem.category" required>
                       <option value="Lost">Lost</option>
-                      <option value="Found">Found</option>
                   </select>
               </div>
               <div class="form-group">
-                  <label for="itemImage">Upload Item Image</label>
-                  <input type="file" class="form-control-file" id="itemImage" 
-                      ng-model="newItem.imageFile" 
-                      onchange="angular.element(this).scope().handleFileUpload(this.files)" />
+                <label for="itemImage">Upload Item Image</label>
+                <input type="file" class="form-control-file" id="itemImage" 
+                    onchange="angular.element(this).scope().handleImageUpload(this.files)" />
+                
               </div>
               <button type="submit" class="btn btn-primary btn-block">Submit Report</button>
-
+    
               <!-- New Close Button -->
               <button type="button" class="btn btn-secondary btn-block mt-1" ng-click="toggleReportPopup()">Close</button>
           </form>
       </div>
-  </div>
+    </div>
 
   <!-- Footer -->
   <footer class="footer">
