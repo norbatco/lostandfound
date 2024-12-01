@@ -12,9 +12,8 @@
   var app = angular.module('lostAndFoundApp', []);
 
   // Constants and API Configuration
-  require('dotenv').config();
   const GITHUB_API_URL = 'https://api.github.com/repos/norbatco/lostandfound/contents/reports.json';
-  const GITHUB_TOKEN = process.env.GITHUB_TOKEN; // Replace with a secure method of token storage
+  const GITHUB_TOKEN = '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'; // Replace with a secure method of token storage
 
   // Main Controller
   app.controller('mainController', function ($scope, $http) {
