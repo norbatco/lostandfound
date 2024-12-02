@@ -87,44 +87,44 @@
     </div>
   </div>
 
-  <!-- Report Form Section -->
+    <!-- Report Form Section -->
     <div class="report-popup-container" ng-if="reportPopupVisible">
-        <div class="report-popup-content">
-            <form ng-submit="submitReport()">
-                <h2 class="text-center">Create a Report</h2>
-                <div class="form-group">
-                    <label for="userName">Your Name</label>
-                    <input type="text" class="form-control" id="userName" ng-model="newItem.name" placeholder="Enter your name" required />
-                </div>
-                <div class="form-group">
-                    <label for="itemName">Item Name</label>
-                    <input type="text" class="form-control" id="itemName" ng-model="newItem.itemName" placeholder="Enter item name" required />
-                </div>
-                <div class="form-group">
-                    <label for="itemDescription">Item Description</label>
-                    <textarea class="form-control" id="itemDescription" ng-model="newItem.description" rows="3" placeholder="Describe the item" required></textarea>
-                </div>
-                <div class="form-group">
-                    <label for="itemCategory">Category</label>
-                    <select class="form-control" id="itemCategory" ng-model="newItem.category" required>
-                        <option value="Lost">Lost</option>
-                        <option value="Found">Found</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="itemImage">Upload Item Image</label>
-                    <input type="file" class="form-control-file" id="itemImage" 
-                        ng-model="newItem.imageFile" 
-                        onchange="angular.element(this).scope().handleFileUpload(this.files)" />
-                </div>
-                <button type="submit" class="btn btn-primary btn-block">Submit Report</button>
-
-                <!-- New Close Button -->
-                <button type="button" class="btn btn-secondary btn-block mt-1" ng-click="toggleReportPopup()">Close</button>
-            </form>
-        </div>
+      <div class="report-popup-content">
+          <form ng-submit="submitReport()">
+              <h2 class="text-center">Create a Report</h2>
+              <div class="form-group">
+                  <label for="userName">Your Name</label>
+                  <input type="text" class="form-control" id="userName" ng-model="newItem.name" placeholder="Enter your name" required />
+              </div>
+              <div class="form-group">
+                  <label for="itemName">Item Name</label>
+                  <input type="text" class="form-control" id="itemName" ng-model="newItem.itemName" placeholder="Enter item name" required />
+              </div>
+              <div class="form-group">
+                  <label for="itemDescription">Item Description</label>
+                  <textarea class="form-control" id="itemDescription" ng-model="newItem.description" rows="3" placeholder="Describe the item" required></textarea>
+              </div>
+              <div class="form-group">
+                  <label for="itemCategory">Category</label>
+                  <select class="form-control" id="itemCategory" ng-model="newItem.category" required>
+                      <option value="Lost">Lost</option>
+                      <option value="Found">Found</option>
+                  </select>
+              </div>
+              <div class="form-group">
+                <label for="itemImage">Upload Item Image</label>
+                <input type="file" class="form-control-file" id="itemImage" 
+                    onchange="angular.element(this).scope().handleImageUpload(this.files)" />
+                <img id="imagePreview" style="max-width: 100%; margin-top: 10px;" alt="Image Preview" />
+              </div>
+              <button type="submit" class="btn btn-primary btn-block">Submit Report</button>
+    
+              <!-- New Close Button -->
+              <button type="button" class="btn btn-secondary btn-block mt-1" ng-click="toggleReportPopup()">Close</button>
+          </form>
+      </div>
     </div>
-
+    
   <!-- Footer -->
   <footer class="footer">
     <div class="footer-container">

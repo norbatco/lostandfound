@@ -13,7 +13,8 @@
 
   // Constants and API Configuration
   const GITHUB_API_URL = 'https://api.github.com/repos/norbatco/lostandfound/contents/reports.json';
-  const GITHUB_TOKEN = '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'; // Replace with a secure method of token storage
+  const GITHUB_IMAGE_PATH = 'https://api.github.com/repos/norbatco/lostandfound/contents/';
+  const GITHUB_TOKEN = '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'; // Replace with a secure method of token storage
 
   // Main Controller
   app.controller('mainController', function ($scope, $http) {
@@ -46,7 +47,10 @@
         imageFile: null
     };
 
-    $scope.reports = []; // List to store fetched reports
+    $scope.reports = [];
+    $scope.reportPopupVisible = false;
+    $scope.loginVisible = false;
+    $scope.adminMode = false;
 
     /**
      * ----------------------------
@@ -57,49 +61,51 @@
     // Handle File Upload and Convert to Base64
     $scope.handleFileUpload = function (files) {
         if (files && files[0]) {
-            const reader = new FileReader();
-            reader.onload = (event) => {
-                $scope.$apply(() => {
-                    $scope.newItem.image = event.target.result; // Preview image
-                    $scope.newItem.imageFile = files[0]; // Store file for upload
-                });
-            };
-            reader.readAsDataURL(files[0]);
+          const reader = new FileReader();
+          reader.onload = (event) => {
+            $scope.$apply(() => {
+              $scope.newItem.image = event.target.result;
+              $scope.newItem.imageFile = files[0];
+            });
+          };
+          reader.readAsDataURL(files[0]);
         }
-    };
-
+      };
+    
     // Upload Image to GitHub Repository
     $scope.uploadImageToGitHub = async function (file) {
         const reader = new FileReader();
         return new Promise((resolve, reject) => {
-            reader.onload = async (event) => {
-                const base64Image = event.target.result.split(',')[1];
-                const filePath = `images/${Date.now()}_${file.name}`; // Unique file path
-
-                try {
-                    const response = await $http.put(
-                        `${GITHUB_API_URL.replace('reports.json', filePath)}`,
-                        {
-                            message: 'Upload item image',
-                            content: base64Image
-                        },
-                        {
-                            headers: {
-                                Authorization: `token ${GITHUB_TOKEN}`,
-                                Accept: 'application/vnd.github.v3+json'
-                            }
-                        }
-                    );
-                    resolve(response.data.content.download_url); // Return uploaded image URL
-                } catch (error) {
-                    console.error('Error uploading image:', error);
-                    reject(error);
+          reader.onload = async (event) => {
+            const base64Image = event.target.result.split(',')[1];
+            const filePath = `images/${Date.now()}_${file.name}`;
+      
+            try {
+              const response = await $http.put(
+                `${GITHUB_IMAGE_PATH}${filePath}`,
+                {
+                  message: 'Upload item image',
+                  content: base64Image
+                },
+                {
+                  headers: {
+                    Authorization: `token ${GITHUB_TOKEN}`,
+                    Accept: 'application/vnd.github.v3+json'
+                  }
                 }
-            };
-            reader.readAsDataURL(file);
+              );
+              console.log('Image uploaded successfully:', response.data.content.download_url);
+              resolve(response.data.content.download_url);
+            } catch (error) {
+              console.error('Error uploading image:', error);
+              alert(`Image upload failed: ${error.message}`);
+              reject(error);
+            }
+          };
+          reader.readAsDataURL(file);
         });
-    };
-
+      };
+      
     /**
      * ------------------------
      * Report Management
@@ -109,152 +115,138 @@
     // Submit a New Report
     $scope.submitReport = async function () {
         try {
-            // Create a new report object
-            const report = {
-                name: $scope.newItem.name,
-                itemName: $scope.newItem.itemName,
-                description: $scope.newItem.description,
-                category: $scope.newItem.category,
-                timestamp: new Date().toISOString()
-            };
-
-            // Upload image if provided
-            if ($scope.newItem.imageFile) {
-                report.image = await $scope.uploadImageToGitHub($scope.newItem.imageFile);
+          const report = {
+            name: $scope.newItem.name,
+            itemName: $scope.newItem.itemName,
+            description: $scope.newItem.description,
+            category: $scope.newItem.category,
+            timestamp: new Date().toISOString()
+          };
+    
+          if ($scope.newItem.imageFile) {
+            report.image = await $scope.uploadImageToGitHub($scope.newItem.imageFile);
+          }
+    
+          const response = await $http.get(GITHUB_API_URL, {
+            headers: {
+              Authorization: `token ${GITHUB_TOKEN}`,
+              Accept: 'application/vnd.github.v3+json'
             }
-
-            // Fetch existing reports
-            const response = await $http.get(GITHUB_API_URL, {
-                headers: {
-                    Authorization: `token ${GITHUB_TOKEN}`,
-                    Accept: 'application/vnd.github.v3+json'
-                }
-            });
-
-            const existingReports = JSON.parse(atob(response.data.content));
-            existingReports.push(report); // Add new report to existing reports
-
-            // Save updated reports.json to GitHub
-            await $http.put(
-                GITHUB_API_URL,
-                {
-                    message: 'Add new report',
-                    content: btoa(JSON.stringify(existingReports, null, 2)),
-                    sha: response.data.sha
-                },
-                {
-                    headers: {
-                        Authorization: `token ${GITHUB_TOKEN}`,
-                        Accept: 'application/vnd.github.v3+json'
-                    }
-                }
-            );
-
-            alert('Report submitted successfully!');
-            $scope.newItem = {}; // Reset form after submission
-            $scope.fetchReports(); // Refresh reports list
+          });
+    
+          const existingReports = JSON.parse(atob(response.data.content));
+          existingReports.push(report);
+    
+          await $http.put(
+            GITHUB_API_URL,
+            {
+              message: 'Add new report',
+              content: btoa(JSON.stringify(existingReports, null, 2)),
+              sha: response.data.sha
+            },
+            {
+              headers: {
+                Authorization: `token ${GITHUB_TOKEN}`,
+                Accept: 'application/vnd.github.v3+json'
+              }
+            }
+          );
+    
+          alert('Report submitted successfully!');
+          $scope.newItem = {};
+          $scope.fetchReports();
         } catch (error) {
-            console.error('Error submitting report:', error);
-            alert('Failed to submit the report. Please try again.');
+          console.error('Error submitting report:', error);
+          alert('Failed to submit the report. Please try again.');
         }
-    };
+      };
 
     // Delete Report
     $scope.deleteItem = async function (index) {
         if (confirm('Are you sure you want to delete this report?')) {
-            try {
-                // Remove the item locally
-                $scope.reports.splice(index, 1);
+          try {
+            $scope.reports.splice(index, 1);
     
-                // Prepare updated reports content
-                const updatedReports = JSON.stringify($scope.reports, null, 2);
+            const updatedReports = JSON.stringify($scope.reports, null, 2);
     
-                // Fetch the current SHA for the reports.json file
-                const response = await $http.get(GITHUB_API_URL, {
-                    headers: {
-                        Authorization: `token ${GITHUB_TOKEN}`,
-                        Accept: 'application/vnd.github.v3+json'
-                    }
-                });
+            const response = await $http.get(GITHUB_API_URL, {
+              headers: {
+                Authorization: `token ${GITHUB_TOKEN}`,
+                Accept: 'application/vnd.github.v3+json'
+              }
+            });
     
-                // Update the reports.json file on GitHub
-                await $http.put(
-                    GITHUB_API_URL,
-                    {
-                        message: 'Delete a report',
-                        content: btoa(updatedReports),
-                        sha: response.data.sha
-                    },
-                    {
-                        headers: {
-                            Authorization: `token ${GITHUB_TOKEN}`,
-                            Accept: 'application/vnd.github.v3+json'
-                        }
-                    }
-                );
+            await $http.put(
+              GITHUB_API_URL,
+              {
+                message: 'Delete a report',
+                content: btoa(updatedReports),
+                sha: response.data.sha
+              },
+              {
+                headers: {
+                  Authorization: `token ${GITHUB_TOKEN}`,
+                  Accept: 'application/vnd.github.v3+json'
+                }
+              }
+            );
     
-                alert('Report deleted successfully!');
-            } catch (error) {
-                console.error('Error deleting report:', error);
-                alert('Failed to delete the report. Please try again.');
-            }
+            alert('Report deleted successfully!');
+          } catch (error) {
+            console.error('Error deleting report:', error);
+            alert('Failed to delete the report. Please try again.');
+          }
         }
-    };
+      };
 
       // Edit Report
       $scope.updateReport = async function (item, index) {
         try {
-            console.log('Updating report for item at index:', index);
+          $scope.reports[index] = item;
     
-            // Update the item locally
-            $scope.reports[index] = item;
+          const updatedReports = JSON.stringify($scope.reports, null, 2);
     
-            // Prepare updated reports content
-            const updatedReports = JSON.stringify($scope.reports, null, 2);
+          const response = await $http.get(GITHUB_API_URL, {
+            headers: {
+              Authorization: `token ${GITHUB_TOKEN}`,
+              Accept: 'application/vnd.github.v3+json'
+            }
+          });
     
-            // Fetch the current SHA for the reports.json file
-            const response = await $http.get(GITHUB_API_URL, {
-                headers: {
-                    Authorization: `token ${GITHUB_TOKEN}`,
-                    Accept: 'application/vnd.github.v3+json'
-                }
-            });
+          await $http.put(
+            GITHUB_API_URL,
+            {
+              message: 'Update report item',
+              content: btoa(updatedReports),
+              sha: response.data.sha
+            },
+            {
+              headers: {
+                Authorization: `token ${GITHUB_TOKEN}`,
+                Accept: 'application/vnd.github.v3+json'
+              }
+            }
+          );
     
-            // Save the updated reports.json to GitHub
-            await $http.put(
-                GITHUB_API_URL,
-                {
-                    message: 'Update report item',
-                    content: btoa(updatedReports),
-                    sha: response.data.sha
-                },
-                {
-                    headers: {
-                        Authorization: `token ${GITHUB_TOKEN}`,
-                        Accept: 'application/vnd.github.v3+json'
-                    }
-                }
-            );
-    
-            alert('Report updated successfully!');
+          alert('Report updated successfully!');
         } catch (error) {
-            console.error('Error updating report:', error);
-            alert('Failed to update the report. Please try again.');
+          console.error('Error updating report:', error);
+          alert('Failed to update the report. Please try again.');
         }
-    };
-
+      };
+ 
     // Fetch All Reports from GitHub
     $scope.fetchReports = function () {
         $http.get(GITHUB_API_URL, {
-            headers: {
-                Authorization: `token ${GITHUB_TOKEN}`,
-                Accept: 'application/vnd.github.v3+json'
-            }
+        headers: {
+            Authorization: `token ${GITHUB_TOKEN}`,
+            Accept: 'application/vnd.github.v3+json'
+        }
         }).then(response => {
-            const reports = JSON.parse(atob(response.data.content));
-            $scope.reports = reports; // Update scope with fetched reports
+        const reports = JSON.parse(atob(response.data.content));
+        $scope.reports = reports;
         }).catch(error => {
-            console.error('Error fetching reports:', error);
+        console.error('Error fetching reports:', error);
         });
     };
 
