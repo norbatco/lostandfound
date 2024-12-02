@@ -294,6 +294,8 @@ $scope.submitReport = async function () {
         });
     };
 
+    console.log("Using token:", GITHUB_TOKEN); // Log the token to ensure it's set correctly
+
     /**
      * -------------------------
      * Popup and Form Management
