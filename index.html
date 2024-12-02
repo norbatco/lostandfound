@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   
   <!-- AngularJS -->
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
@@ -26,58 +27,51 @@
 </head>
 <body ng-controller="mainController">
 
-  <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
-    <a class="navbar-brand" href="#">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+      <a class="navbar-brand" href="#">
         <img src="https://raw.githubusercontent.com/norbatco/lostandfound/refs/heads/main/images.png" alt="NORBATCO Logo" style="height: 60px;">
-    </a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      </a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
-    </button>
+      </button>
       <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav ml-auto">
-              <li class="nav-item">
-                  <a class="nav-link" href="#top" data-toggle="collapse" data-target="index.html">Home</a>
-              </li>
-              <li class="nav-item navbar-divider d-none d-lg-block">
-                  <span>|</span>
-              </li>
-              <li class="nav-item">
-                  <a class="nav-link" href="#" ng-click="toggleReportPopup()" data-toggle="collapse" data-target=".navbar-collapse.show">Create Report</a>
-              </li>
-              <li class="nav-item navbar-divider d-none d-lg-block">
-                  <span>|</span>
-              </li>
-              <li class="nav-item">
-                  <a class="nav-link" href="about.html">About</a>
-              </li>
-              <li class="nav-item navbar-divider d-none d-lg-block">
-                  <span>|</span>
-              </li>
-              <li class="nav-item" ng-if="!adminMode">
-                  <a class="nav-link" href="#" ng-click="toggleLoginPopup()" data-toggle="collapse" data-target=".navbar-collapse.show">Login</a>
-              </li>
-              <li class="nav-item" ng-if="adminMode">
-                  <a class="nav-link text-danger" href="#" ng-click="logout()" data-toggle="collapse" data-target=".navbar-collapse.show">Logout</a>
-              </li>
-          </ul>
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="#top" data-toggle="collapse" data-target="index.html">Home</a>
+          </li>
+          <li class="nav-item navbar-divider d-none d-lg-block"><span>|</span></li>
+          <li class="nav-item">
+            <a class="nav-link" href="#" ng-click="toggleReportPopup()" data-toggle="collapse" data-target=".navbar-collapse.show">Create Report</a>
+          </li>
+          <li class="nav-item navbar-divider d-none d-lg-block"><span>|</span></li>
+          <li class="nav-item">
+            <a class="nav-link" href="about.html">About</a>
+          </li>
+          <li class="nav-item navbar-divider d-none d-lg-block"><span>|</span></li>
+          <li class="nav-item" ng-if="!adminMode">
+            <a class="nav-link" href="#" ng-click="toggleLoginPopup()" data-toggle="collapse" data-target=".navbar-collapse.show">Login</a>
+          </li>
+          <li class="nav-item" ng-if="adminMode">
+            <a class="nav-link text-danger" href="#" ng-click="logout()" data-toggle="collapse" data-target=".navbar-collapse.show">Logout</a>
+          </li>
+        </ul>
       </div>
-  </nav>
+    </nav>
 
-  <!-- Header Section -->
-  <div id="top" class="header fade-in">
-    <br><br><br>
-    <h1>NORBATCO Lost and Found</h1>
-    <p>A Solution for Recovering Belongings on Public Transportation</p>
-    <!-- Updated Button -->
-    <button class="btn btn-primary my-2" ng-click="scrollDownByPercentage(30)">View Items</button>
-  </div>
+    <!-- Header Section -->
+    <div id="top" class="header fade-in">
+      <br><br><br>
+      <h1>NORBATCO Lost and Found</h1>
+      <p>A Solution for Recovering Belongings on Public Transportation</p>
+      <button class="btn btn-primary my-2" ng-click="scrollDownByPercentage(20)">View Items</button>
+    </div>
 
-  <!-- Reported Items Section -->
+    <!-- Reported Items Section -->
     <div class="container items-section">
       <h2 class="text-center">Reported Items</h2>
 
-      <!-- Search Bar with Spyglass Icon -->
+      <!-- Search Bar -->
       <div class="form-group position-relative">
         <input type="text" class="form-control pl-4" ng-model="searchTerm" placeholder="Search for items..." />
         <i class="fas fa-search search-icon"></i>
@@ -86,20 +80,28 @@
       <!-- Scrollable Box -->
       <div class="reported-items-container">
         <div class="row">
-          <!-- Dynamic Item Cards -->
-          <div class="col-md-4" ng-repeat="item in reports | filter:searchTerm">
+          <div class="col-md-4" ng-repeat="item in reports | filter:searchTerm track by item.id">
             <div class="card">
-              <!-- Image -->
-              <img ng-src="{{item.image || 'https://via.placeholder.com/150'}}" class="card-img-top" alt="{{item.itemName}}" />
-              
+              <img ng-src="{{item.image}}" class="card-img-top" alt="{{item.itemName}}" />
               <div class="card-body">
-                <!-- Item Name -->
-                <h5 class="card-title">{{item.itemName}}</h5>
-                
-                <!-- Description -->
-                <p class="card-text">{{item.description}}</p>
+                <!-- Item Name (larger text) -->
+                <h5 class="card-title item-name">{{item.itemName}}</h5>
 
-                <!-- Editable Category Dropdown (Visible in Admin Mode) -->
+                <!-- Color -->
+                <p class="card-text item-color">
+                  <strong>Color:</strong> {{item.itemColor || 'N/A'}}
+                </p>
+
+                <!-- Description -->
+                <p class="card-text item-description">
+                  <strong>Description:</strong> {{item.itemDescription || 'N/A'}}
+                </p>
+
+                <!-- Date of Report -->
+                <p class="card-text item-date">
+                  <strong>Date Reported:</strong> {{item.timestamp | date:'shortDate'}}
+                </p>
+                <!-- Category Editable for Admin Mode -->
                 <div ng-if="adminMode">
                   <label for="category-{{$index}}">Category:</label>
                   <select id="category-{{$index}}" class="form-control" ng-model="item.category">
@@ -107,11 +109,10 @@
                     <option value="Found">Found</option>
                     <option value="Not Found">Not Found</option>
                   </select>
-                  <!-- Add Update Button -->
                   <button class="btn btn-update btn-sm mt-2" ng-click="updateReport(item, $index)">Update</button>
                 </div>
 
-                <!-- Non-Editable Category -->
+                <!-- Display Category for Non-Admin Users -->
                 <div ng-if="!adminMode">
                   <span class="category" ng-class="{
                     'category-found': item.category === 'Found',
@@ -120,10 +121,8 @@
                   }">{{item.category}}</span>
                 </div>
 
-                <!-- Delete Button (Visible in Admin Mode) -->
-                <button ng-if="adminMode" class="btn btn-danger btn-sm mt-2" ng-click="deleteItem($index)">
-                  Delete Report
-                </button>
+                <!-- Delete Button for Admin -->
+                <button ng-if="adminMode" class="btn btn-danger btn-sm mt-2" ng-click="deleteItem($index)">Delete Report</button>
               </div>
             </div>
           </div>
@@ -131,43 +130,130 @@
       </div>
     </div>
 
-  <!-- Report Form Section -->
-    <div class="report-popup-container" ng-if="reportPopupVisible">
-      <div class="report-popup-content">
-          <form ng-submit="submitReport()">
-              <h2 class="text-center">Create a Report</h2>
-              <div class="form-group">
-                  <label for="userName">Your Name</label>
-                  <input type="text" class="form-control" id="userName" ng-model="newItem.name" placeholder="Enter your name" required />
+      <!-- Report Form Section with Carousel -->
+      <div class="report-popup-container" ng-if="reportPopupVisible">
+        <div class="report-popup-content">
+          <h2 class="text-center">Create a Report</h2>
+          
+          <!-- Carousel -->
+          <div id="reportFormCarousel" class="carousel slide" data-ride="carousel" data-interval="false">
+            <div class="carousel-inner">
+              <!-- Step 1 -->
+              <div class="carousel-item active">
+                <form name="step1Form">
+                  <div class="form-group">
+                    <label for="firstName">First Name</label>
+                    <input type="text" class="form-control" id="firstName" ng-model="newItem.firstName" required />
+                  </div>
+                  <div class="form-group">
+                    <label for="lastName">Last Name</label>
+                    <input type="text" class="form-control" id="lastName" ng-model="newItem.lastName" required />
+                  </div>
+                  <div class="form-group">
+                    <label for="contactNumber">Contact Number</label>
+                    <input type="text" class="form-control" id="contactNumber" ng-model="newItem.contactNumber" required />
+                  </div>
+                  <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" class="form-control" id="email" ng-model="newItem.email" required />
+                  </div>
+                  <div class="form-group">
+                    <label for="address">Address</label>
+                    <textarea class="form-control" id="address" rows="2" ng-model="newItem.address" required></textarea>
+                  </div>
+
+                  <!-- Mock Captcha -->
+                  <div class="form-group">
+                    <label>I'm not a robot</label>
+                    <input type="checkbox" ng-model="captchaVerified" /> Verify
+                  </div>
+                </form>
               </div>
-              <div class="form-group">
-                  <label for="itemName">Item Name</label>
-                  <input type="text" class="form-control" id="itemName" ng-model="newItem.itemName" placeholder="Enter item name" required />
+
+              <!-- Step 2 -->
+              <div class="carousel-item">
+                <form name="step2Form">
+                  <div class="form-group">
+                    <label for="transportation">Transportation Used</label>
+                    <select class="form-control" id="transportation" ng-model="newItem.transportation" required>
+                      <option value="Bus">Bus</option>
+                      <option value="Multicab">Multicab</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label for="plateNumber">Plate Number (optional)</label>
+                    <input type="text" class="form-control" id="plateNumber" ng-model="newItem.plateNumber" />
+                  </div>
+                  <div class="form-group">
+                    <label for="dateLost">Date Lost</label>
+                    <input type="date" class="form-control" id="dateLost" ng-model="newItem.dateLost" required />
+                  </div>
+                  <div class="form-group">
+                    <label for="timeLost">Time Lost (optional)</label>
+                    <input type="time" class="form-control" id="timeLost" ng-model="newItem.timeLost" />
+                  </div>
+                </form>
               </div>
-              <div class="form-group">
-                  <label for="itemDescription">Item Description</label>
-                  <textarea class="form-control" id="itemDescription" ng-model="newItem.description" rows="3" placeholder="Describe the item" required></textarea>
+
+              <!-- Step 3 -->
+              <div class="carousel-item">
+                <form name="step3Form" ng-submit="submitReport()">
+                  <div class="form-group">
+                    <label for="itemName">What Item is Lost</label>
+                    <input type="text" class="form-control" id="itemName" ng-model="newItem.itemName" required />
+                  </div>
+                  <div class="form-group">
+                    <label for="itemColor">Color of the Item</label>
+                    <input type="text" class="form-control" id="itemColor" ng-model="newItem.itemColor" required />
+                  </div>
+                  <div class="form-group">
+                    <label for="itemCategory">Item Category</label>
+                    <select class="form-control" id="itemCategory" ng-model="newItem.itemCategory" required>
+                      <option value="Pets">Pets</option>
+                      <option value="Accessory">Accessory</option>
+                      <option value="Electronic">Electronic</option>
+                      <option value="Clothing">Clothing</option>
+                      <option value="Other">Other</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label for="itemBrand">Item Brand (optional)</label>
+                    <input type="text" class="form-control" id="itemBrand" ng-model="newItem.itemBrand" />
+                  </div>
+                  <div class="form-group">
+                    <label for="itemDescription">Specific Description (optional)</label>
+                    <textarea class="form-control" id="itemDescription" rows="3" ng-model="newItem.itemDescription"></textarea>
+                  </div>
+
+                  <!-- Image Upload -->
+                  <div class="form-group">
+                    <label for="itemImage">Upload Item Image</label>
+                    <input type="file" class="form-control-file" id="itemImage" onchange="angular.element(this).scope().handleFileUpload(this.files)" />
+                    <img ng-if="newItem.image" ng-src="{{newItem.image}}" alt="Image Preview" style="max-width: 100%; margin-top: 10px;" />
+                  </div>
+
+                  <!-- Submit Button (Only on Step 3) -->
+                  <button type="submit" class="btn btn-success btn-block">Submit Report</button>
+                </form>
               </div>
-              <div class="form-group">
-                  <label for="itemCategory">Category</label>
-                  <select class="form-control" id="itemCategory" ng-model="newItem.category" required>
-                      <option value="Lost">Lost</option>
-                  </select>
-              </div>
-              <div class="form-group">
-                <label for="itemImage">Upload Item Image</label>
-                <input type="file" class="form-control-file" id="itemImage" 
-                    onchange="angular.element(this).scope().handleImageUpload(this.files)" />
-                
-              </div>
-              <button type="submit" class="btn btn-primary btn-block">Submit Report</button>
-    
-              <!-- New Close Button -->
-              <button type="button" class="btn btn-secondary btn-block mt-1" ng-click="toggleReportPopup()">Close</button>
-          </form>
+            </div>
+
+            <!-- Carousel Controls -->
+          <!-- Carousel Controls -->
+          <div class="carousel-controls">
+            <!-- Previous Button - Hide on Step 1 -->
+            <button type="button" class="btn btn-secondary" ng-click="goToPreviousStep()" ng-if="currentStep > 1">Previous</button>
+            
+            <!-- Next Button - Hide on Step 3 -->
+            <button type="button" class="btn btn-primary float-right" ng-click="goToNextStep()" ng-show="currentStep < 3">Next</button>
+          </div>
+        </div>
+
+        <!-- Close Button -->
+        <button type="button" class="btn btn-secondary btn-block mt-1" ng-click="toggleReportPopup()">Close</button>
       </div>
     </div>
-
+    
   <!-- Footer -->
   <footer class="footer">
     <div class="footer-container">
@@ -197,7 +283,7 @@
   <button class="btn-show-login" ng-click="toggleLoginPopup()">Login</button>
 
   <!-- Login Popup -->
-  <div class="popup-container" ng-if="loginVisible"> <!-- Use ng-if instead of ng-show -->
+  <div class="popup-container" ng-if="loginVisible">
     <div class="popup-content">
       <form ng-submit="handleLogin()">
         <h2>Login</h2>
@@ -212,7 +298,10 @@
           <label for="password">Password</label>
           <div class="input-wrapper">
             <i class="fa fa-lock"></i>
-            <input type="password" id="password" ng-model="user.password" placeholder="Password" required />
+            <!-- Dynamically change input type based on passwordVisible -->
+            <input type="{{passwordVisible ? 'text' : 'password'}}" id="password" ng-model="user.password" placeholder="Password" required />
+            
+            <!-- Eye icon to toggle password visibility -->
             <span class="toggle-password" ng-click="togglePasswordVisibility()">
               <i class="fa" ng-class="passwordVisible ? 'fa-eye-slash' : 'fa-eye'"></i>
             </span>

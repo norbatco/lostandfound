@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   
   <!-- AngularJS -->
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
@@ -87,43 +88,129 @@
     </div>
   </div>
 
-    <!-- Report Form Section -->
+    <!-- Report Form Section with Carousel -->
     <div class="report-popup-container" ng-if="reportPopupVisible">
       <div class="report-popup-content">
-          <form ng-submit="submitReport()">
-              <h2 class="text-center">Create a Report</h2>
-              <div class="form-group">
-                  <label for="userName">Your Name</label>
-                  <input type="text" class="form-control" id="userName" ng-model="newItem.name" placeholder="Enter your name" required />
-              </div>
-              <div class="form-group">
-                  <label for="itemName">Item Name</label>
-                  <input type="text" class="form-control" id="itemName" ng-model="newItem.itemName" placeholder="Enter item name" required />
-              </div>
-              <div class="form-group">
-                  <label for="itemDescription">Item Description</label>
-                  <textarea class="form-control" id="itemDescription" ng-model="newItem.description" rows="3" placeholder="Describe the item" required></textarea>
-              </div>
-              <div class="form-group">
-                  <label for="itemCategory">Category</label>
-                  <select class="form-control" id="itemCategory" ng-model="newItem.category" required>
-                      <option value="Lost">Lost</option>
-                      <option value="Found">Found</option>
+        <h2 class="text-center">Create a Report</h2>
+        
+        <!-- Carousel -->
+        <div id="reportFormCarousel" class="carousel slide" data-ride="carousel" data-interval="false">
+          <div class="carousel-inner">
+            <!-- Step 1 -->
+            <div class="carousel-item active">
+              <form name="step1Form">
+                <div class="form-group">
+                  <label for="firstName">First Name</label>
+                  <input type="text" class="form-control" id="firstName" ng-model="newItem.firstName" required />
+                </div>
+                <div class="form-group">
+                  <label for="lastName">Last Name</label>
+                  <input type="text" class="form-control" id="lastName" ng-model="newItem.lastName" required />
+                </div>
+                <div class="form-group">
+                  <label for="contactNumber">Contact Number</label>
+                  <input type="text" class="form-control" id="contactNumber" ng-model="newItem.contactNumber" required />
+                </div>
+                <div class="form-group">
+                  <label for="email">Email Address</label>
+                  <input type="email" class="form-control" id="email" ng-model="newItem.email" required />
+                </div>
+                <div class="form-group">
+                  <label for="address">Address</label>
+                  <textarea class="form-control" id="address" rows="2" ng-model="newItem.address" required></textarea>
+                </div>
+
+                <!-- Mock Captcha -->
+                <div class="form-group">
+                  <label>I'm not a robot</label>
+                  <input type="checkbox" ng-model="captchaVerified" /> Verify
+                </div>
+              </form>
+            </div>
+
+            <!-- Step 2 -->
+            <div class="carousel-item">
+              <form name="step2Form">
+                <div class="form-group">
+                  <label for="transportation">Transportation Used</label>
+                  <select class="form-control" id="transportation" ng-model="newItem.transportation" required>
+                    <option value="Bus">Bus</option>
+                    <option value="Multicab">Multicab</option>
                   </select>
-              </div>
-              <div class="form-group">
-                <label for="itemImage">Upload Item Image</label>
-                <input type="file" class="form-control-file" id="itemImage" 
-                    onchange="angular.element(this).scope().handleImageUpload(this.files)" />
-                <img id="imagePreview" style="max-width: 100%; margin-top: 10px;" alt="Image Preview" />
-              </div>
-              <button type="submit" class="btn btn-primary btn-block">Submit Report</button>
-    
-              <!-- New Close Button -->
-              <button type="button" class="btn btn-secondary btn-block mt-1" ng-click="toggleReportPopup()">Close</button>
-          </form>
+                </div>
+                <div class="form-group">
+                  <label for="plateNumber">Plate Number (optional)</label>
+                  <input type="text" class="form-control" id="plateNumber" ng-model="newItem.plateNumber" />
+                </div>
+                <div class="form-group">
+                  <label for="dateLost">Date Lost</label>
+                  <input type="date" class="form-control" id="dateLost" ng-model="newItem.dateLost" required />
+                </div>
+                <div class="form-group">
+                  <label for="timeLost">Time Lost (optional)</label>
+                  <input type="time" class="form-control" id="timeLost" ng-model="newItem.timeLost" />
+                </div>
+              </form>
+            </div>
+
+            <!-- Step 3 -->
+            <div class="carousel-item">
+              <form name="step3Form" ng-submit="submitReport()">
+                <div class="form-group">
+                  <label for="itemName">What Item is Lost</label>
+                  <input type="text" class="form-control" id="itemName" ng-model="newItem.itemName" required />
+                </div>
+                <div class="form-group">
+                  <label for="itemColor">Color of the Item</label>
+                  <input type="text" class="form-control" id="itemColor" ng-model="newItem.itemColor" required />
+                </div>
+                <div class="form-group">
+                  <label for="itemCategory">Item Category</label>
+                  <select class="form-control" id="itemCategory" ng-model="newItem.itemCategory" required>
+                    <option value="Pets">Pets</option>
+                    <option value="Accessory">Accessory</option>
+                    <option value="Electronic">Electronic</option>
+                    <option value="Clothing">Clothing</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="itemBrand">Item Brand (optional)</label>
+                  <input type="text" class="form-control" id="itemBrand" ng-model="newItem.itemBrand" />
+                </div>
+                <div class="form-group">
+                  <label for="itemDescription">Specific Description (optional)</label>
+                  <textarea class="form-control" id="itemDescription" rows="3" ng-model="newItem.itemDescription"></textarea>
+                </div>
+
+                <!-- Image Upload -->
+                <div class="form-group">
+                  <label for="itemImage">Upload Item Image</label>
+                  <input type="file" class="form-control-file" id="itemImage" onchange="angular.element(this).scope().handleFileUpload(this.files)" />
+                  <img ng-if="newItem.image" ng-src="{{newItem.image}}" alt="Image Preview" style="max-width: 100%; margin-top: 10px;" />
+                </div>
+
+                <!-- Submit Button (Only on Step 3) -->
+                <button type="submit" class="btn btn-success btn-block">Submit Report</button>
+              </form>
+            </div>
+          </div>
+
+          <!-- Carousel Controls -->
+        <!-- Carousel Controls -->
+        <div class="carousel-controls">
+          <!-- Previous Button - Hide on Step 1 -->
+          <button type="button" class="btn btn-secondary" ng-click="goToPreviousStep()" ng-if="currentStep > 1">Previous</button>
+          
+          <!-- Next Button - Hide on Step 3 -->
+          <button type="button" class="btn btn-primary float-right" ng-click="goToNextStep()" ng-show="currentStep < 3">Next</button>
+        </div>
       </div>
+
+      <!-- Close Button -->
+      <button type="button" class="btn btn-secondary btn-block mt-1" ng-click="toggleReportPopup()">Close</button>
     </div>
+  </div>
     
   <!-- Footer -->
   <footer class="footer">
