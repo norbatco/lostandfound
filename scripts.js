@@ -14,7 +14,7 @@
   // Constants and API Configuration
   const GITHUB_API_URL = 'https://api.github.com/repos/norbatco/lostandfound/contents/reports.json';
   const GITHUB_IMAGE_PATH = 'https://api.github.com/repos/norbatco/lostandfound/contents/images';
-  const GITHUB_TOKEN = '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'; // Replace with a secure method of token storage
+  const GITHUB_TOKEN = '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'; // Replace with a secure method of token storage
 
   // Main Controller
   app.controller('mainController', function ($scope, $http) {
