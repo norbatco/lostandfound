@@ -200,8 +200,6 @@ app.controller('mainController', function ($scope) {
       alert('Failed to update the report. Please try again.');
     }
   };
-});
-
 
     /**
      * -------------------------
