@@ -1,33 +1,33 @@
-  // JavaScript: Window Scroll Listener
-  window.addEventListener('scroll', function () {
-    const header = document.getElementById('top');
-    if (window.scrollY > 30) {
-        header.classList.add('shrink-header'); // Add class to shrink the header
-    } else {
-        header.classList.remove('shrink-header'); // Remove class to restore the header
-    }
-  });
+  // Window Scroll Listener
+window.addEventListener('scroll', function () {
+  const header = document.getElementById('top');
+  if (window.scrollY > 30) {
+    header.classList.add('shrink-header'); // Add class to shrink the header
+  } else {
+    header.classList.remove('shrink-header'); // Remove class to restore the header
+  }
+});
 
-    // AngularJS: Application Initialization
+// AngularJS: Application Initialization
 var app = angular.module('lostAndFoundApp', []);
 
 // Main Controller
 app.controller('mainController', function ($scope) {
 
-     /**
-     * ---------------------
-     * View Items Scroll
-     * ---------------------
-     */
-     $scope.scrollDownByPercentage = function (percentage) {
-        const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
-        const scrollToPosition = totalHeight * (percentage / 100);
-        console.log("Scrolling to position:", scrollToPosition); // Debugging line
-        window.scrollTo({
-          top: scrollToPosition,
-          behavior: 'smooth' // Smooth scrolling
-        });
-      };
+  /**
+   * ---------------------
+   * View Items Scroll
+   * ---------------------
+   */
+  $scope.scrollDownByPercentage = function (percentage) {
+    const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const scrollToPosition = totalHeight * (percentage / 100);
+    console.log("Scrolling to position:", scrollToPosition); // Debugging line
+    window.scrollTo({
+      top: scrollToPosition,
+      behavior: 'smooth' // Smooth scrolling
+    });
+  };
 
   // Initialize newItem in the controller
   $scope.newItem = {
@@ -54,73 +54,63 @@ app.controller('mainController', function ($scope) {
   $scope.loginVisible = false;
   $scope.adminMode = false;
 
-  // Path to the local JSON file
-const jsonFilePath = 'reports.json';
-
   // Load Reports from the JSON File
-$scope.loadReportsFromJson = function (file) {
-  const reader = new FileReader();
-  
-  reader.onload = function (e) {
-    try {
-      // Parse the JSON file content
-      const data = JSON.parse(e.target.result);
-      
-      console.log('Loaded JSON data:', data);  // Structue Chekcing
-      
-      // Check if the data is an array
-      if (Array.isArray(data)) {
-        $scope.$apply(() => {
-          $scope.reports = data; // Load reports into scope
-        });
-        alert('Reports loaded successfully from the JSON file!');
-      } else {
-        alert('Invalid JSON format. The file should contain an array of reports.');
+  $scope.loadReportsFromJson = function (file) {
+    const reader = new FileReader();
+    reader.onload = function (e) {
+      try {
+        const data = JSON.parse(e.target.result);
+        console.log('Loaded JSON data:', data); // Structue Checking
+
+        if (Array.isArray(data)) {
+          $scope.$apply(() => {
+            $scope.reports = data; // Load reports into scope
+          });
+          alert('Reports loaded successfully from the JSON file!');
+        } else {
+          alert('Invalid JSON format. The file should contain an array of reports.');
+        }
+      } catch (error) {
+        console.error('Error parsing JSON:', error);
+        alert('Error loading reports from the JSON file.');
       }
-    } catch (error) {
-      console.error('Error parsing JSON:', error);
-      alert('Error loading reports from the JSON file.');
-    }
+    };
+    reader.readAsText(file);
   };
 
-  reader.readAsText(file);
-};
+  // Unified File Upload Handler
+  $scope.handleFileUpload = function (files, isJsonFile) {
+    if (files && files[0]) {
+      const file = files[0];
 
-// Unified File Upload Handler
-$scope.handleFileUpload = function (files, isJsonFile) {
-  if (files && files[0]) {
-    const file = files[0];
-
-    if (isJsonFile) {
-      // Handle JSON file upload
-      $scope.loadReportsFromJson(file); 
-    } else {
-      // Handle Image file upload (Base64 conversion)
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        $scope.$apply(() => {
-          $scope.newItem.image = event.target.result;
-          $scope.newItem.imageFile = file; // Store file for upload
-        });
-      };
-      reader.readAsDataURL(file);
+      if (isJsonFile) {
+        // Handle JSON file upload
+        $scope.loadReportsFromJson(file);
+      } else {
+        // Handle Image file upload (Base64 conversion)
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          $scope.$apply(() => {
+            $scope.newItem.image = event.target.result;
+            $scope.newItem.imageFile = file; // Store file for upload
+          });
+        };
+        reader.readAsDataURL(file);
+      }
     }
-  }
-};
+  };
 
   // Save reports to a local .json file
   $scope.saveReportsToJson = function () {
     try {
       const dataStr = JSON.stringify($scope.reports, null, 2);
       const blob = new Blob([dataStr], { type: 'application/json' });
-  
-      // Simulate saving to the file directly (backend would handle this in real apps)
       const a = document.createElement('a');
       a.href = URL.createObjectURL(blob);
-      a.download = jsonFilePath;
+      a.download = 'reports.json'; // Name the file properly
       a.click();
       URL.revokeObjectURL(a.href);
-  
+
       alert('Reports saved successfully!');
     } catch (error) {
       console.error('Error saving reports:', error);
@@ -136,7 +126,7 @@ $scope.handleFileUpload = function (files, isJsonFile) {
   // Submit Report
   $scope.submitReport = function () {
     try {
-      // Check if newItem is properly initialized and populated
+      // Validate required fields
       if (!$scope.newItem.firstName || !$scope.newItem.lastName || !$scope.newItem.contactNumber || !$scope.newItem.email || !$scope.newItem.address) {
         alert('Please fill in all the required fields.');
         return;
@@ -144,7 +134,7 @@ $scope.handleFileUpload = function (files, isJsonFile) {
 
       // Create the report object
       const report = {
-        id: Date.now(), // Add unique ID based on the current timestamp
+        id: Date.now(), // Unique ID based on the timestamp
         firstName: $scope.newItem.firstName,
         lastName: $scope.newItem.lastName,
         contactNumber: $scope.newItem.contactNumber,
@@ -160,19 +150,19 @@ $scope.handleFileUpload = function (files, isJsonFile) {
         itemCategory: $scope.newItem.itemCategory,
         itemBrand: $scope.newItem.itemBrand,
         itemDescription: $scope.newItem.itemDescription,
-        category: 'Lost', // Automatically set category to "Lost"
+        category: 'Lost', // Default category
         timestamp: new Date().toISOString()
       };
 
-      // If image is uploaded, add it to the report
+      // Include image if uploaded
       if ($scope.newItem.imageFile) {
-        report.image = $scope.newItem.image; // Base64 image data
+        report.image = $scope.newItem.image;
       }
 
-      // Add the new report to the existing reports array
+      // Add the new report to the reports array
       $scope.reports.push(report);
 
-      // Save the updated reports to a local .json file
+      // Save the reports to a JSON file
       $scope.saveReportsToJson();
 
       // Success message and reset form
@@ -185,35 +175,31 @@ $scope.handleFileUpload = function (files, isJsonFile) {
     }
   };
 
-    // Delete Report
-    $scope.deleteItem = function (index) {
-      if (confirm('Are you sure you want to delete this report?')) {
-        try {
-          $scope.reports.splice(index, 1);
-          $scope.saveReportsToJson();
-          alert('Report deleted successfully!');
-        } catch (error) {
-          console.error('Error deleting report:', error);
-          alert('Failed to delete the report. Please try again.');
-        }
+  // Delete Report
+  $scope.deleteItem = function (index) {
+    if (confirm('Are you sure you want to delete this report?')) {
+      try {
+        $scope.reports.splice(index, 1);
+        $scope.saveReportsToJson();
+        alert('Report deleted successfully!');
+      } catch (error) {
+        console.error('Error deleting report:', error);
+        alert('Failed to delete the report. Please try again.');
       }
-    };
-    
-    // Edit Report
-    $scope.updateReport = function (item, index) {
-        try {
-            // Update the report in the array
-            $scope.reports[index] = item;
+    }
+  };
 
-            // Save the updated reports to a local .json file
-            $scope.saveReportsToLocalFile();
-
-            alert('Report updated successfully!');
-        } catch (error) {
-            console.error('Error updating report:', error);
-            alert('Failed to update the report. Please try again.');
-        }
-    };
+  // Edit Report
+  $scope.updateReport = function (item, index) {
+    try {
+      $scope.reports[index] = item; // Update the report in the array
+      $scope.saveReportsToJson(); // Save the updated reports to the JSON file
+      alert('Report updated successfully!');
+    } catch (error) {
+      console.error('Error updating report:', error);
+      alert('Failed to update the report. Please try again.');
+    }
+  };
 
     /**
      * -------------------------
