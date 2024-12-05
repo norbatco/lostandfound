@@ -91,56 +91,58 @@
            onchange="angular.element(this).scope().handleFileUpload(this.files, true)" ng-model="uploadedJsonFile" />
   </div>
 
-  <!-- Scrollable Box -->
-  <div class="reported-items-container">
-    <div class="row">
-      <!-- Loop through reports -->
-      <div class="col-md-4" ng-repeat="item in reports | filter:searchTerm track by item.id">
-        <div class="card" ng-click="showReportDetails(item)">
-          <img ng-src="{{item.image}}" class="card-img-top" alt="{{item.itemName}}" />
-          <div class="card-body">
-            <!-- Item Name -->
-            <h5 class="card-title item-name">{{item.itemName}}</h5>
-            <!-- Color -->
-            <p class="card-text item-color">
-              <strong>Color:</strong> {{item.itemColor || 'N/A'}}
-            </p>
-            <!-- Description -->
-            <p class="card-text item-description">
-              <strong>Description:</strong> {{item.itemDescription || 'N/A'}}
-            </p>
-            <!-- Date of Report -->
-            <p class="card-text item-date">
-              <strong>Date Reported:</strong> {{item.timestamp | date:'shortDate'}}
-            </p>
-            <!-- Category Editable for Admin Mode -->
-            <div ng-if="adminMode">
-              <label for="category-{{$index}}">Category:</label>
-              <select id="category-{{$index}}" class="form-control" ng-model="item.category" ng-click="$event.stopPropagation()">
-                <option value="Lost">Lost</option>
-                <option value="Found">Found</option>
-                <option value="Not Found">Not Found</option>
-                <option value="Retrieved">Retrieved</option>
-              </select>
-              <button class="btn btn-update btn-sm mt-2" ng-click="updateReport(item, $index); $event.stopPropagation();">Update</button>
-            </div>
-            <!-- Display Category for Non-Admin Users -->
-            <div ng-if="!adminMode">
-              <span class="category" ng-class="{
-                'category-found': item.category === 'Found',
-                'category-lost': item.category === 'Lost',
-                'category-notfound': item.category === 'Not Found',
-                'category-retrieved': item.category === 'Retrieved'
-              }">{{item.category}}</span>
-            </div>
-            <!-- Delete Button for Admin -->
-            <button ng-if="adminMode" class="btn btn-danger btn-sm mt-2" ng-click="deleteItem($index); $event.stopPropagation();">Delete Report</button>
-                </div>
-              </div>
-            </div>
+ <!-- Scrollable Box -->
+<div class="reported-items-container">
+  <div class="row">
+    <!-- Loop through reports -->
+    <div class="col-md-4" ng-repeat="item in reports | filter:searchTerm track by item.id">
+      <div class="card" ng-click="showReportDetails(item)">
+        <img ng-src="{{item.image}}" class="card-img-top" alt="{{item.itemName}}" />
+        <div class="card-body">
+          <!-- Item Name -->
+          <h5 class="card-title item-name">{{item.itemName}}</h5>
+          <!-- Color -->
+          <p class="card-text item-color">
+            <strong>Color:</strong> {{item.itemColor || 'N/A'}}
+          </p>
+          <!-- Description -->
+          <p class="card-text item-description">
+            <strong>Description:</strong> {{item.itemDescription || 'N/A'}}
+          </p>
+          <!-- Date of Report -->
+          <p class="card-text item-date">
+            <strong>Date Reported:</strong> {{item.timestamp | date:'shortDate'}}
+          </p>
+
+          <!-- Category Editable for Admin Mode -->
+          <div ng-if="adminMode">
+            <label for="category-{{$index}}">Category:</label>
+            <select id="category-{{$index}}" class="form-control" ng-model="item.category" ng-click="$event.stopPropagation()">
+              <option value="Lost">Lost</option>
+              <option value="Found">Found</option>
+              <option value="Not Found">Not Found</option>
+              <option value="Retrieved">Retrieved</option>
+            </select>
+            <button class="btn btn-update btn-sm mt-2" ng-click="updateReport(item, $index); $event.stopPropagation();">Update</button>
           </div>
+
+          <!-- Display Category for Non-Admin Users -->
+          <div ng-if="!adminMode">
+            <span class="category" ng-class="{
+              'category-found': item.category === 'Found',
+              'category-lost': item.category === 'Lost',
+              'category-notfound': item.category === 'Not Found',
+              'category-retrieved': item.category === 'Retrieved'
+            }">{{item.category}}</span>
+          </div>
+
+          <!-- Delete Button for Admin -->
+          <button ng-if="adminMode" class="btn btn-danger btn-sm mt-2" ng-click="deleteItem($index); $event.stopPropagation();">Delete Report</button>
         </div>
       </div>
+    </div>
+  </div>
+</div>
 
       <!-- Full Report Details Modal -->
       <div class="modal-container" ng-if="selectedReport && adminMode">
