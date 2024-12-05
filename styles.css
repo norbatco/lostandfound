@@ -165,6 +165,20 @@ textarea:focus {
   }
 
   /* Found Items Section */
+#uploadJsonFile {
+  display: none;
+}
+label[for="uploadJsonFile"] {
+  cursor: pointer;
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 4px;
+}
+label[for="uploadJsonFile"]:hover {
+  background-color: #0056b3;
+}
+
   .items-section {
     padding: 25px 25px;
     background: white;
