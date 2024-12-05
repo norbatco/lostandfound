@@ -66,7 +66,7 @@ $scope.loadReportsFromJson = function (file) {
       // Parse the JSON file content
       const data = JSON.parse(e.target.result);
       
-      console.log('Loaded JSON data:', data);  // Log the parsed data to check structure
+      console.log('Loaded JSON data:', data);  // Structue Chekcing
       
       // Check if the data is an array
       if (Array.isArray(data)) {
@@ -83,7 +83,7 @@ $scope.loadReportsFromJson = function (file) {
     }
   };
 
-  reader.readAsText(file); // Read the file as text
+  reader.readAsText(file);
 };
 
 // Unified File Upload Handler
@@ -93,17 +93,17 @@ $scope.handleFileUpload = function (files, isJsonFile) {
 
     if (isJsonFile) {
       // Handle JSON file upload
-      $scope.loadReportsFromJson(file); // Load reports from the uploaded JSON file
+      $scope.loadReportsFromJson(file); 
     } else {
       // Handle Image file upload (Base64 conversion)
       const reader = new FileReader();
       reader.onload = (event) => {
         $scope.$apply(() => {
-          $scope.newItem.image = event.target.result; // Preview image
+          $scope.newItem.image = event.target.result; e
           $scope.newItem.imageFile = file; // Store file for upload
         });
       };
-      reader.readAsDataURL(file); // Read the file as Base64
+      reader.readAsDataURL(file);
     }
   }
 };
