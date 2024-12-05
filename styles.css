@@ -369,6 +369,11 @@ body {
   }
 
   /* Report Pop-up Section */
+/* Prevent scrolling when the pop-up is active */
+.no-scroll {
+  overflow: hidden;
+}
+
   .report-popup-container {
     position: fixed;
     top: 0;
