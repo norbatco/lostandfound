@@ -113,7 +113,6 @@
           <p class="card-text item-date">
             <strong>Date Reported:</strong> {{item.timestamp | date:'shortDate'}}
           </p>
-
           <!-- Category Editable for Admin Mode -->
           <div ng-if="adminMode">
             <label for="category-{{$index}}">Category:</label>
@@ -125,7 +124,6 @@
             </select>
             <button class="btn btn-update btn-sm mt-2" ng-click="updateReport(item, $index); $event.stopPropagation();">Update</button>
           </div>
-
           <!-- Display Category for Non-Admin Users -->
           <div ng-if="!adminMode">
             <span class="category" ng-class="{
@@ -135,7 +133,6 @@
               'category-retrieved': item.category === 'Retrieved'
             }">{{item.category}}</span>
           </div>
-
           <!-- Delete Button for Admin -->
           <button ng-if="adminMode" class="btn btn-danger btn-sm mt-2" ng-click="deleteItem($index); $event.stopPropagation();">Delete Report</button>
         </div>
