@@ -22,7 +22,7 @@
   <script src="js/angular.min.js"></script>
 
   <!-- Font Awesome -->
-  <link rel="stylesheet" href="css/all.min.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
 
   <!-- Google Fonts (Poppins) -->
   <link href="fonts/css2.css" rel="stylesheet">
@@ -280,10 +280,10 @@
           <!-- Carousel Controls -->
           <div class="carousel-controls">
             <!-- Previous Button - Hide on Step 1 -->
-            <button type="button" class="btn btn-secondary" ng-click="goToPreviousStep()" ng-if="currentStep > 1">Previous</button>
+            <button type="button" class="btn btn-secondary" ng-click="goToPreviousStep()" ng-if="currentStep > 1"><</button>
             
             <!-- Next Button - Hide on Step 3 -->
-            <button type="button" class="btn btn-primary float-right" ng-click="goToNextStep()" ng-show="currentStep < 3">Next</button>
+            <button type="button" class="btn btn-primary float-right" ng-click="goToNextStep()" ng-show="currentStep < 3">></button>
           </div>
         </div>
 
@@ -313,20 +313,15 @@
         <br>
         <!-- Social Media Icons with Local Font Awesome -->
         <div class="social-icons-container">
-          <!-- Facebook Link -->
-          <a href="https://facebook.com" target="_blank" class="social-icon">
-            <i class="fab fa-facebook"></i>
-          </a>
-
-          <!-- Instagram Link -->
-          <a href="https://instagram.com" target="_blank" class="social-icon">
-            <i class="fab fa-instagram"></i>
-          </a>
-
-          <!-- Twitter (X) Link -->
-          <a href="https://twitter.com" target="_blank" class="social-icon">
-            <i class="fab fa-twitter"></i>
-          </a>
+        <a href="https://facebook.com" target="_blank" class="social-icon">
+          <i class="fab fa-facebook"></i>
+        </a>
+        <a href="https://instagram.com" target="_blank" class="social-icon">
+          <i class="fab fa-instagram"></i>
+        </a>
+        <a href="https://twitter.com" target="_blank" class="social-icon">
+          <i class="fab fa-twitter"></i>
+        </a>
       </div>
     </div>
   </footer>
