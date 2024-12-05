@@ -541,8 +541,8 @@ label[for="uploadJsonFile"]:hover {
 
   /* Styling for the Reported Items Container */
   .reported-items-container {
-      max-height: 70%;
-      min-height: 30%;
+      max-height: 70vh;
+      min-height: 40vh;
       overflow-y: auto;   
       overflow-x: hidden;
       border: 2px solid #ddd; 
