@@ -317,33 +317,43 @@ $scope.submitReport = async function () {
     };
 
     // Toggle Report Popup
-    // Initialize the current step to 1
-    $scope.currentStep = 1;
+// Initialize the Step 1 Form
+$scope.currentStep = 1;
 
-    // Go to the next step
-    $scope.goToNextStep = function () {
-        if ($scope.currentStep < 3) {
-            $scope.currentStep++;
-            $('#reportFormCarousel').carousel('next');
-        }
-      };
+// Go to the next step
+$scope.goToNextStep = function () {
+    if ($scope.currentStep < 3) {
+        $scope.currentStep++;
+        $('#reportFormCarousel').carousel('next');
+    }
+};
 
-    // Go to the previous step
-    $scope.goToPreviousStep = function () {
-        if ($scope.currentStep > 1) {
-            $scope.currentStep--;
-            $('#reportFormCarousel').carousel('prev');
-        }
-      };
+// Go to the previous step
+$scope.goToPreviousStep = function () {
+    if ($scope.currentStep > 1) {
+        $scope.currentStep--;
+        $('#reportFormCarousel').carousel('prev');
+    }
+};
 
-    // Toggle Report Popup and reset carousel to the first step
-    $scope.toggleReportPopup = function () {
-      $scope.reportPopupVisible = !$scope.reportPopupVisible;
+// Go to a specific step (used when opening the form)
+$scope.goToStep = function (step) {
+    $scope.currentStep = step;
+    $('#reportFormCarousel').carousel(step - 1); // Carousel steps are 0-indexed
+};
 
-      if ($scope.reportPopupVisible) {
+// Toggle Report Popup and reset carousel to the first step
+$scope.toggleReportPopup = function () {
+    $scope.reportPopupVisible = !$scope.reportPopupVisible;
+
+    if ($scope.reportPopupVisible) {
         $scope.goToStep(1); // Go to the first step when opening the form
-      }
-    };
+        document.body.classList.add('no-scroll'); // Disable main page scrolling
+    } else {
+        document.body.classList.remove('no-scroll'); // Enable main page scrolling
+    }
+};
+
 
     /**
      * ----------------
