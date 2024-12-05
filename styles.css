@@ -500,8 +500,8 @@ label[for="uploadJsonFile"]:hover {
   .report-popup-content {
     background: rgba(157, 157, 157, 0.794);
     padding: 3%;
-    width: 80%;
-    max-width: 80%;
+    width: 50%;
+    max-width: 70vw;
     max-height: 70vh;
     overflow-y: auto;
     border-radius: 10px;
@@ -549,13 +549,6 @@ label[for="uploadJsonFile"]:hover {
       padding: 25px; 
       margin-top: 20px;
       border-radius: 15px;
-  }
-
-@media (min-width: 768px) {
-    .reported-items-container {
-      max-width: 50vw;
-      min-width: 30vw;
-    }
   }
 
   @media (max-width: 768px) {
