@@ -215,29 +215,6 @@ $scope.handleFileUpload = function (files, isJsonFile) {
         }
     };
 
-  // Load Reports from the JSON File
-  $scope.loadReportsFromJson = function () {
-    try {
-      fetch(jsonFilePath)
-        .then((response) => {
-          if (!response.ok) throw new Error('Failed to load reports.');
-          return response.json();
-        })
-        .then((data) => {
-          $scope.$apply(() => {
-            $scope.reports = Array.isArray(data) ? data : [];
-          });
-        })
-        .catch((error) => {
-          console.error('Error loading reports:', error);
-          alert('Could not load reports from the JSON file.');
-        });
-    } catch (error) {
-      console.error('Error loading JSON file:', error);
-      alert('An error occurred while reading the JSON file.');
-    }
-  };
-
     /**
      * -------------------------
      * Popup and Form Management
