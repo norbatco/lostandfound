@@ -400,14 +400,14 @@ body {
 
   /* Styling for the Reported Items Container */
   .reported-items-container {
-      max-height: 700px;  
+      max-height: 70%;  
       overflow-y: auto;   
       overflow-x: hidden;
       border: 2px solid #ddd; 
       padding: 25px; 
       margin-top: 20px;
       border-radius: 15px;
-      min-height: 500px;
+      min-height: 50%;
   }
 
   .card {
