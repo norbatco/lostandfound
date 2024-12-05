@@ -54,28 +54,69 @@ app.controller('mainController', function ($scope) {
   $scope.loginVisible = false;
   $scope.adminMode = false;
 
-  // Load Reports from localStorage
-  $scope.loadReportsFromLocalStorage = function () {
-    const savedReports = localStorage.getItem('reports');
-    if (savedReports) {
-      $scope.reports = JSON.parse(savedReports);
+  // Load Reports from the JSON File
+  $scope.loadReportsFromJson = function (file) {
+    const reader = new FileReader();
+    reader.onload = function (e) {
+      try {
+        const data = JSON.parse(e.target.result);
+        console.log('Loaded JSON data:', data); // Structue Checking
+
+        if (Array.isArray(data)) {
+          $scope.$apply(() => {
+            $scope.reports = data; // Load reports into scope
+          });
+          alert('Reports loaded successfully from the JSON file!');
+        } else {
+          alert('Invalid JSON format. The file should contain an array of reports.');
+        }
+      } catch (error) {
+        console.error('Error parsing JSON:', error);
+        alert('Error loading reports from the JSON file.');
+      }
+    };
+    reader.readAsText(file);
+  };
+
+  // Unified File Upload Handler
+  $scope.handleFileUpload = function (files, isJsonFile) {
+    if (files && files[0]) {
+      const file = files[0];
+
+      if (isJsonFile) {
+        // Handle JSON file upload
+        $scope.loadReportsFromJson(file);
+      } else {
+        // Handle Image file upload (Base64 conversion)
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          $scope.$apply(() => {
+            $scope.newItem.image = event.target.result;
+            $scope.newItem.imageFile = file; // Store file for upload
+          });
+        };
+        reader.readAsDataURL(file);
+      }
     }
   };
 
-  // Save reports to localStorage
-  $scope.saveReportsToLocalStorage = function () {
+  // Save reports to a local .json file
+  $scope.saveReportsToJson = function () {
     try {
       const dataStr = JSON.stringify($scope.reports, null, 2);
-      localStorage.setItem('reports', dataStr); // Overwrite reports in localStorage
-      console.log('Reports saved to localStorage');
+      const blob = new Blob([dataStr], { type: 'application/json' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'reports.json'; // Name the file properly
+      a.click();
+      URL.revokeObjectURL(a.href);
+
+      alert('Reports saved successfully!');
     } catch (error) {
       console.error('Error saving reports:', error);
-      alert('Failed to save reports.');
+      alert('Failed to save the reports to the JSON file.');
     }
   };
-
-  // Initialize by loading reports from localStorage
-  $scope.loadReportsFromLocalStorage();
 
   /**
    * ---------------------
@@ -121,13 +162,13 @@ app.controller('mainController', function ($scope) {
       // Add the new report to the reports array
       $scope.reports.push(report);
 
-      // Save the updated reports to localStorage
-      $scope.saveReportsToLocalStorage();
+      // Save the reports to a JSON file
+      $scope.saveReportsToJson();
 
       // Success message and reset form
       alert('Report submitted successfully!');
       $scope.newItem = {}; // Reset the form data
-      $scope.toggleReportPopup(); 
+      $scope.toggleReportPopup(); // Close the popup
     } catch (error) {
       console.error('Error submitting report:', error);
       alert('Failed to submit the report. Please try again.');
@@ -138,8 +179,8 @@ app.controller('mainController', function ($scope) {
   $scope.deleteItem = function (index) {
     if (confirm('Are you sure you want to delete this report?')) {
       try {
-        $scope.reports.splice(index, 1); // Remove the report
-        $scope.saveReportsToLocalStorage(); // Update localStorage with the new list of reports
+        $scope.reports.splice(index, 1);
+        $scope.saveReportsToJson();
         alert('Report deleted successfully!');
       } catch (error) {
         console.error('Error deleting report:', error);
@@ -152,13 +193,15 @@ app.controller('mainController', function ($scope) {
   $scope.updateReport = function (item, index) {
     try {
       $scope.reports[index] = item; // Update the report in the array
-      $scope.saveReportsToLocalStorage(); // Save the updated reports to localStorage
+      $scope.saveReportsToJson(); // Save the updated reports to the JSON file
       alert('Report updated successfully!');
     } catch (error) {
       console.error('Error updating report:', error);
       alert('Failed to update the report. Please try again.');
     }
   };
+});
+
 
     /**
      * -------------------------
