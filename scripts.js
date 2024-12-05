@@ -99,7 +99,7 @@ $scope.handleFileUpload = function (files, isJsonFile) {
       const reader = new FileReader();
       reader.onload = (event) => {
         $scope.$apply(() => {
-          $scope.newItem.image = event.target.result; e
+          $scope.newItem.image = event.target.result;
           $scope.newItem.imageFile = file; // Store file for upload
         });
       };
