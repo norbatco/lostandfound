@@ -549,7 +549,6 @@ label[for="uploadJsonFile"]:hover {
       padding: 25px; 
       margin-top: 20px;
       border-radius: 15px;
-      min-height: 35vw;
   }
 
   @media (max-width: 768px) {
