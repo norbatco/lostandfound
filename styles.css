@@ -541,8 +541,8 @@ label[for="uploadJsonFile"]:hover {
 
   /* Styling for the Reported Items Container */
   .reported-items-container {
-      max-height: 70vh;
-      min-height: 40vh;
+      max-height: 80vh;
+      min-height: 70vh;
       overflow-y: auto;   
       overflow-x: hidden;
       border: 2px solid #ddd; 
@@ -551,9 +551,16 @@ label[for="uploadJsonFile"]:hover {
       border-radius: 15px;
   }
 
+@media (min-width: 768px) {
+    .reported-items-container {
+      max-height: 50vh;
+      min-height: 30vh;
+    }
+  }
+
   @media (max-width: 768px) {
     .reported-items-container {
-      padding: 15px; /* Reduce padding on smaller screens */
+      padding: 15px; /
     }
   }
   
