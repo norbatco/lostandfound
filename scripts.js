@@ -8,293 +8,235 @@
     }
   });
 
-  // AngularJS: Application Initialization
-  var app = angular.module('lostAndFoundApp', []);
+    // AngularJS: Application Initialization
+var app = angular.module('lostAndFoundApp', []);
 
-  // Constants and API Configuration
-  const GITHUB_API_URL = 'https://api.github.com/repos/norbatco/lostandfound/contents/reports.json';
-  const GITHUB_IMAGE_PATH = 'https://api.github.com/repos/norbatco/lostandfound/contents/images';
-  const GITHUB_TOKEN = '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'; // Replace with a secure method of token storage
+// Main Controller
+app.controller('mainController', function ($scope) {
 
-  // Main Controller
-  app.controller('mainController', function ($scope, $http) {
-
-    /**
+     /**
      * ---------------------
      * View Items Scroll
      * ---------------------
      */
-    $scope.scrollDownByPercentage = function (percentage) {
-      const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
-      const scrollToPosition = totalHeight * (percentage / 100);
-      window.scrollTo({
-        top: scrollToPosition,
-        behavior: 'smooth' // Smooth scrolling
-      });
-    };
+     $scope.scrollDownByPercentage = function (percentage) {
+        const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const scrollToPosition = totalHeight * (percentage / 100);
+        console.log("Scrolling to position:", scrollToPosition); // Debugging line
+        window.scrollTo({
+          top: scrollToPosition,
+          behavior: 'smooth' // Smooth scrolling
+        });
+      };
 
-    /**
-     * ---------------------
-     * Data Initialization
-     * ---------------------
-     */
+  // Initialize newItem in the controller
+  $scope.newItem = {
+    firstName: '',
+    lastName: '',
+    contactNumber: '',
+    email: '',
+    address: '',
+    transportation: '',
+    transportationDescription: '',
+    plateNumber: '',
+    dateLost: '',
+    timeLost: '',
+    itemName: '',
+    itemColor: '',
+    itemCategory: '',
+    itemBrand: '',
+    itemDescription: '',
+    imageFile: null
+  };
 
-    // Initialize newItem in the controller
-    $scope.newItem = {
-      firstName: '',
-      lastName: '',
-      contactNumber: '',
-      email: '',
-      address: '',
-      transportation: '',
-      plateNumber: '',
-      dateLost: '',
-      timeLost: '',
-      itemName: '',
-      itemColor: '',
-      itemCategory: '',
-      itemBrand: '',
-      itemDescription: '',
-      imageFile: null
-    };
+  $scope.reports = [];
+  $scope.reportPopupVisible = false;
+  $scope.loginVisible = false;
+  $scope.adminMode = false;
 
-    $scope.reports = [];
-    $scope.reportPopupVisible = false;
-    $scope.loginVisible = false;
-    $scope.adminMode = false;
+  // Path to the local JSON file
+const jsonFilePath = 'reports.json';
 
-    /**
-     * ----------------------------
-     * File and Image Management
-     * ----------------------------
-     */
-
-    // Handle File Upload and Convert to Base64
-    $scope.handleFileUpload = function (files) {
-      if (files && files[0]) {
-        const reader = new FileReader();
-        reader.onload = (event) => {
-          $scope.$apply(() => {
-            $scope.newItem.image = event.target.result; // Preview image
-            $scope.newItem.imageFile = files[0]; // Store file for upload
-          });
-        };
-        reader.readAsDataURL(files[0]);
-      }
-    };
-
-     // Function to upload an image to GitHub
-    $scope.uploadImageToGitHub = async function (file) {
-      const reader = new FileReader();
-      return new Promise((resolve, reject) => {
-        reader.onload = async (event) => {
-          const base64Image = event.target.result.split(',')[1]; // Remove the data URL prefix
-          const filePath = `images/${Date.now()}_${file.name}`; // Unique file path for GitHub
-          
-          try {
-            const response = await $http.put(
-              `https://api.github.com/repos/norbatco/lostandfound/contents/${filePath}`,
-              {
-                message: 'Upload item image',
-                content: base64Image
-              },
-              {
-                headers: {
-                  Authorization: `token ${GITHUB_TOKEN}`,
-                  Accept: 'application/vnd.github.v3+json'
-                }
-              }
-            );
-            resolve(response.data.content.download_url); // Return the uploaded image URL
-          } catch (error) {
-            console.error('Error uploading image:', error);
-            reject(error);
-          }
-        };
-        reader.readAsDataURL(file); // Read the file as a data URL
-      });
-    };
+  // Load Reports from the JSON File
+$scope.loadReportsFromJson = function (file) {
+  const reader = new FileReader();
+  
+  reader.onload = function (e) {
+    try {
+      // Parse the JSON file content
+      const data = JSON.parse(e.target.result);
       
-    /**
-     * ------------------------
-     * Report Management
-     * ------------------------
-     */
-    // Submit Report
-$scope.submitReport = async function () {
-  try {
-    // Check if newItem is properly initialized and populated
-    if (!$scope.newItem.firstName || !$scope.newItem.lastName || !$scope.newItem.contactNumber || !$scope.newItem.email || !$scope.newItem.address) {
-      alert('Please fill in all the required fields.');
-      return;
-    }
-
-    // Create the report object
-    const report = {
-      id: Date.now(), // Add unique ID based on the current timestamp
-      firstName: $scope.newItem.firstName,
-      lastName: $scope.newItem.lastName,
-      contactNumber: $scope.newItem.contactNumber,
-      email: $scope.newItem.email,
-      address: $scope.newItem.address,
-      transportation: $scope.newItem.transportation,
-      plateNumber: $scope.newItem.plateNumber,
-      dateLost: $scope.newItem.dateLost,
-      timeLost: $scope.newItem.timeLost,
-      itemName: $scope.newItem.itemName,
-      itemColor: $scope.newItem.itemColor,
-      itemCategory: $scope.newItem.itemCategory,
-      itemBrand: $scope.newItem.itemBrand,
-      itemDescription: $scope.newItem.itemDescription,
-      category: 'Lost', // Automatically set category to "Lost"
-      timestamp: new Date().toISOString()
-    };
-
-    // Only upload the image if a file is selected
-    if ($scope.newItem.imageFile) {
-      report.image = await $scope.uploadImageToGitHub($scope.newItem.imageFile); // Upload and get the image URL
-    }
-
-    // Fetch the existing reports from the GitHub API
-    const response = await $http.get(GITHUB_API_URL, {
-      headers: {
-        Authorization: `token ${GITHUB_TOKEN}`,
-        Accept: 'application/vnd.github.v3+json'
+      console.log('Loaded JSON data:', data);  // Log the parsed data to check structure
+      
+      // Check if the data is an array
+      if (Array.isArray(data)) {
+        $scope.$apply(() => {
+          $scope.reports = data; // Load reports into scope
+        });
+        alert('Reports loaded successfully from the JSON file!');
+      } else {
+        alert('Invalid JSON format. The file should contain an array of reports.');
       }
-    });
+    } catch (error) {
+      console.error('Error parsing JSON:', error);
+      alert('Error loading reports from the JSON file.');
+    }
+  };
 
-    // Decode the existing reports and add the new report
-    const existingReports = JSON.parse(atob(response.data.content));
-    existingReports.push(report);
+  reader.readAsText(file); // Read the file as text
+};
 
-    // Save the updated list of reports to GitHub
-    await $http.put(
-      GITHUB_API_URL,
-      {
-        message: 'Add new report',
-        content: btoa(JSON.stringify(existingReports, null, 2)),
-        sha: response.data.sha
-      },
-      {
-        headers: {
-          Authorization: `token ${GITHUB_TOKEN}`,
-          Accept: 'application/vnd.github.v3+json'
-            }
-          }
-        );
+// Unified File Upload Handler
+$scope.handleFileUpload = function (files, isJsonFile) {
+  if (files && files[0]) {
+    const file = files[0];
 
-        // Success message and reset form
-        alert('Report submitted successfully!');
-        $scope.newItem = {}; // Reset the form data
-        $scope.fetchReports(); // Refresh reports list
-        $scope.toggleReportPopup(); // Close the popup
-      } catch (error) {
-        console.error('Error submitting report:', error);
-        alert('Failed to submit the report. Please try again.');
+    if (isJsonFile) {
+      // Handle JSON file upload
+      $scope.loadReportsFromJson(file); // Load reports from the uploaded JSON file
+    } else {
+      // Handle Image file upload (Base64 conversion)
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        $scope.$apply(() => {
+          $scope.newItem.image = event.target.result; // Preview image
+          $scope.newItem.imageFile = file; // Store file for upload
+        });
+      };
+      reader.readAsDataURL(file); // Read the file as Base64
+    }
+  }
+};
+
+  // Save reports to a local .json file
+  $scope.saveReportsToJson = function () {
+    try {
+      const dataStr = JSON.stringify($scope.reports, null, 2);
+      const blob = new Blob([dataStr], { type: 'application/json' });
+  
+      // Simulate saving to the file directly (backend would handle this in real apps)
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = jsonFilePath;
+      a.click();
+      URL.revokeObjectURL(a.href);
+  
+      alert('Reports saved successfully!');
+    } catch (error) {
+      console.error('Error saving reports:', error);
+      alert('Failed to save the reports to the JSON file.');
+    }
+  };
+
+  /**
+   * ---------------------
+   * Report Management
+   * ---------------------
+   */
+  // Submit Report
+  $scope.submitReport = function () {
+    try {
+      // Check if newItem is properly initialized and populated
+      if (!$scope.newItem.firstName || !$scope.newItem.lastName || !$scope.newItem.contactNumber || !$scope.newItem.email || !$scope.newItem.address) {
+        alert('Please fill in all the required fields.');
+        return;
       }
-    };
 
-    // Show Log Console when Fetching Reports
-    console.log($scope.reports);
+      // Create the report object
+      const report = {
+        id: Date.now(), // Add unique ID based on the current timestamp
+        firstName: $scope.newItem.firstName,
+        lastName: $scope.newItem.lastName,
+        contactNumber: $scope.newItem.contactNumber,
+        email: $scope.newItem.email,
+        address: $scope.newItem.address,
+        transportation: $scope.newItem.transportation,
+        transportationDescription: $scope.newItem.transportationDescription,
+        plateNumber: $scope.newItem.plateNumber,
+        dateLost: $scope.newItem.dateLost,
+        timeLost: $scope.newItem.timeLost,
+        itemName: $scope.newItem.itemName,
+        itemColor: $scope.newItem.itemColor,
+        itemCategory: $scope.newItem.itemCategory,
+        itemBrand: $scope.newItem.itemBrand,
+        itemDescription: $scope.newItem.itemDescription,
+        category: 'Lost', // Automatically set category to "Lost"
+        timestamp: new Date().toISOString()
+      };
+
+      // If image is uploaded, add it to the report
+      if ($scope.newItem.imageFile) {
+        report.image = $scope.newItem.image; // Base64 image data
+      }
+
+      // Add the new report to the existing reports array
+      $scope.reports.push(report);
+
+      // Save the updated reports to a local .json file
+      $scope.saveReportsToJson();
+
+      // Success message and reset form
+      alert('Report submitted successfully!');
+      $scope.newItem = {}; // Reset the form data
+      $scope.toggleReportPopup(); // Close the popup
+    } catch (error) {
+      console.error('Error submitting report:', error);
+      alert('Failed to submit the report. Please try again.');
+    }
+  };
 
     // Delete Report
-    $scope.deleteItem = async function (index) {
-        if (confirm('Are you sure you want to delete this report?')) {
-            try {
-                $scope.reports.splice(index, 1);
-    
-                const updatedReports = JSON.stringify($scope.reports, null, 2);
-    
-                const response = await $http.get(GITHUB_API_URL, {
-                    headers: {
-                        Authorization: `token ${GITHUB_TOKEN}`,
-                        Accept: 'application/vnd.github.v3+json'
-                    }
-                });
-    
-                await $http.put(
-                    GITHUB_API_URL,
-                    {
-                        message: 'Delete a report',
-                        content: btoa(updatedReports),
-                        sha: response.data.sha
-                    },
-                    {
-                        headers: {
-                            Authorization: `token ${GITHUB_TOKEN}`,
-                            Accept: 'application/vnd.github.v3+json'
-                        }
-                    }
-                );
-    
-                alert('Report deleted successfully!');
-            } catch (error) {
-                console.error('Error deleting report:', error);
-                alert('Failed to delete the report. Please try again.');
-            }
-        }
-    };
-
-      // Edit Report
-      $scope.updateReport = async function (item, index) {
+    $scope.deleteItem = function (index) {
+      if (confirm('Are you sure you want to delete this report?')) {
         try {
-          $scope.reports[index] = item;
-    
-          const updatedReports = JSON.stringify($scope.reports, null, 2);
-    
-          const response = await $http.get(GITHUB_API_URL, {
-            headers: {
-              Authorization: `token ${GITHUB_TOKEN}`,
-              Accept: 'application/vnd.github.v3+json'
-            }
-          });
-    
-          await $http.put(
-            GITHUB_API_URL,
-            {
-              message: 'Update report item',
-              content: btoa(updatedReports),
-              sha: response.data.sha
-            },
-            {
-              headers: {
-                Authorization: `token ${GITHUB_TOKEN}`,
-                Accept: 'application/vnd.github.v3+json'
-              }
-            }
-          );
-    
-          alert('Report updated successfully!');
+          $scope.reports.splice(index, 1);
+          $scope.saveReportsToJson();
+          alert('Report deleted successfully!');
         } catch (error) {
-          console.error('Error updating report:', error);
-          alert('Failed to update the report. Please try again.');
+          console.error('Error deleting report:', error);
+          alert('Failed to delete the report. Please try again.');
         }
-      };
- 
-    // Fetch All Reports from GitHub
-    $scope.fetchReports = function () {
-        $http.get(GITHUB_API_URL, {
-            headers: {
-                Authorization: `token ${GITHUB_TOKEN}`,
-                Accept: 'application/vnd.github.v3+json'
-            }
-        }).then(response => {
-            const reports = JSON.parse(atob(response.data.content));
+      }
+    };
     
-            // Ensure every report has a unique ID
-            reports.forEach(report => {
-                if (!report.id) {
-                    report.id = Date.now() + Math.random(); // Generate a fallback unique ID
-                }
-            });
-    
-            $scope.reports = reports;
-        }).catch(error => {
-            console.error('Error fetching reports:', error);
-        });
+    // Edit Report
+    $scope.updateReport = function (item, index) {
+        try {
+            // Update the report in the array
+            $scope.reports[index] = item;
+
+            // Save the updated reports to a local .json file
+            $scope.saveReportsToLocalFile();
+
+            alert('Report updated successfully!');
+        } catch (error) {
+            console.error('Error updating report:', error);
+            alert('Failed to update the report. Please try again.');
+        }
     };
 
-    console.log("Using token:", GITHUB_TOKEN); // Log the token to ensure it's set correctly
+  // Load Reports from the JSON File
+  $scope.loadReportsFromJson = function () {
+    try {
+      fetch(jsonFilePath)
+        .then((response) => {
+          if (!response.ok) throw new Error('Failed to load reports.');
+          return response.json();
+        })
+        .then((data) => {
+          $scope.$apply(() => {
+            $scope.reports = Array.isArray(data) ? data : [];
+          });
+        })
+        .catch((error) => {
+          console.error('Error loading reports:', error);
+          alert('Could not load reports from the JSON file.');
+        });
+    } catch (error) {
+      console.error('Error loading JSON file:', error);
+      alert('An error occurred while reading the JSON file.');
+    }
+  };
 
     /**
      * -------------------------
@@ -302,9 +244,22 @@ $scope.submitReport = async function () {
      * -------------------------
      */
 
+    // Initialize variables
+    $scope.selectedReport = null;
+
+    // Show full report details
+    $scope.showReportDetails = function (report) {
+      if ($scope.adminMode) {
+        $scope.selectedReport = report; // Set the clicked report as the selected one
+      }
+    };
+
+    // Close the report details modal
+    $scope.closeReportDetails = function () {
+      $scope.selectedReport = null; // Clear the selected report to hide the modal
+    };
+
     // Manage Popup Visibility States
-    $scope.reportPopupVisible = false;
-    $scope.loginVisible = false;
     $scope.passwordVisible = false;
 
     // Toggle Login Popup
@@ -317,43 +272,33 @@ $scope.submitReport = async function () {
     };
 
     // Toggle Report Popup
-// Initialize the Step 1 Form
-$scope.currentStep = 1;
+    // Initialize the current step to 1
+    $scope.currentStep = 1;
 
-// Go to the next step
-$scope.goToNextStep = function () {
-    if ($scope.currentStep < 3) {
-        $scope.currentStep++;
-        $('#reportFormCarousel').carousel('next');
-    }
-};
+    // Go to the next step
+    $scope.goToNextStep = function () {
+        if ($scope.currentStep < 3) {
+            $scope.currentStep++;
+            $('#reportFormCarousel').carousel('next');
+        }
+      };
 
-// Go to the previous step
-$scope.goToPreviousStep = function () {
-    if ($scope.currentStep > 1) {
-        $scope.currentStep--;
-        $('#reportFormCarousel').carousel('prev');
-    }
-};
+    // Go to the previous step
+    $scope.goToPreviousStep = function () {
+        if ($scope.currentStep > 1) {
+            $scope.currentStep--;
+            $('#reportFormCarousel').carousel('prev');
+        }
+      };
 
-// Go to a specific step (used when opening the form)
-$scope.goToStep = function (step) {
-    $scope.currentStep = step;
-    $('#reportFormCarousel').carousel(step - 1); // Carousel steps are 0-indexed
-};
-
-// Toggle Report Popup and reset carousel to the first step
-$scope.toggleReportPopup = function () {
-    $scope.reportPopupVisible = !$scope.reportPopupVisible;
-
-    if ($scope.reportPopupVisible) {
-        $scope.goToStep(1); // Go to the first step when opening the form
-        document.body.classList.add('no-scroll'); // Disable main page scrolling
-    } else {
-        document.body.classList.remove('no-scroll'); // Enable main page scrolling
-    }
-};
-
+    // Toggle Report Popup and reset carousel to the first step
+    $scope.toggleReportPopup = function () {
+        $scope.reportPopupVisible = !$scope.reportPopupVisible;
+        if ($scope.reportPopupVisible) {
+          $scope.currentStep = 1;
+          $('#reportFormCarousel').carousel(0); // Reset carousel to the first step
+        }
+      };
 
     /**
      * ----------------
@@ -387,7 +332,10 @@ $scope.toggleReportPopup = function () {
      */
 
     // Fetch Reports on Controller Initialization
-    $scope.fetchReports();
+    $scope.fetchReports = function () {
+        console.log("Fetching reports..."); // Placeholder for fetching reports functionality
+        $scope.reports = []; // Example initialization of reports
+      };
 
     // User Initialization
     $scope.user = {

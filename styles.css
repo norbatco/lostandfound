@@ -1,28 +1,25 @@
 /* General Styles */
 body {
-    font-family: 'Poppins', sans-serif;
-    margin: 0;
-    background-color: #555;
-  }
+  font-family: 'Poppins', sans-serif;
+  margin: 0;
+  background-color: #555;
+  line-height: 1.6;
+}
 
-  html {
-    scroll-behavior: smooth;
-  }
+html {
+  scroll-behavior: smooth;
+}
 
-  .btn:hover {
-    background-color: #003bb3;
-    transition: background-color 0.3s ease;
-  }
+.btn:hover {
+  background-color: #003bb3;
+  transition: background-color 0.3s ease;
+}
 
-  input:focus, textarea:focus {
-    border-color: #0056ff;
-    transition: border-color 0.3s ease-in-out;
-  }
-  /* Transition */
-  .fade-in {
-    opacity: 0;
-    animation: fadeIn 1s forwards;
-  }
+input:focus,
+textarea:focus {
+  border-color: #0056ff;
+  transition: border-color 0.3s ease-in-out;
+}
   
   @keyframes fadeIn {
     100% {opacity: 1;}
@@ -31,31 +28,30 @@ body {
   /* Navigation Bar */
   .navbar {
     background-color: rgba(0, 0, 0, 0.7);
+    padding: 1rem;
+    position: relative;
+    z-index: 10;
+    transition: height 0.3s ease, background-size 0.3s ease;
   }
-
-  .navbar a {
-    color: rgb(255, 255, 255) !important;
-  }
-
+  
   .navbar-brand img {
-    height: 75px; 
-    width: auto;  
+    height: 10vh; 
+    width: auto;
   }
-
+  
   .navbar-nav {
-    display: flex;  
-    align-items: center;  
+    display: flex;
+    align-items: center;
   }
-
+  
   .navbar-divider {
-    margin: 0 10px;  
-    color: white;  
-    font-size: 18px;  
+    margin: 0 10px;
+    color: white;
+    font-size: 1.5rem; 
   }
-
-  .nav-item {
-    display: flex;  
-    align-items: center;  
+  
+  .nav-item .nav-link {
+    font-size: 1rem; 
   }
 
   @media (max-width: 768px) {
@@ -87,22 +83,40 @@ body {
     height: 100vh;
     color: rgb(255, 255, 255);
     text-align: center;
-    padding: 100px 20px;
-    padding-top: 10%;
+    padding: 0px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
     position: relative;
     transition: height 0.3s ease, background-size 0.3s ease; /* Smooth transition for height and background scaling */
   }
 
   /* Restores header to its original size on scroll */
   .shrink-header {
-    height: 400px;
+    height: 20vh;
     background-size: auto;
     padding: 50px 20px;
   }
 
-  .header h1, .header p {
-    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8);
-  }
+  /* When the header shrinks, set opacity of h1 and p to 0 */
+.shrink-header h1,
+.shrink-header p {
+  opacity: 0; /* Make h1 and p invisible */
+  transition: opacity 0.3s ease; /* Smooth transition for opacity */
+}
+
+/* When the header is in the shrink state, ensure opacity stays 0 for the button */
+.shrink-header .btn-primary {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Header text styling */
+.header h1, .header p {
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8);
+}
 
   .header h1 {
     font-size: 3.6vw;
@@ -154,11 +168,24 @@ body {
   .items-section {
     padding: 25px 25px;
     background: white;
-    background-size: cover;
+    background-size: 100%;
     color: rgb(0, 0, 0);
     border-radius: 15px; 
     font-size: 0.8vw;
-    width: 100%;
+  }
+
+  .reported-items-container.drag-over {
+    border-color: #007bff;
+    background-color: #e9f5ff;
+  }
+  
+  .drag-drop-hint {
+    color: #aaa;
+    font-style: italic;
+  }
+  
+  .drag-over .drag-drop-hint {
+    color: #007bff;
   }
 
   /* Styling for each card in items-section */
@@ -171,11 +198,20 @@ body {
     display: flex; 
     flex-direction: column; 
     justify-content: space-between; 
-    padding: 15px;
+    padding: 2%;
+    margin: 1%;
+    flex: 1 1 30%; /* Make cards flexible */
+    max-width: 30%; /* Cap the maximum size */
     box-sizing: border-box; 
     flex-grow: 1; 
     height: auto; 
-    min-width: 150px; 
+    min-width: 20vw; 
+  }
+
+  /* Maintain Image */
+  .card img {
+    width: 100%; 
+    height: auto;
   }
 
     /* Styling for the Item Name inside .card */
@@ -204,9 +240,23 @@ body {
     color: #555; 
   }
 
+  @media (max-width: 768px) {
+    .card {
+      flex: 1 1 45%; /* Adjust card size for tablets */
+      max-width: 45%;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .card {
+      flex: 1 1 100%; /* Stack cards on small screens */
+      max-width: 100%;
+    }
+  }
+
   /* Category styles */
   .category-found {
-    color: limegreen;
+    color: rgb(48, 148, 249);
   }
 
   .category-lost {
@@ -215,6 +265,10 @@ body {
 
   .category-notfound {
     color: rgb(162, 162, 162);
+  }
+
+  .category-retrieved{
+    color: rgb(0, 255, 13);
   }
 
   .category-found, .category-lost, .category-notfound {
@@ -247,6 +301,53 @@ body {
   .card-text {
       font-size: 1rem;
   }
+
+  /* Modal container */
+.modal-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* Modal content */
+.modal-content {
+  background: #ffffffca;
+  padding: 20px;
+  border-radius: 10px;
+  width: 80%;
+  max-width: 600px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  position: relative;
+}
+
+/* Close button */
+.btn-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 5px 10px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+/* Report details list */
+.report-details-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.report-details-list li {
+  margin-bottom: 5px;
+  font-size: 16px;
+}
 
   /* Carousel Controls */
   .carousel-controls {
@@ -369,17 +470,12 @@ body {
   }
 
   /* Report Pop-up Section */
-/* Prevent scrolling when the pop-up is active */
-.no-scroll {
-  overflow: hidden;
-}
-
   .report-popup-container {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100vw;
-    height: 60vh;
+    width: 100%;
+    height: 100%;
     background: rgba(0, 0, 0, 0.6);
     display: flex;
     justify-content: center;
@@ -389,30 +485,69 @@ body {
 
   .report-popup-content {
     background: rgba(157, 157, 157, 0.794);
-    padding: 30px;
+    padding: 3%;
+    width: 80%;
+    max-width: 50%;
+    max-height: 70vh;
+    overflow-y: auto;
     border-radius: 10px;
-    width: 90%;
-    max-width: 500px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
   }
 
   .report-popup-content h2 {
     text-align: center;
+    font-size: 2rem;
+    margin-bottom: 1rem;
     margin-bottom: 20px;
     color: rgb(255, 255, 255);
     text-shadow: 0 4px 8px rgba(0, 0, 0, 0.43);
   }
 
+  @media (max-width: 768px) {
+    .report-popup-content {
+      width: 90%;
+      padding: 10%;
+    }
+  
+    .report-popup-content h2 {
+      font-size: 1.5rem;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .report-popup-content {
+      width: 95%;
+      padding: 5%;
+    }
+  
+    .report-popup-content h2 {
+      font-size: 1.2rem;
+    }
+  }
+
   /* Styling for the Reported Items Container */
   .reported-items-container {
-      max-height: 70%;  
+      max-height: 70%;
+      min-height: 30%;
       overflow-y: auto;   
       overflow-x: hidden;
       border: 2px solid #ddd; 
       padding: 25px; 
       margin-top: 20px;
       border-radius: 15px;
-      min-height: 50%;
+      min-height: 35vw;
+  }
+
+  @media (max-width: 768px) {
+    .reported-items-container {
+      padding: 15px; /* Reduce padding on smaller screens */
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .reported-items-container {
+      padding: 10px;
+    }
   }
 
   .card {
@@ -436,7 +571,7 @@ body {
 
   /* About Section */
   #about-section {
-    background: linear-gradient(rgba(0, 0, 0, 0.604), rgba(0, 0, 0, 0.53)), url('https://github.com/norbatco/lostandfound/blob/main/norbatco.jpg?raw=true') no-repeat center center/cover;
+    background: linear-gradient(rgba(0, 0, 0, 0.604), rgba(0, 0, 0, 0.53)), url('norbatco.jpg') no-repeat center center/cover;
     background-size: cover;
     background-position: center center;
     height: 100vh;
@@ -454,7 +589,7 @@ body {
   #about-section h2 {
     font-size: 2vw;
     padding-bottom: 15px;
-    padding-top: 55px;
+    padding-top: 35%;
   }
 
   #about-section p {
@@ -502,7 +637,7 @@ body {
     text-align: center; 
     max-width: 100%;
     margin: 0 auto;
-    padding: 20px;
+    padding: 2%;
     color: white;
   }
 
@@ -521,7 +656,7 @@ body {
   }
 
   .footer p {
-    font-size: 0.8vw; /* Responsive footer text size */
+    font-size: 1rem; /* Responsive footer text size */
     transition: font-size 0.3s ease-in-out;
   }
 

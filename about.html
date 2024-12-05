@@ -7,19 +7,25 @@
   <title>NORBATCO Lost and Found</title>
   
   <!-- Bootstrap CSS -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-  
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+
+  <!-- jQuery -->
+  <script src="js/jquery-3.7.1.min.js"></script>
+
+  <!-- Popper.js -->
+  <script src="js/popper.min.js"></script>
+
+  <!-- Bootstrap JS -->
+  <script src="js/bootstrap.min.js"></script>
+
   <!-- AngularJS -->
-  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+  <script src="js/angular.min.js"></script>
 
-  <!-- Icons -->
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="css/all.min.css">
 
-  <!-- Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+  <!-- Google Fonts (Poppins) -->
+  <link href="fonts/css2.css" rel="stylesheet">
 
   <!-- Styles -->
   <link rel="stylesheet" href="styles.css">
@@ -30,39 +36,33 @@
   <!-- Navbar -->
   <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
     <a class="navbar-brand" href="#">
-        <img src="https://raw.githubusercontent.com/norbatco/lostandfound/refs/heads/main/images.png" alt="NORBATCO Logo" style="height: 60px;">
+      <img src="images.png" alt="NORBATCO Logo" style="height: 60px;">
     </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
+      <span class="navbar-toggler-icon"></span>
     </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav ml-auto">
-              <li class="nav-item">
-                  <a class="nav-link" href="index.html">Home</a>
-              </li>
-              <li class="nav-item navbar-divider d-none d-lg-block">
-                  <span>|</span>
-              </li>
-              <li class="nav-item">
-                  <a class="nav-link" href="#" ng-click="toggleReportPopup()" data-toggle="collapse" data-target=".navbar-collapse.show">Create Report</a>
-              </li>
-              <li class="nav-item navbar-divider d-none d-lg-block">
-                  <span>|</span>
-              </li>
-              <li class="nav-item">
-                  <a class="nav-link" href="about.html">About</a>
-              </li>
-              <li class="nav-item navbar-divider d-none d-lg-block">
-                  <span>|</span>
-              </li>
-              <li class="nav-item" ng-if="!adminMode">
-                  <a class="nav-link" href="#" ng-click="toggleLoginPopup()" data-toggle="collapse" data-target=".navbar-collapse.show">Login</a>
-              </li>
-              <li class="nav-item" ng-if="adminMode">
-                  <a class="nav-link text-danger" href="#" ng-click="logout()" data-toggle="collapse" data-target=".navbar-collapse.show">Logout</a>
-              </li>
-          </ul>
-      </div>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="index.html">Home</a>
+        </li>
+        <li class="nav-item navbar-divider d-none d-lg-block"><span>|</span></li>
+        <li class="nav-item">
+          <a class="nav-link" href="#" ng-click="toggleReportPopup()">Create Report</a>
+        </li>
+        <li class="nav-item navbar-divider d-none d-lg-block"><span>|</span></li>
+        <li class="nav-item">
+          <a class="nav-link" href="about.html">About</a>
+        </li>
+        <li class="nav-item navbar-divider d-none d-lg-block"><span>|</span></li>
+        <li class="nav-item" ng-if="!adminMode">
+          <a class="nav-link" href="#" ng-click="toggleLoginPopup()" data-toggle="collapse" data-target=".navbar-collapse.show">Login</a>
+        </li>
+        <li class="nav-item" ng-if="adminMode">
+          <a class="nav-link text-danger" href="#" ng-click="logout()" data-toggle="collapse" data-target=".navbar-collapse.show">Logout</a>
+        </li>
+      </ul>
+    </div>
   </nav>
 
   <!-- About Section -->
@@ -82,7 +82,7 @@
   
         <!-- Right Column: Image -->
         <div class="col-md-5 text-center">
-          <img src="https://factohr-1a56a.kxcdn.com/wp-content/uploads/2021/03/jse.png" alt="About NORBATCO" class="img-fluid rounded">
+          <img src="about-bg.png" alt="About NORBATCO" class="img-fluid rounded">
         </div>
       </div>
     </div>
@@ -91,6 +91,7 @@
     <!-- Report Form Section with Carousel -->
     <div class="report-popup-container" ng-if="reportPopupVisible">
       <div class="report-popup-content">
+        <!-- Create Report Title -->
         <h2 class="text-center">Create a Report</h2>
         
         <!-- Carousel -->
@@ -115,15 +116,9 @@
                   <label for="email">Email Address</label>
                   <input type="email" class="form-control" id="email" ng-model="newItem.email" required />
                 </div>
-                <div class="form-group">
+                <div class="form-group full-width">
                   <label for="address">Address</label>
                   <textarea class="form-control" id="address" rows="2" ng-model="newItem.address" required></textarea>
-                </div>
-
-                <!-- Mock Captcha -->
-                <div class="form-group">
-                  <label>I'm not a robot</label>
-                  <input type="checkbox" ng-model="captchaVerified" /> Verify
                 </div>
               </form>
             </div>
@@ -137,6 +132,10 @@
                     <option value="Bus">Bus</option>
                     <option value="Multicab">Multicab</option>
                   </select>
+                </div>
+                <div class="form-group">
+                  <label for="transportationDescription">Transportation Description (optional)</label>
+                  <input type="text" class="form-control" id="transportationDescription" ng-model="newItem.transportationDescription" />
                 </div>
                 <div class="form-group">
                   <label for="plateNumber">Plate Number (optional)</label>
@@ -167,11 +166,13 @@
                 <div class="form-group">
                   <label for="itemCategory">Item Category</label>
                   <select class="form-control" id="itemCategory" ng-model="newItem.itemCategory" required>
-                    <option value="Pets">Pets</option>
-                    <option value="Accessory">Accessory</option>
-                    <option value="Electronic">Electronic</option>
-                    <option value="Clothing">Clothing</option>
-                    <option value="Other">Other</option>
+                    <option value="Personal Belonging">Personal Belonging</option>
+                    <option value="Clothing & Accessory">Clothing & Accessory</option>
+                    <option value="Electronic">Electronics</option>
+                    <option value="Transportation Item">Transportation Item</option>
+                    <option value="Document">Document</option>
+                    <option value="Pet">Pet</option>
+                    <option value="Others">Others</option>
                   </select>
                 </div>
                 <div class="form-group">
@@ -187,7 +188,6 @@
                 <div class="form-group">
                   <label for="itemImage">Upload Item Image</label>
                   <input type="file" class="form-control-file" id="itemImage" onchange="angular.element(this).scope().handleFileUpload(this.files)" />
-                  <img ng-if="newItem.image" ng-src="{{newItem.image}}" alt="Image Preview" style="max-width: 100%; margin-top: 10px;" />
                 </div>
 
                 <!-- Submit Button (Only on Step 3) -->
@@ -197,28 +197,27 @@
           </div>
 
           <!-- Carousel Controls -->
-        <!-- Carousel Controls -->
-        <div class="carousel-controls">
-          <!-- Previous Button - Hide on Step 1 -->
-          <button type="button" class="btn btn-secondary" ng-click="goToPreviousStep()" ng-if="currentStep > 1">Previous</button>
-          
-          <!-- Next Button - Hide on Step 3 -->
-          <button type="button" class="btn btn-primary float-right" ng-click="goToNextStep()" ng-show="currentStep < 3">Next</button>
+          <div class="carousel-controls">
+            <!-- Previous Button - Hide on Step 1 -->
+            <button type="button" class="btn btn-secondary" ng-click="goToPreviousStep()" ng-if="currentStep > 1">Previous</button>
+            
+            <!-- Next Button - Hide on Step 3 -->
+            <button type="button" class="btn btn-primary float-right" ng-click="goToNextStep()" ng-show="currentStep < 3">Next</button>
+          </div>
         </div>
-      </div>
 
-      <!-- Close Button -->
-      <button type="button" class="btn btn-secondary btn-block mt-1" ng-click="toggleReportPopup()">Close</button>
+        <!-- Close Button -->
+        <button type="button" class="btn btn-secondary btn-block mt-1 close-btn" ng-click="toggleReportPopup()">Close</button>
+      </div>
     </div>
-  </div>
     
-  <!-- Footer -->
-  <footer class="footer">
+   <!-- Footer -->
+   <footer class="footer">
     <div class="footer-container">
       <div class="footer-left">
         <p>101 New Kawayan, Tacloban City, Leyte</p>
         <p># 093 9379 33017</p>
-        <p>norbatco@gmail.com</p>
+        <p>norbatco.lost.and.found@gmail.com</p>
       </div>
       <div class="footer-center">
         <p></p>
@@ -230,9 +229,22 @@
       <div class="footer-right">
         <p>Find us @:</p>
         <br>
-        <a href="https://facebook.com" target="_blank" class="social-icon"><i class="fab fa-facebook"></i></a>
-        <a href="https://instagram.com" target="_blank" class="social-icon"><i class="fab fa-instagram"></i></a>
-        <a href="https://x.com" target="_blank" class="social-icon"><i class="fab fa-twitter"></i></a>
+        <!-- Social Media Icons with Local Font Awesome -->
+        <div class="social-icons-container">
+          <!-- Facebook Link -->
+          <a href="https://facebook.com" target="_blank" class="social-icon">
+            <i class="fab fa-facebook"></i>
+          </a>
+
+          <!-- Instagram Link -->
+          <a href="https://instagram.com" target="_blank" class="social-icon">
+            <i class="fab fa-instagram"></i>
+          </a>
+
+          <!-- Twitter (X) Link -->
+          <a href="https://twitter.com" target="_blank" class="social-icon">
+            <i class="fab fa-twitter"></i>
+          </a>
       </div>
     </div>
   </footer>
