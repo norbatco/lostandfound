@@ -88,7 +88,7 @@
       <i class="fas fa-upload"></i> Upload JSON File
     </label>
     <input type="file" id="uploadJsonFile" accept=".json" style="display: none;" 
-           ng-change="handleFileUpload(uploadedJsonFile, true)" ng-model="uploadedJsonFile" />
+           onchange="angular.element(this).scope().handleFileUpload(this.files, true)" ng-model="uploadedJsonFile" />
   </div>
 
   <!-- Scrollable Box -->
