@@ -334,6 +334,7 @@ label[for="uploadJsonFile"]:hover {
 .modal-content {
   background: #ffffffca;
   padding: 20px;
+  top: 10px;
   border-radius: 10px;
   width: 80%;
   max-width: 600px;
