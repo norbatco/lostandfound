@@ -501,7 +501,7 @@ label[for="uploadJsonFile"]:hover {
     background: rgba(157, 157, 157, 0.794);
     padding: 3%;
     width: 80%;
-    max-width: 50%;
+    max-width: 80%;
     max-height: 70vh;
     overflow-y: auto;
     border-radius: 10px;
